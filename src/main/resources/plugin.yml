@@ -1,0 +1,21 @@
+name: Asurajang
+version: '${version}'
+description: Asurajang Plugin
+authors: [qmftm]
+
+main: me.qmftm.asurajang.Asurajang
+api-version: '26.1.2'
+load: POSTWORLD
+
+permissions:
+  asurajang.admin:
+    description: Asurajang 관리 권한
+    default: op
+
+commands:
+  mayhem:
+    description: Asurajang 관리 명령어
+    usage: /mayhem reload
+    permission: asurajang.admin
+    aliases:
+      - 아수라장

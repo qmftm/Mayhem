@@ -1,0 +1,27 @@
+# Asurajang 설정 파일
+
+augmentations:
+  heuksom:
+    display-name: "흑섬"
+    icon: OBSIDIAN
+    color: dark_gray
+    description:
+      - "적을 5번 때릴 때마다"
+      - "20% 확률로 2.5배 대미지를 줍니다."
+
+  deadful:
+    display-name: "DeadFul"
+    icon: FERMENTED_SPIDER_EYE
+    color: red
+    description:
+      - "최대 체력이 5칸으로 고정되며"
+      - "2초마다 즉시 치유 I를 받습니다."
+
+  boogiewoogie:
+    display-name: "부기우기"
+    icon: SHEARS
+    color: light_purple
+    description:
+      - "F키(양손 교환) 사용 시 20블록 내"
+      - "가장 가까운 적과 위치를 교환합니다."
+      - "쿨타임: 5초"

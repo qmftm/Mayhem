@@ -1,0 +1,104 @@
+package me.qmftm.asurajang.augmentation;
+
+import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.*;
+
+public class AugmentationManager {
+
+    private final Map<String, Augmentation> augmentations = new LinkedHashMap<>();
+    private final Map<UUID, Map<String, AugmentationEffect>> playerEffects = new HashMap<>();
+
+    public AugmentationManager(FileConfiguration config) {
+        load(config);
+    }
+
+    public void reload(FileConfiguration config) {
+        load(config);
+    }
+
+    private void load(FileConfiguration config) {
+        augmentations.clear();
+        ConfigurationSection section = config.getConfigurationSection("augmentations");
+        if (section == null) return;
+
+        for (String id : section.getKeys(false)) {
+            ConfigurationSection entry = section.getConfigurationSection(id);
+            if (entry == null) continue;
+
+            String displayName = entry.getString("display-name", id);
+
+            String iconStr = entry.getString("icon", "NETHER_STAR");
+            Material iconMat = Material.matchMaterial(iconStr);
+            if (iconMat == null) iconMat = Material.NETHER_STAR;
+
+            String colorStr = entry.getString("color", "white").toLowerCase();
+            NamedTextColor color = NamedTextColor.NAMES.value(colorStr);
+            if (color == null) color = NamedTextColor.WHITE;
+
+            List<String> descLines = entry.getStringList("description");
+
+            ItemStack icon = new ItemStack(iconMat);
+            ItemMeta meta = icon.getItemMeta();
+            meta.displayName(Component.text(displayName, color).decoration(TextDecoration.ITALIC, false));
+
+            if (!descLines.isEmpty()) {
+                List<Component> lore = new ArrayList<>();
+                for (String line : descLines) {
+                    lore.add(Component.text(line, NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+                }
+                meta.lore(lore);
+            }
+
+            icon.setItemMeta(meta);
+
+            augmentations.put(id, new Augmentation(id, displayName, icon));
+        }
+    }
+
+    // ── 효과 활성화 / 비활성화 ───────────────────────────────────────────────
+
+    public void activateFor(Player player, String augId) {
+        AugmentationEffect effect = AugmentationRegistry.create(augId);
+        if (effect == null) return;
+
+        playerEffects.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>())
+                     .put(augId, effect);
+        effect.onActivate(player);
+    }
+
+    public void deactivateFor(Player player) {
+        Map<String, AugmentationEffect> effects = playerEffects.remove(player.getUniqueId());
+        if (effects == null) return;
+        effects.values().forEach(effect -> effect.onDeactivate(player));
+    }
+
+    public void deactivateAll(Iterable<? extends Player> players) {
+        for (Player player : players) {
+            deactivateFor(player);
+        }
+    }
+
+    public Map<String, AugmentationEffect> getActiveEffects(UUID playerId) {
+        return playerEffects.getOrDefault(playerId, Collections.emptyMap());
+    }
+
+    // ── 조회 ────────────────────────────────────────────────────────────────
+
+    public Augmentation get(String id) {
+        return augmentations.get(id);
+    }
+
+    public List<Augmentation> getAll() {
+        return Collections.unmodifiableList(new ArrayList<>(augmentations.values()));
+    }
+}

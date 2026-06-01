@@ -1,0 +1,111 @@
+package me.qmftm.asurajang.command;
+
+import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class AsurajangCommand implements CommandExecutor, TabCompleter {
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) {
+            sendUsage(sender);
+            return true;
+        }
+
+        Asurajang plugin = Asurajang.getInstance();
+
+        // 권한 없이도 사용 가능한 커맨드
+        if (args[0].equalsIgnoreCase("status")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                return true;
+            }
+            plugin.openPlayerAugmentations(player);
+            return true;
+        }
+
+        if (!sender.hasPermission("asurajang.admin")) {
+            sender.sendMessage(Component.text("권한이 없습니다.", NamedTextColor.RED));
+            return true;
+        }
+
+        switch (args[0].toLowerCase()) {
+            case "start" -> {
+                if (!plugin.getGameManager().start()) {
+                    sender.sendMessage(Component.text("이미 게임이 진행 중이거나 준비 중입니다.", NamedTextColor.RED));
+                }
+            }
+            case "stop" -> {
+                if (!plugin.getGameManager().stop()) {
+                    sender.sendMessage(Component.text("진행 중인 게임이 없습니다.", NamedTextColor.RED));
+                }
+            }
+            case "reload" -> {
+                plugin.reloadConfig();
+                plugin.getAugmentationManager().reload(plugin.getConfig());
+                sender.sendMessage(Component.text("[Asurajang] 설정을 리로드했습니다.", NamedTextColor.GREEN));
+            }
+            case "list" -> {
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                } else {
+                    plugin.openAugmentationList(player);
+                }
+            }
+            case "debug" -> handleDebug(sender, args, plugin);
+            default -> sendUsage(sender);
+        }
+
+        return true;
+    }
+
+    private void handleDebug(CommandSender sender, String[] args, Asurajang plugin) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+            return;
+        }
+
+        if (args.length < 2) {
+            sendDebugUsage(sender);
+            return;
+        }
+
+        switch (args[1].toLowerCase()) {
+            case "aug" -> plugin.openAugmentationSelect(player);
+            case "proc" -> {
+                HeugsomEffect.debugProc = !HeugsomEffect.debugProc;
+                sender.sendMessage(Component.text(
+                    "확률 100% 디버그 모드: " + (HeugsomEffect.debugProc ? "ON" : "OFF"),
+                    HeugsomEffect.debugProc ? NamedTextColor.GREEN : NamedTextColor.RED
+                ));
+            }
+            default -> sendDebugUsage(sender);
+        }
+    }
+
+    private void sendUsage(CommandSender sender) {
+        sender.sendMessage(Component.text("사용법: /mayhem <start|stop|reload|list|status|debug>", NamedTextColor.YELLOW));
+    }
+
+    private void sendDebugUsage(CommandSender sender) {
+        sender.sendMessage(Component.text("사용법: /mayhem debug <aug|proc>", NamedTextColor.YELLOW));
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 1) return List.of("start", "stop", "reload", "list", "status", "debug");
+        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug", "proc");
+        return List.of();
+    }
+}
