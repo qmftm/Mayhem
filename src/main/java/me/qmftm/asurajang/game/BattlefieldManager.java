@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BattlefieldManager {
 
-    private static final int BORDER_RADIUS = 50;
+    private static final int BORDER_RADIUS = 25;
     private static final int HISTORY_SIZE  = 3;          // 최근 N회 기록만 유지
     private static final int[] SEARCH_RADII = {3000, 6000, 12000, 20000}; // 단계별 탐색 반경
 
