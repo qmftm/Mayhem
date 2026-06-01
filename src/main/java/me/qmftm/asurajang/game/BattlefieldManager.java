@@ -106,6 +106,26 @@ public class BattlefieldManager {
         return new Location(world, x + 0.5, y + 1, z + 0.5);
     }
 
+    // teamIndex 0 → NW 모서리, 1 → SE 모서리 (±5블록 랜덤 분산)
+    @Nullable
+    public Location getTeamCornerSpawn(int teamIndex) {
+        if (currentLocation == null) return null;
+        World world = currentLocation.getWorld();
+        ThreadLocalRandom rng = ThreadLocalRandom.current();
+        int offset = BORDER_RADIUS - 10;
+        int sign = (teamIndex == 0) ? -1 : 1;
+
+        int x = currentLocation.getBlockX() + sign * offset + rng.nextInt(-5, 6);
+        int z = currentLocation.getBlockZ() + sign * offset + rng.nextInt(-5, 6);
+
+        if (!world.isChunkLoaded(x >> 4, z >> 4)) {
+            world.loadChunk(x >> 4, z >> 4);
+        }
+
+        int y = world.getHighestBlockYAt(x, z);
+        return new Location(world, x + 0.5, y + 1, z + 0.5);
+    }
+
     // ── 조회 ────────────────────────────────────────────────────────────────
 
     @Nullable

@@ -12,7 +12,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,6 +30,7 @@ public class GameManager {
     private State state = State.WAITING;
     private GameMode gameMode = GameMode.SOLO;
     private final Map<UUID, PlayerInventorySnapshot> snapshots = new HashMap<>();
+    private final Map<UUID, Integer> teams = new HashMap<>();
     private int remainingSeconds = GAME_DURATION;
     private BukkitTask timerTask;
 
@@ -87,10 +92,17 @@ public class GameManager {
             bm.applyBorder();
 
             GameScoreboardManager sbm = plugin.getScoreboardManager();
-            for (Player p : Bukkit.getOnlinePlayers()) {
+            Collection<? extends Player> online = Bukkit.getOnlinePlayers();
+            if (gameMode == GameMode.TEAM) assignTeams(online);
+            for (Player p : online) {
                 snapshots.put(p.getUniqueId(), new PlayerInventorySnapshot(p));
                 DefaultKit.apply(p);
-                Location spawn = bm.getRandomSpawn();
+                Location spawn;
+                if (gameMode == GameMode.TEAM) {
+                    spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0));
+                } else {
+                    spawn = bm.getRandomSpawn();
+                }
                 p.teleport(spawn != null ? spawn : loc);
                 p.showTitle(startTitle);
                 sbm.setup(p);
@@ -139,8 +151,18 @@ public class GameManager {
             if (snapshot != null) snapshot.restore(player);
         }
         snapshots.clear();
+        teams.clear();
 
         return true;
+    }
+
+    private void assignTeams(Collection<? extends Player> players) {
+        teams.clear();
+        List<Player> list = new ArrayList<>(players);
+        Collections.shuffle(list);
+        for (int i = 0; i < list.size(); i++) {
+            teams.put(list.get(i).getUniqueId(), i % 2);
+        }
     }
 
     public boolean isRunning() {
@@ -157,5 +179,10 @@ public class GameManager {
 
     public GameMode getGameMode() {
         return gameMode;
+    }
+
+    // 0 = NW팀, 1 = SE팀, -1 = 개인전 또는 미배정
+    public int getTeam(UUID uuid) {
+        return teams.getOrDefault(uuid, -1);
     }
 }
