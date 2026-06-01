@@ -45,12 +45,12 @@ public class GameModeSelectGUI implements InventoryHolder {
 
     private void populate() {
         inventory.setItem(TEAM_SLOT, buildChoice(
-            Material.LIME_CONCRETE,
+            Material.BLUE_BANNER,
             Component.text("팀전", NamedTextColor.GREEN),
             Component.text("팀을 나눠 싸우는 모드", NamedTextColor.GRAY)
         ));
         inventory.setItem(SOLO_SLOT, buildChoice(
-            Material.ORANGE_CONCRETE,
+            Material.BLADE_POTTERY_SHERD,
             Component.text("개인전", NamedTextColor.GOLD),
             Component.text("혼자 싸우는 모드", NamedTextColor.GRAY)
         ));
