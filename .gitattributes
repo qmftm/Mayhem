@@ -9,3 +9,8 @@
 
 # Binary files should be left untouched
 *.jar           binary
+
+# GitHub Linguist
+*.md            linguist-documentation=true
+*.yml           linguist-documentation=true
+.claude/        linguist-documentation=true
