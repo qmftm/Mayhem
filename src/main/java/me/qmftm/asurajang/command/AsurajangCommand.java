@@ -2,6 +2,8 @@ package me.qmftm.asurajang.command;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.game.GameManager;
+import me.qmftm.asurajang.gui.GameModeSelectGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.Command;
@@ -42,9 +44,15 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
 
         switch (args[0].toLowerCase()) {
             case "start" -> {
-                if (!plugin.getGameManager().start()) {
-                    sender.sendMessage(Component.text("이미 게임이 진행 중이거나 준비 중입니다.", NamedTextColor.RED));
+                if (!(sender instanceof Player player)) {
+                    sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                    return true;
                 }
+                if (plugin.getGameManager().getState() != GameManager.State.WAITING) {
+                    sender.sendMessage(Component.text("이미 게임이 진행 중이거나 준비 중입니다.", NamedTextColor.RED));
+                    return true;
+                }
+                new GameModeSelectGUI().open(player);
             }
             case "stop" -> {
                 if (!plugin.getGameManager().stop()) {

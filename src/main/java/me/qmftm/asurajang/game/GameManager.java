@@ -21,15 +21,18 @@ public class GameManager {
     private static final int GAME_DURATION = 600; // 10분
 
     public enum State { WAITING, STARTING, RUNNING }
+    public enum GameMode { TEAM, SOLO }
 
     private State state = State.WAITING;
+    private GameMode gameMode = GameMode.SOLO;
     private final Map<UUID, PlayerInventorySnapshot> snapshots = new HashMap<>();
     private int remainingSeconds = GAME_DURATION;
     private BukkitTask timerTask;
 
-    public boolean start() {
+    public boolean start(GameMode mode) {
         if (state != State.WAITING) return false;
         state = State.STARTING;
+        gameMode = mode;
 
         Asurajang plugin = Asurajang.getInstance();
         World world = Bukkit.getWorlds().get(0);
@@ -93,7 +96,8 @@ public class GameManager {
                 sbm.setup(p);
             }
 
-            Bukkit.broadcast(Component.text("[아수라장] 게임 시작! — " + biomeName + " 전장", NamedTextColor.GOLD));
+            String modeLabel = gameMode == GameMode.TEAM ? "팀전" : "개인전";
+            Bukkit.broadcast(Component.text("[아수라장] 게임 시작! (" + modeLabel + ") — " + biomeName + " 전장", NamedTextColor.GOLD));
             Bukkit.getOnlinePlayers().forEach(p -> {
                 p.playSound(p.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1.0f, 1.0f);
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 1.2f);
@@ -149,5 +153,9 @@ public class GameManager {
 
     public int getRemainingSeconds() {
         return remainingSeconds;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
     }
 }
