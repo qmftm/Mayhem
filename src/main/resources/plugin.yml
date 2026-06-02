@@ -4,7 +4,7 @@ description: Asurajang Plugin
 authors: [qmftm]
 
 main: me.qmftm.asurajang.Asurajang
-api-version: '1.20'
+api-version: '26.1.2'
 load: POSTWORLD
 
 permissions:
