@@ -59,6 +59,7 @@ public class PlayerDeathListener implements Listener {
 
             Asurajang.getInstance().getScoreboardManager().addKill(killer);
             Asurajang.getInstance().getScoreboardManager().addGold(killer, reward);
+            killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
                 .append(killer.displayName())
