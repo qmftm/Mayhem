@@ -34,6 +34,7 @@ public class GameManager {
     private int remainingSeconds = GAME_DURATION;
     private BukkitTask timerTask;
     private BukkitTask timeTask;
+    private boolean firstBloodClaimed = false;
 
     public boolean start(GameMode mode) {
         if (state != State.WAITING) return false;
@@ -78,6 +79,7 @@ public class GameManager {
 
             state = State.RUNNING;
             remainingSeconds = GAME_DURATION;
+            firstBloodClaimed = false;
 
             BattlefieldManager bm = plugin.getBattlefieldManager();
             Location battlefield = bm.getCurrentLocation();
@@ -204,5 +206,12 @@ public class GameManager {
     // 0 = NW팀, 1 = SE팀, -1 = 개인전 또는 미배정
     public int getTeam(UUID uuid) {
         return teams.getOrDefault(uuid, -1);
+    }
+
+    // 경기 중 첫 킬이면 true를 반환하고 이후로는 false (선취점)
+    public boolean claimFirstBlood() {
+        if (firstBloodClaimed) return false;
+        firstBloodClaimed = true;
+        return true;
     }
 }

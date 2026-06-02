@@ -22,6 +22,7 @@ import java.util.UUID;
 public class PlayerDeathListener implements Listener {
 
     private static final int KILL_GOLD_REWARD = 50;
+    private static final int FIRST_BLOOD_BONUS = 25;
 
     private final Map<UUID, Location> deathLocations = new HashMap<>();
 
@@ -40,15 +41,27 @@ public class PlayerDeathListener implements Listener {
         // 킬 추적
         Player killer = player.getKiller();
         if (killer != null) {
+            boolean firstBlood = Asurajang.getInstance().getGameManager().claimFirstBlood();
+            int reward = KILL_GOLD_REWARD + (firstBlood ? FIRST_BLOOD_BONUS : 0);
+
             Asurajang.getInstance().getScoreboardManager().addKill(killer);
-            Asurajang.getInstance().getScoreboardManager().addGold(killer, KILL_GOLD_REWARD);
-            event.deathMessage(Component.text()
+            Asurajang.getInstance().getScoreboardManager().addGold(killer, reward);
+
+            Component message = Component.text()
                 .append(killer.displayName())
                 .append(Component.text("님이 ", NamedTextColor.GRAY))
                 .append(player.displayName())
                 .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
-                .build());
-            killer.sendMessage(Component.text("+" + KILL_GOLD_REWARD + " 골드", NamedTextColor.GOLD));
+                .append(firstBlood
+                    ? Component.text(". 퍼스트 블러드!", NamedTextColor.RED)
+                    : Component.empty())
+                .build();
+            event.deathMessage(message);
+
+            killer.sendMessage(Component.text("+" + reward + " 골드", NamedTextColor.GOLD)
+                .append(firstBlood
+                    ? Component.text(" (선취점 보너스)", NamedTextColor.GRAY)
+                    : Component.empty()));
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
