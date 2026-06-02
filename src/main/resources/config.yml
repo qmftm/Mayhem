@@ -6,8 +6,10 @@ augmentations:
     icon: OBSIDIAN
     color: dark_gray
     description:
-      - "적을 5번 때릴 때마다"
-      - "20% 확률로 2.5배 대미지를 줍니다."
+      - "공격마다 2% 확률로 발동합니다."
+      - "발동 시 2.5배 피해와 4배 넉백을 줍니다."
+      - "발동 후 3번의 공격은 25% → 15% → 5% 확률로"
+      - "연속 발동이 가능합니다."
 
   deadful:
     display-name: "DeadFul"

@@ -48,10 +48,10 @@ public class HeugsomEffect implements AugmentationEffect {
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
         double chance = switch (streakRemaining) {
-            case 3 -> 0.50;
-            case 2 -> 0.35;
-            case 1 -> 0.20;
-            default -> 0.05;
+            case 3 -> 0.25;
+            case 2 -> 0.15;
+            case 1 -> 0.05;
+            default -> 0.02;
         };
         if (streakRemaining > 0) streakRemaining--;
 
