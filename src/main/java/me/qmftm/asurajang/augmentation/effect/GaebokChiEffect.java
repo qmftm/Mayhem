@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -37,12 +38,15 @@ public class GaebokChiEffect implements AugmentationEffect {
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         if (mgr.getActiveEffects(target.getUniqueId()).containsKey("gaebokchi")) return;
-        if (ThreadLocalRandom.current().nextDouble() >= 0.25) return;
+        if (ThreadLocalRandom.current().nextDouble() >= 0.10) return;
 
         mgr.deactivateSingle(player, "gaebokchi");
         mgr.activateFor(target, "gaebokchi");
 
         player.sendActionBar(Component.text("개복치 이전됨!", NamedTextColor.GREEN));
         target.sendActionBar(Component.text("개복치 감염됨!", NamedTextColor.RED));
+
+        player.playSound(player.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1.0f, 1.0f);
+        target.playSound(target.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1.0f, 1.0f);
     }
 }

@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
@@ -40,6 +41,8 @@ public class ByeontaeEffect implements AugmentationEffect {
 
         Map<Integer, ItemStack> leftover = inv.addItem(stripped);
         leftover.values().forEach(item -> target.getWorld().dropItemNaturally(target.getLocation(), item));
+
+        player.playSound(player.getLocation(), Sound.ENTITY_GHAST_HURT, 1.0f, 1.5f);
     }
 
     private static boolean hasItem(ItemStack item) {

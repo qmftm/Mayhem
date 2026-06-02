@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ public class MobangEffect implements AugmentationEffect {
         mgr.activateFor(player, toGet);
 
         String augName = mgr.get(toGet) != null ? mgr.get(toGet).getDisplayName() : toGet;
-        player.sendActionBar(Component.text("모방: " + augName, NamedTextColor.LIGHT_PURPLE));
+        player.sendMessage(Component.text("[모방] ", NamedTextColor.LIGHT_PURPLE)
+            .append(Component.text(augName + " 증강을 복사했습니다.", NamedTextColor.GRAY)));
+        player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 1.0f, 1.0f);
     }
 }

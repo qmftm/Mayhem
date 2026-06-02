@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Biome;
@@ -19,16 +20,16 @@ public class BattlefieldManager {
 
     private static final int BORDER_RADIUS = 50;
     private static final int HISTORY_SIZE  = 3;
-    private static final int LOCATE_RADIUS     = 25600; // /locate biome 기준 반경
-    private static final int LOCATE_STEP_HORIZ = 32;    // /locate biome 기준 수평 간격
-    private static final int LOCATE_STEP_VERT  = 64;    // /locate biome 기준 수직 간격
+    private static final int LOCATE_RADIUS     = 25600;
+    private static final int LOCATE_STEP_HORIZ = 32;
+    private static final int LOCATE_STEP_VERT  = 64;
 
     private static final List<Biome> BIOME_POOL = List.of(
         Biome.PLAINS,          Biome.CHERRY_GROVE,
         Biome.DESERT,          Biome.SNOWY_PLAINS,
         Biome.JAGGED_PEAKS,    Biome.BADLANDS,
         Biome.MEADOW,          Biome.WINDSWEPT_HILLS,
-        Biome.SUNFLOWER_PLAINS, Biome.FROZEN_RIVER
+        Biome.SUNFLOWER_PLAINS, Biome.STONY_PEAKS
     );
 
     private static final Map<Biome, String> BIOME_NAMES = Map.of(
@@ -41,7 +42,7 @@ public class BattlefieldManager {
         Biome.MEADOW,           "목초지",
         Biome.WINDSWEPT_HILLS,  "바람이 세찬 언덕",
         Biome.SUNFLOWER_PLAINS, "해바라기 평원",
-        Biome.FROZEN_RIVER,     "얼어붙은 강"
+        Biome.STONY_PEAKS,      "바위 봉우리"
     );
 
     private static final Map<String, NamedTextColor> BIOME_COLORS = Map.of(
@@ -54,7 +55,7 @@ public class BattlefieldManager {
         "목초지",           NamedTextColor.DARK_GREEN,
         "바람이 세찬 언덕", NamedTextColor.DARK_GRAY,
         "해바라기 평원",    NamedTextColor.YELLOW,
-        "얼어붙은 강",      NamedTextColor.DARK_AQUA
+        "바위 봉우리",      NamedTextColor.GRAY
     );
 
     private final LinkedList<Biome> usedBiomes = new LinkedList<>();
@@ -71,9 +72,8 @@ public class BattlefieldManager {
         Biome target = pickNext();
         String targetName = BIOME_NAMES.getOrDefault(target, target.name());
 
-        // 매 게임마다 다른 위치의 바이옴을 찾기 위해 랜덤 좌표를 탐색 기점으로 사용
         double angle = ThreadLocalRandom.current().nextDouble() * Math.PI * 2;
-        double dist  = 2000 + ThreadLocalRandom.current().nextDouble() * 6000; // 2000~8000블록
+        double dist  = 2000 + ThreadLocalRandom.current().nextDouble() * 6000;
         Location randomOrigin = new Location(world,
             Math.cos(angle) * dist, 64, Math.sin(angle) * dist);
 
@@ -84,17 +84,48 @@ public class BattlefieldManager {
 
             Bukkit.getScheduler().runTask(Asurajang.getInstance(), () -> {
                 if (found != null) {
-                    int chunkX = found.getBlockX() >> 4;
-                    int chunkZ = found.getBlockZ() >> 4;
+                    Location dry = findDryLocation(world, found);
+                    int chunkX = dry.getBlockX() >> 4;
+                    int chunkZ = dry.getBlockZ() >> 4;
                     if (!world.isChunkLoaded(chunkX, chunkZ)) world.loadChunk(chunkX, chunkZ);
-                    int y = world.getHighestBlockYAt(found.getBlockX(), found.getBlockZ());
+                    int y = world.getHighestBlockYAt(dry.getBlockX(), dry.getBlockZ());
                     currentLocation = new Location(world,
-                        found.getBlockX() + 0.5, y + 1, found.getBlockZ() + 0.5);
+                        dry.getBlockX() + 0.5, y + 1, dry.getBlockZ() + 0.5);
                 }
                 currentBiomeName = targetName;
                 onComplete.run();
             });
         });
+    }
+
+    // 수면/용암 위면 나선형으로 마른 땅을 탐색
+    private static Location findDryLocation(World world, Location center) {
+        int cx = center.getBlockX();
+        int cz = center.getBlockZ();
+
+        for (int radius = 0; radius <= 128; radius += 8) {
+            int step = radius == 0 ? 1 : 8;
+            for (int dx = -radius; dx <= radius; dx += step) {
+                for (int dz = -radius; dz <= radius; dz += step) {
+                    if (radius > 0 && Math.abs(dx) < radius && Math.abs(dz) < radius) continue;
+                    int x = cx + dx, z = cz + dz;
+                    int chX = x >> 4, chZ = z >> 4;
+                    if (!world.isChunkLoaded(chX, chZ)) world.loadChunk(chX, chZ);
+                    int y = world.getHighestBlockYAt(x, z);
+                    if (!isWet(world.getBlockAt(x, y, z).getType())) {
+                        return new Location(world, x, y, z);
+                    }
+                }
+            }
+        }
+        return center;
+    }
+
+    private static boolean isWet(Material mat) {
+        return switch (mat) {
+            case WATER, LAVA, ICE, FROSTED_ICE, BLUE_ICE, PACKED_ICE -> true;
+            default -> false;
+        };
     }
 
     public static List<String> getAllBiomeNames() {
