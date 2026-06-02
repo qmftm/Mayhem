@@ -119,6 +119,36 @@ public class GameScoreboardManager {
         return levels.getOrDefault(player.getUniqueId(), 0);
     }
 
+    // ── 팀 ──────────────────────────────────────────────────────────────────
+
+    // 각 플레이어의 개인 스코어보드에 레드/블루 팀을 등록하고 이름 색상·접두사 적용
+    public void setupGameTeams(Map<UUID, Integer> teamMap) {
+        for (Scoreboard board : boards.values()) {
+            Team red = board.registerNewTeam("mayhem_red");
+            red.color(NamedTextColor.RED);
+            red.prefix(Component.text("[레드] ", NamedTextColor.RED));
+
+            Team blue = board.registerNewTeam("mayhem_blue");
+            blue.color(NamedTextColor.BLUE);
+            blue.prefix(Component.text("[블루] ", NamedTextColor.BLUE));
+
+            for (Map.Entry<UUID, Integer> e : teamMap.entrySet()) {
+                Player p = Bukkit.getPlayer(e.getKey());
+                if (p == null) continue;
+                (e.getValue() == 0 ? red : blue).addEntry(p.getName());
+            }
+        }
+    }
+
+    public void cleanupGameTeams() {
+        for (Scoreboard board : boards.values()) {
+            Team red = board.getTeam("mayhem_red");
+            if (red != null) red.unregister();
+            Team blue = board.getTeam("mayhem_blue");
+            if (blue != null) blue.unregister();
+        }
+    }
+
     // ── 내부 ────────────────────────────────────────────────────────────────
 
     private static String formatTime(int seconds) {

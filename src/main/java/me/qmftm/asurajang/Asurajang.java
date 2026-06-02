@@ -10,6 +10,7 @@ import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
 import me.qmftm.asurajang.listener.AugmentationEffectListener;
 import me.qmftm.asurajang.listener.AugmentationSelectListener;
+import me.qmftm.asurajang.listener.GameModeSelectListener;
 import me.qmftm.asurajang.listener.HotbarButtonListener;
 import me.qmftm.asurajang.listener.PlayerDeathListener;
 import me.qmftm.asurajang.listener.ShopListener;
@@ -46,6 +47,7 @@ public final class Asurajang extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new AugmentationSelectListener(), this);
         getServer().getPluginManager().registerEvents(new AugmentationEffectListener(), this);
+        getServer().getPluginManager().registerEvents(new GameModeSelectListener(), this);
         getServer().getPluginManager().registerEvents(new ShopListener(), this);
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);

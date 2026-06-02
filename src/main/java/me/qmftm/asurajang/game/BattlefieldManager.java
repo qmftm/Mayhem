@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BattlefieldManager {
 
-    private static final int BORDER_RADIUS = 50;
+    private static final int BORDER_RADIUS = 25;
     private static final int HISTORY_SIZE  = 3;          // 최근 N회 기록만 유지
     private static final int[] SEARCH_RADII = {3000, 6000, 12000, 20000}; // 단계별 탐색 반경
 
@@ -97,6 +97,26 @@ public class BattlefieldManager {
 
         int x = currentLocation.getBlockX() + rng.nextInt(-margin, margin + 1);
         int z = currentLocation.getBlockZ() + rng.nextInt(-margin, margin + 1);
+
+        if (!world.isChunkLoaded(x >> 4, z >> 4)) {
+            world.loadChunk(x >> 4, z >> 4);
+        }
+
+        int y = world.getHighestBlockYAt(x, z);
+        return new Location(world, x + 0.5, y + 1, z + 0.5);
+    }
+
+    // teamIndex 0 → NW 모서리, 1 → SE 모서리 (±5블록 랜덤 분산)
+    @Nullable
+    public Location getTeamCornerSpawn(int teamIndex) {
+        if (currentLocation == null) return null;
+        World world = currentLocation.getWorld();
+        ThreadLocalRandom rng = ThreadLocalRandom.current();
+        int offset = BORDER_RADIUS - 10;
+        int sign = (teamIndex == 0) ? -1 : 1;
+
+        int x = currentLocation.getBlockX() + sign * offset + rng.nextInt(-5, 6);
+        int z = currentLocation.getBlockZ() + sign * offset + rng.nextInt(-5, 6);
 
         if (!world.isChunkLoaded(x >> 4, z >> 4)) {
             world.loadChunk(x >> 4, z >> 4);
