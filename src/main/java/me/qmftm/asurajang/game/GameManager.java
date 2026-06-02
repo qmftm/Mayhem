@@ -36,7 +36,7 @@ public class GameManager {
     private BukkitTask timeTask;
     private boolean firstBloodClaimed = false;
 
-    public boolean start(GameMode mode) {
+    public boolean start(GameMode mode, Player sender) {
         if (state != State.WAITING) return false;
         state = State.STARTING;
         gameMode = mode;
@@ -44,20 +44,121 @@ public class GameManager {
         Asurajang plugin = Asurajang.getInstance();
         World world = Bukkit.getWorlds().get(0);
 
-        Bukkit.broadcast(Component.text("[아수라장] 전장을 탐색하는 중...", NamedTextColor.GOLD));
+        sender.sendMessage(Component.text("[아수라장] 전장을 탐색하는 중...", NamedTextColor.GOLD));
+
+        final int[] tick = {0};
+        final String[] DOTS = {"", ".", "..", "..."};
+        final BukkitTask[] animTask = {null};
+        animTask[0] = Bukkit.getScheduler().runTaskTimer(plugin, () ->
+            sender.sendActionBar(Component.text("탐색 중" + DOTS[tick[0]++ % DOTS.length], NamedTextColor.YELLOW)),
+        0L, 8L);
 
         plugin.getBattlefieldManager().searchAsync(world, () -> {
+            animTask[0].cancel();
+            sender.sendActionBar(Component.empty());
             if (state != State.STARTING) return;
             String biomeName = plugin.getBattlefieldManager().getCurrentBiomeName();
-            Bukkit.broadcast(Component.text("[아수라장] 전장 발견: " + biomeName, NamedTextColor.YELLOW));
-            runCountdown(plugin, world, biomeName);
+            runSlotMachine(plugin, biomeName, () -> runCountdown(plugin, world, biomeName));
         });
 
         return true;
     }
 
+    private void runSlotMachine(Asurajang plugin, String targetName, Runnable onFinish) {
+        List<String> pool = new ArrayList<>(BattlefieldManager.getAllBiomeNames());
+        pool.remove(targetName);
+        Collections.shuffle(pool);
+
+        int[][] phases  = {{2, 6}, {4, 4}, {6, 3}, {9, 2}};
+        float[] pitches = {1.9f,  1.4f,  1.0f,  0.7f};
+        long tick = 0;
+        int poolIdx = 0;
+
+        for (int phaseIdx = 0; phaseIdx < phases.length; phaseIdx++) {
+            int interval = phases[phaseIdx][0], count = phases[phaseIdx][1];
+            final float pitch = pitches[phaseIdx];
+            for (int i = 0; i < count; i++) {
+                tick += interval;
+                final String name = pool.get(poolIdx++ % pool.size());
+                final long delay = tick;
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    if (state != State.STARTING) return;
+                    NamedTextColor color = BattlefieldManager.getBiomeColor(name);
+                    Title frame = Title.title(
+                        Component.text(name, color),
+                        Component.empty(),
+                        Title.Times.times(Duration.ZERO, Duration.ofMillis(300), Duration.ZERO)
+                    );
+                    Bukkit.getOnlinePlayers().forEach(p -> {
+                        p.showTitle(frame);
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, pitch);
+                    });
+                }, delay);
+            }
+        }
+
+        // 최종 공개
+        tick += 15;
+        final long revealAt = tick;
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (state != State.STARTING) return;
+            showBracketTitle(targetName, true);
+            Bukkit.getOnlinePlayers().forEach(p -> {
+                p.playSound(p.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1.0f, 1.0f);
+            });
+        }, revealAt);
+
+        // 대괄호 깜빡임 4회 (ON/OFF × 4 = 8 상태 전환, 10틱 간격)
+        for (int b = 0; b < 8; b++) {
+            final long blinkDelay = revealAt + 8 + b * 7L;
+            final boolean on = (b % 2 == 0);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                if (state != State.STARTING) return;
+                if (on) {
+                    showBracketTitle(targetName, false);
+                    Bukkit.getOnlinePlayers().forEach(p ->
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 0.8f, 1.5f));
+                } else {
+                    NamedTextColor color = BattlefieldManager.getBiomeColor(targetName);
+                    Title noBrackets = Title.title(
+                        Component.text(targetName, color),
+                        Component.empty(),
+                        Title.Times.times(Duration.ZERO, Duration.ofMillis(600), Duration.ZERO)
+                    );
+                    Bukkit.getOnlinePlayers().forEach(p -> p.showTitle(noBrackets));
+                }
+            }, blinkDelay);
+        }
+
+        // 깜빡임 후 대괄호 고정
+        final long holdAt = revealAt + 8 + 56L;
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (state != State.STARTING) return;
+            showBracketTitle(targetName, false);
+        }, holdAt);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (state != State.STARTING) return;
+            onFinish.run();
+        }, holdAt + 12L);
+    }
+
+    private static void showBracketTitle(String name, boolean withSubtitle) {
+        NamedTextColor color = BattlefieldManager.getBiomeColor(name);
+        Component titleComp = Component.text("[", NamedTextColor.WHITE)
+            .append(Component.text(name, color))
+            .append(Component.text("]", NamedTextColor.WHITE));
+        Component subtitle = withSubtitle
+            ? Component.text("전장이 선택되었습니다!", NamedTextColor.GRAY)
+            : Component.empty();
+        Title title = Title.title(titleComp, subtitle,
+            Title.Times.times(Duration.ZERO, Duration.ofMillis(700), Duration.ZERO));
+        Bukkit.getOnlinePlayers().forEach(p -> p.showTitle(title));
+    }
+
     private void runCountdown(Asurajang plugin, World world, String biomeName) {
-        for (int i = 5; i >= 1; i--) {
+        for (int i = 3; i >= 1; i--) {
             final int count = i;
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 if (state != State.STARTING) return;
@@ -66,12 +167,12 @@ public class GameManager {
                     Component.text(biomeName + " 전장", NamedTextColor.GRAY),
                     Title.Times.times(Duration.ZERO, Duration.ofMillis(900), Duration.ofMillis(100))
                 );
-                float pitch = 0.6f + (5 - count) * 0.2f; // 숫자가 낮을수록 음이 높아짐
+                float pitch = 0.6f + (3 - count) * 0.2f; // 숫자가 낮을수록 음이 높아짐
                 Bukkit.getOnlinePlayers().forEach(p -> {
                     p.showTitle(t);
                     p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, pitch);
                 });
-            }, (long)(5 - count) * 20L);
+            }, (long)(3 - count) * 20L);
         }
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -133,7 +234,7 @@ public class GameManager {
             });
 
             startTimer(plugin);
-        }, 5 * 20L);
+        }, 3 * 20L);
     }
 
     private void startTimer(Asurajang plugin) {

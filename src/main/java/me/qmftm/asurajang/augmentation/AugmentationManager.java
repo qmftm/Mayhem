@@ -82,6 +82,13 @@ public class AugmentationManager {
         effects.values().forEach(effect -> effect.onDeactivate(player));
     }
 
+    public void deactivateSingle(Player player, String augId) {
+        Map<String, AugmentationEffect> effects = playerEffects.get(player.getUniqueId());
+        if (effects == null) return;
+        AugmentationEffect effect = effects.remove(augId);
+        if (effect != null) effect.onDeactivate(player);
+    }
+
     public void deactivateAll(Iterable<? extends Player> players) {
         for (Player player : players) {
             deactivateFor(player);

@@ -3,6 +3,9 @@ package me.qmftm.asurajang.augmentation.effect;
 import me.qmftm.asurajang.Asurajang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.ShadowColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -13,43 +16,97 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
 
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HeugsomEffect implements AugmentationEffect {
 
     public static boolean debugProc = false;
+    public static final Set<UUID> pendingKnockback    = ConcurrentHashMap.newKeySet();
+    // target UUID → attacker UUID: 흑섬 발동 후 사망 시 파티클 표시용
+    public static final Map<UUID, UUID> pendingDeathParticle = new ConcurrentHashMap<>();
 
-    private static final Particle.DustOptions BLACK_DUST = new Particle.DustOptions(Color.BLACK, 1.1f);
-    private static final Particle.DustOptions RED_DUST   = new Particle.DustOptions(Color.RED,   0.7f);
+    private static final Particle.DustOptions BLACK_DUST        = new Particle.DustOptions(Color.BLACK, 1.1f);
+    private static final Particle.DustOptions RED_DUST          = new Particle.DustOptions(Color.RED,   0.7f);
+    private static final Particle.DustOptions BRANCH_BLACK_DUST = new Particle.DustOptions(Color.BLACK, 1.65f);
+    private static final Particle.DustOptions BRANCH_RED_DUST   = new Particle.DustOptions(Color.RED,   1.05f);
 
-    private int hitCount = 0;
+    // 발동 후 남은 연속 공격 횟수 (3→50%, 2→35%, 1→20%, 0→5%)
+    private int streakRemaining = 0;
 
     @Override
     public void onActivate(Player player) {}
 
     @Override
     public void onDeactivate(Player player) {
-        hitCount = 0;
+        streakRemaining = 0;
     }
 
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
-        hitCount++;
+        double chance = switch (streakRemaining) {
+            case 3 -> 0.50;
+            case 2 -> 0.35;
+            case 1 -> 0.20;
+            default -> 0.05;
+        };
+        if (streakRemaining > 0) streakRemaining--;
 
-        if (hitCount % 5 == 0 && (debugProc || ThreadLocalRandom.current().nextDouble() < 0.20)) {
+        if (debugProc || ThreadLocalRandom.current().nextDouble() < chance) {
+            streakRemaining = 3;
             event.setDamage(event.getDamage() * 2.5);
 
             LivingEntity target = (LivingEntity) event.getEntity();
             World world = target.getWorld();
+
+            // 넉백 4배: EntityKnockbackByEntityEvent에서 처리
+            pendingKnockback.add(player.getUniqueId());
+
+            // 사망 파티클 대상 등록
+            pendingDeathParticle.put(target.getUniqueId(), player.getUniqueId());
             Location loc = target.getLocation().add(0, 1, 0);
 
             world.playSound(loc, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1.0f, 1.6f);
             world.playSound(loc, Sound.ENTITY_LIGHTNING_BOLT_IMPACT,  1.0f, 1.9f);
-            player.sendActionBar(Component.text("흑섬 발동!", NamedTextColor.DARK_GRAY));
+            player.sendActionBar(Component.text("흑섬", Style.style()
+                .color(NamedTextColor.BLACK)
+                .decoration(TextDecoration.BOLD, true)
+                .decoration(TextDecoration.ITALIC, false)
+                .shadowColor(ShadowColor.shadowColor(0xFFFF0000))
+                .build()));
 
             // 0.1초(2틱) 간격으로 10회 = 1초 지속
             int[] count = {0};
             Asurajang plugin = Asurajang.getInstance();
+
+            // DUST_COLOR_TRANSITION: 반경 5칸, 5~8개, 0.25초(5틱)마다 4번
+            int[] transCount = {0};
+            plugin.getServer().getScheduler().runTaskTimer(plugin, transTask -> {
+                if (transCount[0] >= 4 || !target.isValid() || target.isDead()) {
+                    transTask.cancel();
+                    return;
+                }
+                ThreadLocalRandom rng = ThreadLocalRandom.current();
+                Location base = target.getLocation().add(0, 1, 0);
+                Particle.DustOptions bigRedDust = new Particle.DustOptions(Color.RED, 3.3f);
+                int amount = 5 + rng.nextInt(4); // 5~8개
+                for (int i = 0; i < amount; i++) {
+                    double offX = (rng.nextDouble() - 0.5) * 6.0; // -3 ~ +3
+                    double offZ = (rng.nextDouble() - 0.5) * 6.0; // -3 ~ +3
+                    double offY = rng.nextDouble() * 2.0;
+                    Location pos  = base.clone().add(offX, offY, offZ);
+                    Particle.DustTransition trans = rng.nextBoolean()
+                        ? new Particle.DustTransition(Color.BLACK, Color.RED,   8.25f)
+                        : new Particle.DustTransition(Color.RED,   Color.BLACK, 8.25f);
+                    world.spawnParticle(Particle.DUST_COLOR_TRANSITION, pos, 1, 0, 0, 0, 0.0, trans);
+                    world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0.0, bigRedDust);
+                }
+                transCount[0]++;
+            }, 0L, 5L);
+
             plugin.getServer().getScheduler().runTaskTimer(plugin, task -> {
                 if (count[0] >= 10 || !target.isValid() || target.isDead()) {
                     task.cancel();
@@ -90,9 +147,9 @@ public class HeugsomEffect implements AugmentationEffect {
                         (rng.nextDouble() - 0.5) * 0.10
                     ))
                 );
-                world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BLACK_DUST);
+                world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BRANCH_BLACK_DUST);
                 if (rng.nextDouble() < 0.65) {
-                    world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, RED_DUST);
+                    world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BRANCH_RED_DUST);
                 }
             }
 
@@ -112,9 +169,9 @@ public class HeugsomEffect implements AugmentationEffect {
                     double subLen = 0.4 + rng.nextDouble() * 1.0;
                     for (double d = 0.15; d < subLen; d += 0.15) {
                         Location pos = subOrigin.clone().add(subDir.clone().multiply(d));
-                        world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BLACK_DUST);
+                        world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BRANCH_BLACK_DUST);
                         if (rng.nextDouble() < 0.55) {
-                            world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, RED_DUST);
+                            world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0, BRANCH_RED_DUST);
                         }
                     }
                 }

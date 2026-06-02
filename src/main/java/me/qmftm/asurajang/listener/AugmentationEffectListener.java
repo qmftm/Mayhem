@@ -3,12 +3,15 @@ package me.qmftm.asurajang.listener;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
+import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -17,6 +20,27 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.ArrayList;
 
 public class AugmentationEffectListener implements Listener {
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        Player victim = event.getPlayer();
+        Player killer = victim.getKiller();
+        if (killer == null) return;
+
+        AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(killer.getUniqueId()).values())) {
+            effect.onKillEnemy(killer, victim);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onKnockback(EntityKnockbackByEntityEvent event) {
+        if (!(event.getSourceEntity() instanceof Player attacker)) return;
+        if (!HeugsomEffect.pendingKnockback.remove(attacker.getUniqueId())) return;
+        org.bukkit.util.Vector kb = event.getFinalKnockback();
+        event.setFinalKnockback(new org.bukkit.util.Vector(kb.getX() * 4.0, kb.getY(), kb.getZ() * 4.0));
+    }
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {

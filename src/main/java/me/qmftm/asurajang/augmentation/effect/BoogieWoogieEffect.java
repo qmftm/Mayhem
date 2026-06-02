@@ -67,11 +67,11 @@ public class BoogieWoogieEffect implements AugmentationEffect {
             Location playerLoc = player.getLocation().clone();
             Location targetLoc = finalTarget.getLocation().clone();
 
-            Location newPlayerLoc = targetLoc.clone();
+            Location newPlayerLoc = targetLoc.clone().add(0, 0.5, 0);
             newPlayerLoc.setYaw(playerLoc.getYaw());
             newPlayerLoc.setPitch(playerLoc.getPitch());
 
-            Location newTargetLoc = playerLoc.clone();
+            Location newTargetLoc = playerLoc.clone().add(0, 0.5, 0);
             newTargetLoc.setYaw(targetLoc.getYaw());
             newTargetLoc.setPitch(targetLoc.getPitch());
 

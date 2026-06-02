@@ -29,7 +29,7 @@ public class GameModeSelectListener implements Listener {
             ? GameManager.GameMode.TEAM
             : GameManager.GameMode.SOLO;
 
-        if (!Asurajang.getInstance().getGameManager().start(mode)) {
+        if (!Asurajang.getInstance().getGameManager().start(mode, player)) {
             player.sendMessage(Component.text("이미 게임이 진행 중이거나 준비 중입니다.", NamedTextColor.RED));
             return;
         }

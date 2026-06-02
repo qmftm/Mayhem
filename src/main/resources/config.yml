@@ -25,3 +25,28 @@ augmentations:
       - "F키(양손 교환) 사용 시 20블록 내"
       - "가장 가까운 적과 위치를 교환합니다."
       - "쿨타임: 5초"
+
+  gaebokchi:
+    display-name: "개복치"
+    icon: PUFFERFISH
+    color: aqua
+    description:
+      - "최대체력이 절반 감소합니다."
+      - "적을 때릴 때마다 25% 확률로"
+      - "능력을 이전 시킵니다."
+
+  byeontae:
+    display-name: "변태"
+    icon: ARMOR_STAND
+    color: yellow
+    description:
+      - "적을 때릴 때마다 3% 확률로"
+      - "갑옷 부위를 벗깁니다."
+
+  mobang:
+    display-name: "모방"
+    icon: MAGENTA_DYE
+    color: light_purple
+    description:
+      - "적을 죽일 시 적의 증강 중"
+      - "하나를 복사합니다."

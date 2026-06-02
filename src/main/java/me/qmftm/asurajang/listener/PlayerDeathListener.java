@@ -1,13 +1,17 @@
 package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +22,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerDeathListener implements Listener {
 
@@ -67,21 +72,56 @@ public class PlayerDeathListener implements Listener {
                 .append(player.displayName())
                 .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
                 .append(firstBlood
-                    ? Component.text(". 퍼스트 블러드!", NamedTextColor.RED)
+                    ? Component.text(". ", NamedTextColor.GRAY)
+                        .append(Component.text("퍼스트 블러드!", NamedTextColor.RED))
                     : Component.empty())
                 .build();
             event.deathMessage(message);
 
-            killer.sendMessage(Component.text()
+            // 킬 메시지(데스 이벤트 방송) 이후에 골드 메시지 표시
+            final Component goldMsg = Component.text()
                 .append(multiKillLabel(multi))
                 .append(Component.text("+" + reward + " 골드", NamedTextColor.GOLD))
                 .append(firstBlood
                     ? Component.text(" (선취점 보너스)", NamedTextColor.GRAY)
                     : Component.empty())
-                .build());
+                .build();
+            Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
+                () -> killer.sendMessage(goldMsg), 1L);
+        }
+
+        // 흑섬 발동으로 사망 시 파티클
+        UUID procAttacker = HeugsomEffect.pendingDeathParticle.remove(player.getUniqueId());
+        if (procAttacker != null && killer != null && killer.getUniqueId().equals(procAttacker)) {
+            spawnHeugsomDeathBurst(player.getLocation(), player.getWorld());
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
+    }
+
+    private static void spawnHeugsomDeathBurst(Location loc, World world) {
+        ThreadLocalRandom rng = ThreadLocalRandom.current();
+        Particle.DustTransition transA = new Particle.DustTransition(Color.BLACK, Color.RED,   8.25f);
+        Particle.DustTransition transB = new Particle.DustTransition(Color.RED,   Color.BLACK, 8.25f);
+        Particle.DustOptions bigRed   = new Particle.DustOptions(Color.RED,   3.3f);
+        Particle.DustOptions bigBlack = new Particle.DustOptions(Color.BLACK, 3.3f);
+
+        Location center = loc.clone().add(0, 1, 0);
+
+        // 산포
+        for (int i = 0; i < 35; i++) {
+            double offX = (rng.nextDouble() - 0.5) * 6.0;
+            double offZ = (rng.nextDouble() - 0.5) * 6.0;
+            double offY = rng.nextDouble() * 3.0;
+            Location pos = center.clone().add(offX, offY, offZ);
+            world.spawnParticle(Particle.DUST_COLOR_TRANSITION, pos, 1, 0, 0, 0, 0.0,
+                rng.nextBoolean() ? transA : transB);
+            world.spawnParticle(Particle.DUST, pos, 1, 0, 0, 0, 0.0, bigRed);
+        }
+
+        // 중심 집중 폭발
+        world.spawnParticle(Particle.DUST, center, 50, 0.6, 0.6, 0.6, 0.0, bigBlack);
+        world.spawnParticle(Particle.DUST, center, 40, 0.4, 0.4, 0.4, 0.0, bigRed);
     }
 
     @EventHandler
@@ -138,9 +178,15 @@ public class PlayerDeathListener implements Listener {
                 player.setGameMode(GameMode.SURVIVAL);
                 Location spawn = plugin.getBattlefieldManager().getRandomSpawn();
                 player.teleport(spawn != null ? spawn : player.getWorld().getSpawnLocation());
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.0f);
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.4f);
+                player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.9f, 1.2f);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 1.1f);
                 return;
             }
+
+            // 카운트다운 틱 효과음 (마지막 3초는 피치 올라감)
+            float pitch = timer[0] <= 3 ? 1.2f + (3 - timer[0]) * 0.2f : 0.8f;
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, pitch);
 
             player.showTitle(Title.title(
                 Component.text(timer[0] + "초", NamedTextColor.YELLOW),

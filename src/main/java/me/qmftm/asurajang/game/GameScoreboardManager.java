@@ -121,10 +121,34 @@ public class GameScoreboardManager {
 
     // ── 팀 ──────────────────────────────────────────────────────────────────
 
-    // 각 플레이어의 개인 스코어보드에 레드/블루 팀을 등록하고 이름 색상·접두사 적용
+    // 메인 스코어보드(/team 호환) + 개인 스코어보드(이름색 표시) 양쪽에 팀 등록
     public void setupGameTeams(Map<UUID, Integer> teamMap) {
+        Scoreboard main = Bukkit.getScoreboardManager().getMainScoreboard();
+
+        // 기존 팀이 남아있으면 정리
+        Team prev;
+        if ((prev = main.getTeam("mayhem_red"))  != null) prev.unregister();
+        if ((prev = main.getTeam("mayhem_blue")) != null) prev.unregister();
+
+        Team mainRed  = main.registerNewTeam("mayhem_red");
+        mainRed.color(NamedTextColor.RED);
+        mainRed.prefix(Component.text("[레드] ", NamedTextColor.RED));
+        mainRed.setAllowFriendlyFire(false);
+
+        Team mainBlue = main.registerNewTeam("mayhem_blue");
+        mainBlue.color(NamedTextColor.BLUE);
+        mainBlue.prefix(Component.text("[블루] ", NamedTextColor.BLUE));
+        mainBlue.setAllowFriendlyFire(false);
+
+        for (Map.Entry<UUID, Integer> e : teamMap.entrySet()) {
+            Player p = Bukkit.getPlayer(e.getKey());
+            if (p == null) continue;
+            (e.getValue() == 0 ? mainRed : mainBlue).addEntry(p.getName());
+        }
+
+        // 개인 스코어보드에도 동일하게 등록 (플레이어가 보는 이름 색상 적용)
         for (Scoreboard board : boards.values()) {
-            Team red = board.registerNewTeam("mayhem_red");
+            Team red  = board.registerNewTeam("mayhem_red");
             red.color(NamedTextColor.RED);
             red.prefix(Component.text("[레드] ", NamedTextColor.RED));
 
@@ -141,9 +165,15 @@ public class GameScoreboardManager {
     }
 
     public void cleanupGameTeams() {
+        Scoreboard main = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team mainRed  = main.getTeam("mayhem_red");
+        if (mainRed  != null) mainRed.unregister();
+        Team mainBlue = main.getTeam("mayhem_blue");
+        if (mainBlue != null) mainBlue.unregister();
+
         for (Scoreboard board : boards.values()) {
-            Team red = board.getTeam("mayhem_red");
-            if (red != null) red.unregister();
+            Team red  = board.getTeam("mayhem_red");
+            if (red  != null) red.unregister();
             Team blue = board.getTeam("mayhem_blue");
             if (blue != null) blue.unregister();
         }

@@ -45,7 +45,7 @@ public class GameModeSelectGUI implements InventoryHolder {
 
     private void populate() {
         inventory.setItem(TEAM_SLOT, buildChoice(
-            Material.BLUE_BANNER,
+            Material.CYAN_BUNDLE,
             Component.text("팀전", NamedTextColor.GREEN),
             Component.text("팀을 나눠 싸우는 모드", NamedTextColor.GRAY)
         ));
@@ -59,7 +59,7 @@ public class GameModeSelectGUI implements InventoryHolder {
     private static ItemStack buildChoice(Material material, Component name, Component loreLine) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(name);
+        meta.displayName(name.decoration(TextDecoration.ITALIC, false).decoration(TextDecoration.BOLD, true));
         meta.lore(List.of(loreLine.decoration(TextDecoration.ITALIC, false)));
         item.setItemMeta(meta);
         return item;
