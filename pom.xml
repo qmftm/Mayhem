@@ -12,9 +12,9 @@
     <name>Asurajang</name>
 
     <properties>
-        <java.version>25</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <server.plugins.dir>D:\1.Song(삭제하지마세요)\Documents\.files\server\.26.1.2 [Asurajang]\plugins</server.plugins.dir>
+        <server.plugins.dir>${project.build.directory}</server.plugins.dir>
     </properties>
 
     <build>
@@ -40,7 +40,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${server.plugins.dir}\${project.artifactId}.jar</outputFile>
+                            <outputFile>${server.plugins.dir}/${project.artifactId}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>[26.1.2.build,)</version>
+            <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
