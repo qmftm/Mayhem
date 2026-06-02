@@ -34,6 +34,6 @@ public class GameModeSelectListener implements Listener {
             return;
         }
 
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+        player.playSound(player.getLocation(), Sound.BLOCK_LEVER_CLICK, 1.0f, 1.0f);
     }
 }
