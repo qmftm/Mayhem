@@ -5,7 +5,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -34,6 +33,7 @@ public class GameManager {
     private final Map<UUID, Integer> teams = new HashMap<>();
     private int remainingSeconds = GAME_DURATION;
     private BukkitTask timerTask;
+    private BukkitTask timeTask;
 
     public boolean start(GameMode mode) {
         if (state != State.WAITING) return false;
@@ -92,7 +92,8 @@ public class GameManager {
 
             bm.applyBorder();
             world.setTime(1000);
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            timeTask = Bukkit.getScheduler().runTaskTimer(plugin,
+                () -> world.setTime(1000), 20L, 20L);
 
             GameScoreboardManager sbm = plugin.getScoreboardManager();
             Collection<? extends Player> online = Bukkit.getOnlinePlayers();
@@ -141,6 +142,10 @@ public class GameManager {
             timerTask.cancel();
             timerTask = null;
         }
+        if (timeTask != null) {
+            timeTask.cancel();
+            timeTask = null;
+        }
 
         Bukkit.broadcast(Component.text("[아수라장] 게임이 종료되었습니다.", NamedTextColor.GOLD));
 
@@ -148,7 +153,6 @@ public class GameManager {
         plugin.getAugmentationManager().deactivateAll(Bukkit.getOnlinePlayers());
         plugin.getBattlefieldManager().resetBorder();
         plugin.getScoreboardManager().removeAll();
-        Bukkit.getWorlds().get(0).setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             PlayerInventorySnapshot snapshot = snapshots.remove(player.getUniqueId());
