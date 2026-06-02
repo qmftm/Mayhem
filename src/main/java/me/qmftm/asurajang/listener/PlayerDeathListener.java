@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class PlayerDeathListener implements Listener {
 
-    private static final int KILL_GOLD_REWARD = 25;
+    private static final int KILL_GOLD_REWARD = 50;
 
     private final Map<UUID, Location> deathLocations = new HashMap<>();
 
