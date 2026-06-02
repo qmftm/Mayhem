@@ -39,6 +39,12 @@ public class PlayerDeathListener implements Listener {
         Player killer = player.getKiller();
         if (killer != null) {
             Asurajang.getInstance().getScoreboardManager().addKill(killer);
+            event.deathMessage(Component.text()
+                .append(killer.displayName())
+                .append(Component.text("님이 ", NamedTextColor.GRAY))
+                .append(player.displayName())
+                .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
+                .build());
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
