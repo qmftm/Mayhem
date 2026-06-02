@@ -21,6 +21,8 @@ import java.util.UUID;
 
 public class PlayerDeathListener implements Listener {
 
+    private static final int KILL_GOLD_REWARD = 25;
+
     private final Map<UUID, Location> deathLocations = new HashMap<>();
 
     @EventHandler
@@ -39,12 +41,14 @@ public class PlayerDeathListener implements Listener {
         Player killer = player.getKiller();
         if (killer != null) {
             Asurajang.getInstance().getScoreboardManager().addKill(killer);
+            Asurajang.getInstance().getScoreboardManager().addGold(killer, KILL_GOLD_REWARD);
             event.deathMessage(Component.text()
                 .append(killer.displayName())
                 .append(Component.text("님이 ", NamedTextColor.GRAY))
                 .append(player.displayName())
                 .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
                 .build());
+            killer.sendMessage(Component.text("(+" + KILL_GOLD_REWARD + " 골드)", NamedTextColor.GOLD));
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
