@@ -111,6 +111,17 @@ public class GameManager {
                 p.showTitle(startTitle);
                 sbm.setup(p);
             }
+            if (gameMode == GameMode.TEAM) {
+                sbm.setupGameTeams(teams);
+                for (Player p : online) {
+                    int t = teams.getOrDefault(p.getUniqueId(), 0);
+                    p.sendMessage(Component.text("당신은 ")
+                        .append(t == 0
+                            ? Component.text("레드팀", NamedTextColor.RED)
+                            : Component.text("블루팀", NamedTextColor.BLUE))
+                        .append(Component.text("입니다!")));
+                }
+            }
 
             String modeLabel = gameMode == GameMode.TEAM ? "팀전" : "개인전";
             Bukkit.broadcast(Component.text("[아수라장] 게임 시작! (" + modeLabel + ") — " + biomeName + " 전장", NamedTextColor.GOLD));
@@ -152,6 +163,7 @@ public class GameManager {
         Asurajang plugin = Asurajang.getInstance();
         plugin.getAugmentationManager().deactivateAll(Bukkit.getOnlinePlayers());
         plugin.getBattlefieldManager().resetBorder();
+        plugin.getScoreboardManager().cleanupGameTeams();
         plugin.getScoreboardManager().removeAll();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
