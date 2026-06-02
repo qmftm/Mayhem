@@ -81,7 +81,8 @@ public class PlayerDeathListener implements Listener {
                 .build());
         }
 
-        Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
+        Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
+            () -> Asurajang.getVersionAdapter().respawnPlayer(player), 1L);
     }
 
     @EventHandler
