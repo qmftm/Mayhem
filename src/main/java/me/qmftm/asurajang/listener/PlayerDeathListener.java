@@ -48,7 +48,7 @@ public class PlayerDeathListener implements Listener {
                 .append(player.displayName())
                 .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
                 .build());
-            killer.sendMessage(Component.text("(+" + KILL_GOLD_REWARD + " 골드)", NamedTextColor.GOLD));
+            killer.sendMessage(Component.text("+" + KILL_GOLD_REWARD + " 골드", NamedTextColor.GOLD));
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
