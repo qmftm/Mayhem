@@ -3,14 +3,18 @@ package me.qmftm.asurajang.listener;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
+import me.qmftm.asurajang.augmentation.effect.GyeongjeongwonEffect;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
-import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
+import org.bukkit.util.Vector;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -37,9 +41,25 @@ public class AugmentationEffectListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onKnockback(EntityKnockbackByEntityEvent event) {
         if (!(event.getSourceEntity() instanceof Player attacker)) return;
-        if (!HeugsomEffect.pendingKnockback.remove(attacker.getUniqueId())) return;
-        org.bukkit.util.Vector kb = event.getFinalKnockback();
-        event.setFinalKnockback(new org.bukkit.util.Vector(kb.getX() * 4.0, kb.getY(), kb.getZ() * 4.0));
+        if (HeugsomEffect.pendingKnockback.remove(attacker.getUniqueId())) {
+            Vector kb = event.getFinalKnockback();
+            event.setFinalKnockback(new Vector(kb.getX() * 4.0, kb.getY(), kb.getZ() * 4.0));
+        } else if (GyeongjeongwonEffect.pendingDoubleKnockback.remove(attacker.getUniqueId())) {
+            event.setFinalKnockback(event.getFinalKnockback().multiply(2.0));
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onProjectileDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getDamager() instanceof Projectile proj)) return;
+        if (!(proj.getShooter() instanceof Player shooter)) return;
+
+        AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(shooter.getUniqueId()).values())) {
+            effect.onProjectileDamageAsAttacker(shooter, event);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -78,6 +98,17 @@ public class AugmentationEffectListener implements Listener {
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onSwapHands(player, event);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFallDamage(EntityDamageEvent event) {
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (Asurajang.getInstance().getAugmentationManager()
+                .getActiveEffects(player.getUniqueId()).containsKey("lightlanding")) {
+            event.setCancelled(true);
         }
     }
 

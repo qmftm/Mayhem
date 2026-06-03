@@ -10,6 +10,7 @@ public interface AugmentationEffect {
     void onDeactivate(Player player);
 
     default void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {}
+    default void onProjectileDamageAsAttacker(Player shooter, EntityDamageByEntityEvent event) {}
     default void onKillEnemy(Player player, Player victim) {}
     default void onRightClick(Player player, PlayerInteractEvent event) {}
     default void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {}

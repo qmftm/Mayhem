@@ -51,3 +51,76 @@ augmentations:
     description:
       - "적을 죽일 시 적의 증강 중"
       - "하나를 복사합니다."
+
+  sniperduel:
+    display-name: "저격 대결"
+    icon: BOW
+    color: yellow
+    description:
+      - "12칸 이상 거리의 적을 공격 시"
+      - "피해가 50% 증가합니다."
+
+  gyeongjeongwon:
+    display-name: "경정권"
+    icon: NAUTILUS_SHELL
+    color: aqua
+    description:
+      - "공격 시 80%의 피해를 준 뒤"
+      - "0.5초 후 40%의 피해와"
+      - "2배의 넉백을 추가로 줍니다."
+
+  naengnyeolhan:
+    display-name: "냉혈한"
+    icon: SNOWBALL
+    color: aqua
+    description:
+      - "우클릭으로 5칸 내 적에게"
+      - "구속 III, 나약함 I를 3초간 부여합니다."
+      - "쿨타임: 5초"
+
+  heavyforce:
+    display-name: "육중한 힘"
+    icon: IRON_AXE
+    color: gray
+    description:
+      - "공격력이 20% 증가합니다."
+
+  selfdestruct:
+    display-name: "자폭"
+    icon: TNT
+    color: red
+    description:
+      - "25초마다 폭탄이 부착됩니다."
+      - "폭탄은 5초 후 폭발하며 주변 범위 내의 적에게"
+      - "최대 체력의 20%인 고정 피해를 줍니다."
+
+  guiltpleasure:
+    display-name: "죄책감의 쾌락"
+    icon: REDSTONE
+    color: red
+    description:
+      - "적 플레이어를 처치 시"
+      - "최대 체력의 20%를 회복합니다."
+
+  glasscannon:
+    display-name: "유리 대포"
+    icon: GLASS_BOTTLE
+    color: white
+    description:
+      - "최대 체력이 30% 감소합니다."
+      - "피해량의 15%를 추가로 입힙니다."
+
+  cleanup:
+    display-name: "클린업"
+    icon: SUGAR
+    color: white
+    description:
+      - "체력 30% 이하인 적이 10칸 내에 있으면"
+      - "이동 속도가 100% 증가합니다."
+
+  lightlanding:
+    display-name: "가벼운 착지"
+    icon: FEATHER
+    color: white
+    description:
+      - "낙하 피해를 받지 않습니다."
