@@ -19,7 +19,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -79,13 +81,7 @@ public class PlayerDeathListener implements Listener {
             event.deathMessage(message);
 
             // 킬 메시지(데스 이벤트 방송) 이후에 골드 메시지 표시
-            final Component goldMsg = Component.text()
-                .append(multiKillLabel(multi))
-                .append(Component.text("+" + reward + " 골드", NamedTextColor.GOLD))
-                .append(firstBlood
-                    ? Component.text(" (선취점 보너스)", NamedTextColor.GRAY)
-                    : Component.empty())
-                .build();
+            final Component goldMsg = buildGoldMessage(multi, firstBlood, reward);
             Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
                 () -> killer.sendMessage(goldMsg), 1L);
         }
@@ -148,6 +144,32 @@ public class PlayerDeathListener implements Listener {
             case 4 -> 15;
             case 5 -> 20;
             default -> count >= 6 ? 25 : 0;
+        };
+    }
+
+    private static Component buildGoldMessage(int multi, boolean firstBlood, int total) {
+        int multiBonus = multiKillBonus(multi);
+        Component.Builder b = Component.text();
+        b.append(multiKillLabel(multi));
+        b.append(Component.text("+" + total + " 골드 획득", NamedTextColor.GOLD));
+
+        List<String> reasons = new ArrayList<>();
+        if (firstBlood) reasons.add("선취점 +" + FIRST_BLOOD_BONUS);
+        if (multiBonus > 0) reasons.add(multiKillName(multi) + " +" + multiBonus);
+
+        if (!reasons.isEmpty()) {
+            b.append(Component.text(" (" + String.join(", ", reasons) + ")", NamedTextColor.GRAY));
+        }
+        return b.build();
+    }
+
+    private static String multiKillName(int count) {
+        return switch (count) {
+            case 2 -> "더블킬";
+            case 3 -> "트리플킬";
+            case 4 -> "쿼드라킬";
+            case 5 -> "펜타킬";
+            default -> "전설적인킬";
         };
     }
 
