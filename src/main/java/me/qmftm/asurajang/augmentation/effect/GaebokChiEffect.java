@@ -37,11 +37,11 @@ public class GaebokChiEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target)) return;
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
-        if (mgr.getActiveEffects(target.getUniqueId()).containsKey("gaebokchi")) return;
+        if (mgr.getActiveEffects(target.getUniqueId()).containsKey("molamola")) return;
         if (ThreadLocalRandom.current().nextDouble() >= 0.10) return;
 
-        mgr.deactivateSingle(player, "gaebokchi");
-        mgr.activateFor(target, "gaebokchi");
+        mgr.deactivateSingle(player, "molamola");
+        mgr.activateFor(target, "molamola");
 
         player.sendActionBar(Component.text("개복치 이전됨!", NamedTextColor.GREEN));
         target.sendActionBar(Component.text("개복치 감염됨!", NamedTextColor.RED));

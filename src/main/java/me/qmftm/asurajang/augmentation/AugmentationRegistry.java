@@ -27,21 +27,21 @@ public class AugmentationRegistry {
     private static final Map<String, Supplier<AugmentationEffect>> REGISTRY = new HashMap<>();
 
     static {
-        REGISTRY.put("heuksom",      HeugsomEffect::new);
-        REGISTRY.put("deadful",      DeadfulEffect::new);
-        REGISTRY.put("boogiewoogie", BoogieWoogieEffect::new);
-        REGISTRY.put("gaebokchi",      GaebokChiEffect::new);
-        REGISTRY.put("byeontae",       ByeontaeEffect::new);
-        REGISTRY.put("mobang",         MobangEffect::new);
-        REGISTRY.put("sniperduel",     SniperDuelEffect::new);
-        REGISTRY.put("gyeongjeongwon", GyeongjeongwonEffect::new);
-        REGISTRY.put("naengnyeolhan",  NaengnyeolhanEffect::new);
-        REGISTRY.put("heavyforce",     HeavyForceEffect::new);
-        REGISTRY.put("selfdestruct",   SelfDestructEffect::new);
-        REGISTRY.put("guiltpleasure",  GuiltPleasureEffect::new);
-        REGISTRY.put("glasscannon",    GlassCannonEffect::new);
-        REGISTRY.put("cleanup",        CleanupEffect::new);
-        REGISTRY.put("lightlanding",   LightLandingEffect::new);
+        REGISTRY.put("blackflash",    HeugsomEffect::new);
+        REGISTRY.put("deadful",       DeadfulEffect::new);
+        REGISTRY.put("boogiewoogie",  BoogieWoogieEffect::new);
+        REGISTRY.put("molamola",      GaebokChiEffect::new);
+        REGISTRY.put("hentai",        ByeontaeEffect::new);
+        REGISTRY.put("copy",          MobangEffect::new);
+        REGISTRY.put("sniperduel",    SniperDuelEffect::new);
+        REGISTRY.put("divergentfist", GyeongjeongwonEffect::new);
+        REGISTRY.put("coldblood",     NaengnyeolhanEffect::new);
+        REGISTRY.put("heavyforce",    HeavyForceEffect::new);
+        REGISTRY.put("selfbomber",    SelfDestructEffect::new);
+        REGISTRY.put("guiltpleasure", GuiltPleasureEffect::new);
+        REGISTRY.put("glasscannon",   GlassCannonEffect::new);
+        REGISTRY.put("cleanup",       CleanupEffect::new);
+        REGISTRY.put("featherfalling",LightLandingEffect::new);
     }
 
     @Nullable

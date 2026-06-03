@@ -34,7 +34,7 @@ public class MobangEffect implements AugmentationEffect {
         if (notHave.isEmpty()) return; // 전부 동일 → 효과 없음
 
         String toGet = notHave.get(ThreadLocalRandom.current().nextInt(notHave.size()));
-        mgr.deactivateSingle(player, "mobang");
+        mgr.deactivateSingle(player, "copy");
         mgr.activateFor(player, toGet);
 
         String augName = mgr.get(toGet) != null ? mgr.get(toGet).getDisplayName() : toGet;

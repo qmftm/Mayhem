@@ -107,7 +107,7 @@ public class AugmentationEffectListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (Asurajang.getInstance().getAugmentationManager()
-                .getActiveEffects(player.getUniqueId()).containsKey("lightlanding")) {
+                .getActiveEffects(player.getUniqueId()).containsKey("featherfalling")) {
             event.setCancelled(true);
         }
     }
