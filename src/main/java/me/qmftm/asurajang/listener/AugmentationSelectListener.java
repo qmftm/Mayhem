@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
+import me.qmftm.asurajang.gui.DebugAugGiveGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -18,6 +19,31 @@ public class AugmentationSelectListener implements Listener {
     public void onListClick(InventoryClickEvent event) {
         if (!(event.getInventory().getHolder() instanceof AugmentationListGUI)) return;
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onDebugAugGiveClick(InventoryClickEvent event) {
+        if (!(event.getInventory().getHolder() instanceof DebugAugGiveGUI gui)) return;
+        event.setCancelled(true);
+
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+
+        Augmentation aug = gui.getAugAt(event.getRawSlot());
+        if (aug == null) return;
+
+        boolean alreadyOwned = Asurajang.getInstance()
+            .getAugmentationManager()
+            .getActiveEffects(player.getUniqueId())
+            .containsKey(aug.getId());
+
+        if (alreadyOwned) {
+            player.sendMessage(Component.text("[" + aug.getDisplayName() + "] 이미 보유한 증강입니다.", NamedTextColor.GRAY));
+            return;
+        }
+
+        Asurajang.getInstance().getAugmentationManager().activateFor(player, aug.getId());
+        player.sendMessage(Component.text("[DEBUG] [" + aug.getDisplayName() + "] 증강을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
     }
 
     @EventHandler
