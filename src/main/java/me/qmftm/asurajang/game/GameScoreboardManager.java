@@ -86,18 +86,17 @@ public class GameScoreboardManager {
 
         Component[] lines = {
             Component.empty(),
-            Component.text("골드  ", NamedTextColor.YELLOW)
+            Component.text("골드  ", NamedTextColor.WHITE)
                 .append(Component.text(g + " G", NamedTextColor.GOLD)),
-            Component.text("KDA  ", NamedTextColor.GRAY)
-                .append(Component.text(String.valueOf(k), NamedTextColor.GREEN))
+            Component.text(String.valueOf(k), NamedTextColor.GREEN)
                 .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(String.valueOf(d), NamedTextColor.RED))
                 .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(String.valueOf(a), NamedTextColor.AQUA)),
             Component.text("레벨  ", NamedTextColor.WHITE)
                 .append(Component.text(String.valueOf(lvl), NamedTextColor.LIGHT_PURPLE)),
-            Component.text("시간  ", NamedTextColor.GRAY)
-                .append(Component.text(formatTime(remainingSeconds), NamedTextColor.WHITE)),
+            Component.text("시간  ", NamedTextColor.WHITE)
+                .append(Component.text(formatTime(remainingSeconds), NamedTextColor.YELLOW)),
             Component.empty()
         };
 
