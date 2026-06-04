@@ -63,6 +63,7 @@ public class PlayerDeathListener implements Listener {
 
         Player player = event.getPlayer();
         deathLocations.put(player.getUniqueId(), player.getLocation().clone());
+        Asurajang.getInstance().getScoreboardManager().addDeath(player);
 
         // 킬 추적
         Player killer = player.getKiller();
