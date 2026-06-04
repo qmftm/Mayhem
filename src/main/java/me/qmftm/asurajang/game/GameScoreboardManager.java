@@ -84,19 +84,27 @@ public class GameScoreboardManager {
         int g   = gold.getOrDefault(player.getUniqueId(), 0);
         int lvl = levels.getOrDefault(player.getUniqueId(), 0);
 
-        String[] lines = {
-            "",
-            "골드: "      + g,
-            "KDA: "       + k + "/" + d + "/" + a,
-            "레벨: "      + lvl,
-            "남은 시간: " + formatTime(remainingSeconds),
-            ""
+        Component[] lines = {
+            Component.empty(),
+            Component.text("골드  ", NamedTextColor.YELLOW)
+                .append(Component.text(g + " G", NamedTextColor.GOLD)),
+            Component.text("KDA  ", NamedTextColor.GRAY)
+                .append(Component.text(String.valueOf(k), NamedTextColor.GREEN))
+                .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
+                .append(Component.text(String.valueOf(d), NamedTextColor.RED))
+                .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
+                .append(Component.text(String.valueOf(a), NamedTextColor.AQUA)),
+            Component.text("레벨  ", NamedTextColor.WHITE)
+                .append(Component.text(String.valueOf(lvl), NamedTextColor.LIGHT_PURPLE)),
+            Component.text("시간  ", NamedTextColor.GRAY)
+                .append(Component.text(formatTime(remainingSeconds), NamedTextColor.WHITE)),
+            Component.empty()
         };
 
         for (int i = 0; i < lines.length; i++) {
             Team team = board.getTeam("line" + i);
             if (team != null) {
-                team.prefix(Component.text(lines[i], NamedTextColor.WHITE));
+                team.prefix(lines[i]);
             }
         }
 
