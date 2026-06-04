@@ -110,7 +110,7 @@ public class GameScoreboardManager {
         }
     }
 
-    private void updateTabListEntry(Player player) {
+    public void updateTabListEntry(Player player) {
         int k  = kills.getOrDefault(player.getUniqueId(), 0);
         int d  = deaths.getOrDefault(player.getUniqueId(), 0);
         int a  = assists.getOrDefault(player.getUniqueId(), 0);

@@ -17,6 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -50,6 +52,28 @@ public class PlayerDeathListener implements Listener {
         recentDamage
             .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
             .put(attacker.getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHealthChange(EntityDamageEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        scheduleTabListUpdate(player);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHealthRegen(EntityRegainHealthEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        scheduleTabListUpdate(player);
+    }
+
+    private void scheduleTabListUpdate(Player player) {
+        Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> {
+            if (player.isOnline() && Asurajang.getInstance().getGameManager().isRunning()) {
+                Asurajang.getInstance().getScoreboardManager().updateTabListEntry(player);
+            }
+        }, 1L);
     }
 
     @EventHandler
