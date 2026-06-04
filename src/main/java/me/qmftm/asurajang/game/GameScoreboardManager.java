@@ -54,6 +54,7 @@ public class GameScoreboardManager {
         gold.remove(player.getUniqueId());
         levels.remove(player.getUniqueId());
         if (player.isOnline()) {
+            player.playerListName(null);
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
     }
@@ -98,6 +99,8 @@ public class GameScoreboardManager {
                 team.prefix(Component.text(lines[i], NamedTextColor.WHITE));
             }
         }
+
+        updateTabListEntry(player);
     }
 
     public void updateAll(int remainingSeconds) {
@@ -107,18 +110,35 @@ public class GameScoreboardManager {
         }
     }
 
+    private void updateTabListEntry(Player player) {
+        int k  = kills.getOrDefault(player.getUniqueId(), 0);
+        int d  = deaths.getOrDefault(player.getUniqueId(), 0);
+        int a  = assists.getOrDefault(player.getUniqueId(), 0);
+        double hp = player.getHealth();
+
+        player.playerListName(Component.text()
+            .append(player.displayName())
+            .append(Component.text("  " + k + "/" + d + "/" + a, NamedTextColor.GRAY))
+            .appendNewline()
+            .append(Component.text("❤ " + String.format("%.1f", hp), NamedTextColor.RED))
+            .build());
+    }
+
     // ── 통계 ────────────────────────────────────────────────────────────────
 
     public void addKill(Player player) {
         kills.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
     }
 
     public void addDeath(Player player) {
         deaths.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
     }
 
     public void addAssist(Player player) {
         assists.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
     }
 
     public void addGold(Player player, int amount) {
