@@ -14,7 +14,9 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -32,9 +34,23 @@ public class PlayerDeathListener implements Listener {
     private static final int FIRST_BLOOD_BONUS = 25;
     private static final long MULTI_KILL_WINDOW_MS = 10_000L;
 
-    private final Map<UUID, Location> deathLocations = new HashMap<>();
-    private final Map<UUID, Integer> multiKillCounts = new HashMap<>();
-    private final Map<UUID, Long>    lastKillTimes   = new HashMap<>();
+    private static final long ASSIST_WINDOW_MS = 10_000L;
+
+    private final Map<UUID, Location>           deathLocations  = new HashMap<>();
+    private final Map<UUID, Integer>            multiKillCounts = new HashMap<>();
+    private final Map<UUID, Long>               lastKillTimes   = new HashMap<>();
+    // victim UUID → (attacker UUID → last hit timestamp)
+    private final Map<UUID, Map<UUID, Long>>    recentDamage    = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+        recentDamage
+            .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
+            .put(attacker.getUniqueId(), System.currentTimeMillis());
+    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -84,6 +100,24 @@ public class PlayerDeathListener implements Listener {
             final Component goldMsg = buildGoldMessage(multi, firstBlood, reward);
             Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
                 () -> killer.sendMessage(goldMsg), 1L);
+        }
+
+        // 어시스트: 10초 내에 피해를 준 킬러 외 플레이어에게 어시스트 부여
+        Map<UUID, Long> damagers = recentDamage.remove(player.getUniqueId());
+        if (damagers != null && killer != null) {
+            long now2 = System.currentTimeMillis();
+            UUID killerId = killer.getUniqueId();
+            for (Map.Entry<UUID, Long> entry : damagers.entrySet()) {
+                if (entry.getKey().equals(killerId)) continue;
+                if (now2 - entry.getValue() > ASSIST_WINDOW_MS) continue;
+                Player assister = Bukkit.getPlayer(entry.getKey());
+                if (assister == null || !assister.isOnline()) continue;
+                Asurajang.getInstance().getScoreboardManager().addAssist(assister);
+                assister.sendMessage(Component.text()
+                    .append(Component.text("어시스트 ", NamedTextColor.AQUA))
+                    .append(player.displayName())
+                    .build());
+            }
         }
 
         // 흑섬 발동으로 사망 시 파티클

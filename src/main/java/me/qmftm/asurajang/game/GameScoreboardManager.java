@@ -11,12 +11,13 @@ import java.util.*;
 public class GameScoreboardManager {
 
     // 각 줄의 고유 식별자 (§ 색상코드)
-    private static final String[] KEYS = {"§0", "§1", "§2", "§3", "§4", "§5"};
+    private static final String[] KEYS = {"§0", "§1", "§2", "§3", "§4", "§5", "§6"};
 
-    private final Map<UUID, Scoreboard> boards  = new HashMap<>();
-    private final Map<UUID, Integer>    kills   = new HashMap<>();
-    private final Map<UUID, Integer>    gold    = new HashMap<>();
-    private final Map<UUID, Integer>    levels  = new HashMap<>();
+    private final Map<UUID, Scoreboard> boards   = new HashMap<>();
+    private final Map<UUID, Integer>    kills    = new HashMap<>();
+    private final Map<UUID, Integer>    assists  = new HashMap<>();
+    private final Map<UUID, Integer>    gold     = new HashMap<>();
+    private final Map<UUID, Integer>    levels   = new HashMap<>();
 
     // ── 설정 / 해제 ─────────────────────────────────────────────────────────
 
@@ -35,6 +36,7 @@ public class GameScoreboardManager {
 
         boards.put(player.getUniqueId(), board);
         kills.putIfAbsent(player.getUniqueId(), 0);
+        assists.putIfAbsent(player.getUniqueId(), 0);
         gold.putIfAbsent(player.getUniqueId(), 0);
         levels.putIfAbsent(player.getUniqueId(), 0);
 
@@ -45,6 +47,7 @@ public class GameScoreboardManager {
     public void remove(Player player) {
         boards.remove(player.getUniqueId());
         kills.remove(player.getUniqueId());
+        assists.remove(player.getUniqueId());
         gold.remove(player.getUniqueId());
         levels.remove(player.getUniqueId());
         if (player.isOnline()) {
@@ -59,6 +62,7 @@ public class GameScoreboardManager {
         }
         boards.clear();
         kills.clear();
+        assists.clear();
         gold.clear();
         levels.clear();
     }
@@ -70,6 +74,7 @@ public class GameScoreboardManager {
         if (board == null) return;
 
         int k   = kills.getOrDefault(player.getUniqueId(), 0);
+        int a   = assists.getOrDefault(player.getUniqueId(), 0);
         int g   = gold.getOrDefault(player.getUniqueId(), 0);
         int lvl = levels.getOrDefault(player.getUniqueId(), 0);
 
@@ -77,6 +82,7 @@ public class GameScoreboardManager {
             "",
             "골드: "      + g,
             "킬: "        + k,
+            "어시스트: "  + a,
             "레벨: "      + lvl,
             "남은 시간: " + formatTime(remainingSeconds),
             ""
@@ -101,6 +107,10 @@ public class GameScoreboardManager {
 
     public void addKill(Player player) {
         kills.merge(player.getUniqueId(), 1, Integer::sum);
+    }
+
+    public void addAssist(Player player) {
+        assists.merge(player.getUniqueId(), 1, Integer::sum);
     }
 
     public void addGold(Player player, int amount) {
