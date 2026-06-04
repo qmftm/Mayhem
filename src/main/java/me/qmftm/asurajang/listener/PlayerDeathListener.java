@@ -81,8 +81,26 @@ public class PlayerDeathListener implements Listener {
 
             int reward = KILL_GOLD_REWARD + (firstBlood ? FIRST_BLOOD_BONUS : 0) + multiKillBonus(multi);
 
-            Asurajang.getInstance().getScoreboardManager().addKill(killer);
-            Asurajang.getInstance().getScoreboardManager().addGold(killer, reward);
+            // 어시스터 수집 (킬 보상 분배를 위해 먼저 계산)
+            Map<UUID, Long> damagers = recentDamage.remove(player.getUniqueId());
+            List<Player> assisters = new ArrayList<>();
+            if (damagers != null) {
+                for (Map.Entry<UUID, Long> entry : damagers.entrySet()) {
+                    if (entry.getKey().equals(kid)) continue;
+                    if (now - entry.getValue() > ASSIST_WINDOW_MS) continue;
+                    Player assister = Bukkit.getPlayer(entry.getKey());
+                    if (assister == null || !assister.isOnline()) continue;
+                    assisters.add(assister);
+                }
+            }
+
+            // 어시스트가 있으면 킬러는 절반, 어시스터는 총량의 1/n
+            int killerGold   = assisters.isEmpty() ? reward : reward / 2;
+            int assisterGold = assisters.isEmpty() ? 0      : reward / assisters.size();
+
+            Asurajang plugin = Asurajang.getInstance();
+            plugin.getScoreboardManager().addKill(killer);
+            plugin.getScoreboardManager().addGold(killer, killerGold);
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
@@ -97,28 +115,22 @@ public class PlayerDeathListener implements Listener {
                 .build();
             event.deathMessage(message);
 
-            // 킬 메시지(데스 이벤트 방송) 이후에 골드 메시지 표시
-            final Component goldMsg = buildGoldMessage(multi, firstBlood, reward);
-            Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
-                () -> killer.sendMessage(goldMsg), 1L);
-        }
+            final Component goldMsg = buildGoldMessage(multi, firstBlood, killerGold, !assisters.isEmpty());
+            Bukkit.getScheduler().runTaskLater(plugin, () -> killer.sendMessage(goldMsg), 1L);
 
-        // 어시스트: 10초 내에 피해를 준 킬러 외 플레이어에게 어시스트 부여
-        Map<UUID, Long> damagers = recentDamage.remove(player.getUniqueId());
-        if (damagers != null && killer != null) {
-            long now2 = System.currentTimeMillis();
-            UUID killerId = killer.getUniqueId();
-            for (Map.Entry<UUID, Long> entry : damagers.entrySet()) {
-                if (entry.getKey().equals(killerId)) continue;
-                if (now2 - entry.getValue() > ASSIST_WINDOW_MS) continue;
-                Player assister = Bukkit.getPlayer(entry.getKey());
-                if (assister == null || !assister.isOnline()) continue;
-                Asurajang.getInstance().getScoreboardManager().addAssist(assister);
+            // 어시스터 처리
+            for (Player assister : assisters) {
+                plugin.getScoreboardManager().addAssist(assister);
+                plugin.getScoreboardManager().addGold(assister, assisterGold);
+                final int ag = assisterGold;
                 assister.sendMessage(Component.text()
                     .append(Component.text("어시스트 ", NamedTextColor.AQUA))
                     .append(player.displayName())
+                    .append(Component.text("  +" + ag + " 골드", NamedTextColor.GOLD))
                     .build());
             }
+        } else {
+            recentDamage.remove(player.getUniqueId());
         }
 
         // 흑섬 발동으로 사망 시 파티클
@@ -182,7 +194,7 @@ public class PlayerDeathListener implements Listener {
         };
     }
 
-    private static Component buildGoldMessage(int multi, boolean firstBlood, int total) {
+    private static Component buildGoldMessage(int multi, boolean firstBlood, int total, boolean hasAssist) {
         int multiBonus = multiKillBonus(multi);
         Component.Builder b = Component.text();
         b.append(multiKillLabel(multi));
@@ -191,6 +203,7 @@ public class PlayerDeathListener implements Listener {
         List<String> reasons = new ArrayList<>();
         if (firstBlood) reasons.add("선취점 +" + FIRST_BLOOD_BONUS);
         if (multiBonus > 0) reasons.add(multiKillName(multi) + " +" + multiBonus);
+        if (hasAssist) reasons.add("어시스트 분배");
 
         if (!reasons.isEmpty()) {
             b.append(Component.text(" (" + String.join(", ", reasons) + ")", NamedTextColor.GRAY));
