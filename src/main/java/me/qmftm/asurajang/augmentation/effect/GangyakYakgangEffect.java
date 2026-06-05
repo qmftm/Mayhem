@@ -20,8 +20,12 @@ public class GangyakYakgangEffect implements AugmentationEffect {
 
         double maxHp = Objects.requireNonNull(victim.getAttribute(Attribute.MAX_HEALTH)).getValue();
         double hpPercent = victim.getHealth() / maxHp * 100.0;
-        double bonusPercent = 75.0 - hpPercent;
-        double multiplier = 1.0 + bonusPercent / 100.0;
-        event.setDamage(event.getDamage() * multiplier);
+
+        if (hpPercent > 50.0) {
+            event.setDamage(event.getDamage() * 0.5);
+        } else {
+            double multiplier = 1.0 + (50.0 - hpPercent) / 100.0;
+            event.setDamage(event.getDamage() * multiplier);
+        }
     }
 }

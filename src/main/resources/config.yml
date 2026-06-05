@@ -127,8 +127,8 @@ augmentations:
     icon: WITHER_ROSE
     color: red
     description:
-      - "상대의 체력 비율에 비례하여"
-      - "(75 - 체력%) 만큼 추가 피해를 줍니다."
+      - "상대 체력 50% 이하: (50 - 체력%)만큼 추가 피해."
+      - "상대 체력 50% 초과: 피해가 절반으로 줄어듭니다."
 
   ganggangyakyak:
     display-name: "강강약약"
