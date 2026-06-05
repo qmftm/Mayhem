@@ -122,6 +122,22 @@ augmentations:
     description:
       - "낙하 피해를 받지 않습니다."
 
+  gangyakyakgang:
+    display-name: "강약약강"
+    icon: WITHER_ROSE
+    color: red
+    description:
+      - "상대의 체력 비율에 비례하여"
+      - "(75 - 체력%) 만큼 추가 피해를 줍니다."
+
+  ganggangyakyak:
+    display-name: "강강약약"
+    icon: NETHER_STAR
+    color: gold
+    description:
+      - "가장 킬 수가 높은 적에게"
+      - "1.5배의 피해를 줍니다."
+
   okgyeon:
     display-name: "옥견"
     icon: WOLF_SPAWN_EGG

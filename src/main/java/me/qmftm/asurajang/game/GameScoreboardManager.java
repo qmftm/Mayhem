@@ -148,6 +148,10 @@ public class GameScoreboardManager {
         updateTabListEntry(player);
     }
 
+    public int getKills(UUID uuid) {
+        return kills.getOrDefault(uuid, 0);
+    }
+
     public void addGold(Player player, int amount) {
         gold.merge(player.getUniqueId(), amount, Integer::sum);
     }
