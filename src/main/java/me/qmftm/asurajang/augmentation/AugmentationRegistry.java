@@ -14,6 +14,7 @@ import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
 import me.qmftm.asurajang.augmentation.effect.LightLandingEffect;
 import me.qmftm.asurajang.augmentation.effect.MobangEffect;
 import me.qmftm.asurajang.augmentation.effect.NaengnyeolhanEffect;
+import me.qmftm.asurajang.augmentation.effect.OkgyeonEffect;
 import me.qmftm.asurajang.augmentation.effect.SelfDestructEffect;
 import me.qmftm.asurajang.augmentation.effect.SniperDuelEffect;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +43,7 @@ public class AugmentationRegistry {
         REGISTRY.put("glasscannon",   GlassCannonEffect::new);
         REGISTRY.put("cleanup",       CleanupEffect::new);
         REGISTRY.put("featherfalling",LightLandingEffect::new);
+        REGISTRY.put("okgyeon",       OkgyeonEffect::new);
     }
 
     @Nullable

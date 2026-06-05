@@ -121,3 +121,11 @@ augmentations:
     color: white
     description:
       - "낙하 피해를 받지 않습니다."
+
+  okgyeon:
+    display-name: "옥견"
+    icon: WOLF_SPAWN_EGG
+    color: white
+    description:
+      - "두 마리의 길들인 늑대가 당신을 도와 싸웁니다."
+      - "늑대는 사망 시 60초 후에 부활합니다."
