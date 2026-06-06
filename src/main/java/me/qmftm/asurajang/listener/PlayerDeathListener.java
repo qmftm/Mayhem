@@ -147,7 +147,6 @@ public class PlayerDeathListener implements Listener {
             for (Player assister : assisters) {
                 plugin.getScoreboardManager().addAssist(assister);
                 plugin.getScoreboardManager().addGold(assister, assisterGold);
-                plugin.getScoreboardManager().addExp(assister, 30);
                 final int ag = assisterGold;
                 assister.sendMessage(Component.text()
                     .append(Component.text("어시스트 ", NamedTextColor.AQUA))

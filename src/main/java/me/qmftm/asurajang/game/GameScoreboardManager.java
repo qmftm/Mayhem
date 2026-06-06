@@ -100,10 +100,10 @@ public class GameScoreboardManager {
                 .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(String.valueOf(a), NamedTextColor.AQUA)),
             Component.text("레벨  ", NamedTextColor.WHITE)
-                .append(Component.text(lvl + " Lv", NamedTextColor.GREEN))
-                .append(Component.text("  " + curExp + "/" + reqExp + " Exp", NamedTextColor.DARK_GREEN)),
+                .append(Component.text(lvl + " Lv", NamedTextColor.GREEN)),
             Component.text("골드  ", NamedTextColor.WHITE)
-                .append(Component.text(g + " G", NamedTextColor.GOLD)),
+                .append(Component.text(g + " G", NamedTextColor.GOLD))
+                .append(Component.text("  " + curExp + "/" + reqExp + " Exp", NamedTextColor.DARK_GREEN)),
             Component.empty()
         };
 
