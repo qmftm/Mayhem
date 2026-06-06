@@ -19,6 +19,7 @@ public class GameScoreboardManager {
     private final Map<UUID, Integer>    assists  = new HashMap<>();
     private final Map<UUID, Integer>    gold     = new HashMap<>();
     private final Map<UUID, Integer>    levels   = new HashMap<>();
+    private final Map<UUID, Integer>    exp      = new HashMap<>();
 
     // ── 설정 / 해제 ─────────────────────────────────────────────────────────
 
@@ -40,7 +41,8 @@ public class GameScoreboardManager {
         deaths.putIfAbsent(player.getUniqueId(), 0);
         assists.putIfAbsent(player.getUniqueId(), 0);
         gold.putIfAbsent(player.getUniqueId(), 0);
-        levels.putIfAbsent(player.getUniqueId(), 0);
+        levels.putIfAbsent(player.getUniqueId(), 1);
+        exp.putIfAbsent(player.getUniqueId(), 0);
 
         player.setScoreboard(board);
         updatePlayer(player, 0);
@@ -53,6 +55,7 @@ public class GameScoreboardManager {
         assists.remove(player.getUniqueId());
         gold.remove(player.getUniqueId());
         levels.remove(player.getUniqueId());
+        exp.remove(player.getUniqueId());
         if (player.isOnline()) {
             player.playerListName(null);
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
@@ -70,6 +73,7 @@ public class GameScoreboardManager {
         assists.clear();
         gold.clear();
         levels.clear();
+        exp.clear();
     }
 
     // ── 갱신 ────────────────────────────────────────────────────────────────
@@ -78,11 +82,13 @@ public class GameScoreboardManager {
         Scoreboard board = boards.get(player.getUniqueId());
         if (board == null) return;
 
-        int k   = kills.getOrDefault(player.getUniqueId(), 0);
-        int d   = deaths.getOrDefault(player.getUniqueId(), 0);
-        int a   = assists.getOrDefault(player.getUniqueId(), 0);
-        int g   = gold.getOrDefault(player.getUniqueId(), 0);
-        int lvl = levels.getOrDefault(player.getUniqueId(), 0);
+        int k    = kills.getOrDefault(player.getUniqueId(), 0);
+        int d    = deaths.getOrDefault(player.getUniqueId(), 0);
+        int a    = assists.getOrDefault(player.getUniqueId(), 0);
+        int g    = gold.getOrDefault(player.getUniqueId(), 0);
+        int lvl  = levels.getOrDefault(player.getUniqueId(), 1);
+        int curExp  = exp.getOrDefault(player.getUniqueId(), 0);
+        int reqExp  = expRequired(lvl);
 
         Component[] lines = {
             Component.empty(),
@@ -94,7 +100,8 @@ public class GameScoreboardManager {
                 .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
                 .append(Component.text(String.valueOf(a), NamedTextColor.AQUA)),
             Component.text("레벨  ", NamedTextColor.WHITE)
-                .append(Component.text(String.valueOf(lvl) + " Lv", NamedTextColor.GREEN)),
+                .append(Component.text(lvl + " Lv", NamedTextColor.GREEN))
+                .append(Component.text("  " + curExp + "/" + reqExp + " Exp", NamedTextColor.DARK_GREEN)),
             Component.text("골드  ", NamedTextColor.WHITE)
                 .append(Component.text(g + " G", NamedTextColor.GOLD)),
             Component.empty()
@@ -160,12 +167,30 @@ public class GameScoreboardManager {
         return gold.getOrDefault(player.getUniqueId(), 0);
     }
 
+    public void addExp(Player player, int amount) {
+        UUID uuid = player.getUniqueId();
+        int curExp = exp.merge(uuid, amount, Integer::sum);
+        int lvl    = levels.getOrDefault(uuid, 1);
+        while (curExp >= expRequired(lvl)) {
+            curExp -= expRequired(lvl);
+            lvl++;
+            exp.put(uuid, curExp);
+            levels.put(uuid, lvl);
+            player.sendMessage(Component.text("레벨 업! ", NamedTextColor.GREEN)
+                .append(Component.text(lvl + " Lv", NamedTextColor.YELLOW)));
+        }
+    }
+
     public void setLevel(Player player, int level) {
         levels.put(player.getUniqueId(), level);
     }
 
     public int getLevel(Player player) {
-        return levels.getOrDefault(player.getUniqueId(), 0);
+        return levels.getOrDefault(player.getUniqueId(), 1);
+    }
+
+    private static int expRequired(int level) {
+        return 100 + (level - 1) * 50;
     }
 
     // ── 팀 ──────────────────────────────────────────────────────────────────

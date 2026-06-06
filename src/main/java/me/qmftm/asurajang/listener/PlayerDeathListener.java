@@ -125,6 +125,7 @@ public class PlayerDeathListener implements Listener {
             Asurajang plugin = Asurajang.getInstance();
             plugin.getScoreboardManager().addKill(killer);
             plugin.getScoreboardManager().addGold(killer, killerGold);
+            plugin.getScoreboardManager().addExp(killer, 100);
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
@@ -146,6 +147,7 @@ public class PlayerDeathListener implements Listener {
             for (Player assister : assisters) {
                 plugin.getScoreboardManager().addAssist(assister);
                 plugin.getScoreboardManager().addGold(assister, assisterGold);
+                plugin.getScoreboardManager().addExp(assister, 30);
                 final int ag = assisterGold;
                 assister.sendMessage(Component.text()
                     .append(Component.text("어시스트 ", NamedTextColor.AQUA))
