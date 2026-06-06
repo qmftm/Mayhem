@@ -3,6 +3,7 @@ package me.qmftm.asurajang.command;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
 import me.qmftm.asurajang.game.GameManager;
+import me.qmftm.asurajang.gui.DebugAugGiveGUI;
 import me.qmftm.asurajang.gui.GameModeSelectGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -90,7 +91,8 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
         }
 
         switch (args[1].toLowerCase()) {
-            case "aug" -> plugin.openAugmentationSelect(player);
+            case "aug", "aug_1" -> plugin.openAugmentationSelect(player);
+            case "aug_2" -> new DebugAugGiveGUI(plugin.getAugmentationManager().getAll()).open(player);
             case "proc" -> {
                 HeugsomEffect.debugProc = !HeugsomEffect.debugProc;
                 sender.sendMessage(Component.text(
@@ -107,13 +109,13 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendDebugUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("사용법: /mayhem debug <aug|proc>", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("사용법: /mayhem debug <aug_1|aug_2|proc>", NamedTextColor.YELLOW));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) return List.of("start", "stop", "reload", "list", "status", "debug");
-        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug", "proc");
+        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "proc");
         return List.of();
     }
 }

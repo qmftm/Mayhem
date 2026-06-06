@@ -13,6 +13,7 @@ import me.qmftm.asurajang.listener.AugmentationSelectListener;
 import me.qmftm.asurajang.listener.GameModeSelectListener;
 import me.qmftm.asurajang.listener.HotbarButtonListener;
 import me.qmftm.asurajang.listener.PlayerDeathListener;
+import me.qmftm.asurajang.listener.RewardMessageListener;
 import me.qmftm.asurajang.listener.ShopListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,6 +52,7 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShopListener(), this);
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
 
         AsurajangCommand cmd = new AsurajangCommand();
         Objects.requireNonNull(getCommand("mayhem")).setExecutor(cmd);

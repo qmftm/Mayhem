@@ -13,10 +13,13 @@ public class GameScoreboardManager {
     // 각 줄의 고유 식별자 (§ 색상코드)
     private static final String[] KEYS = {"§0", "§1", "§2", "§3", "§4", "§5"};
 
-    private final Map<UUID, Scoreboard> boards  = new HashMap<>();
-    private final Map<UUID, Integer>    kills   = new HashMap<>();
-    private final Map<UUID, Integer>    gold    = new HashMap<>();
-    private final Map<UUID, Integer>    levels  = new HashMap<>();
+    private final Map<UUID, Scoreboard> boards   = new HashMap<>();
+    private final Map<UUID, Integer>    kills    = new HashMap<>();
+    private final Map<UUID, Integer>    deaths   = new HashMap<>();
+    private final Map<UUID, Integer>    assists  = new HashMap<>();
+    private final Map<UUID, Integer>    gold     = new HashMap<>();
+    private final Map<UUID, Integer>    levels   = new HashMap<>();
+    private final Map<UUID, Integer>    exp      = new HashMap<>();
 
     // ── 설정 / 해제 ─────────────────────────────────────────────────────────
 
@@ -35,8 +38,11 @@ public class GameScoreboardManager {
 
         boards.put(player.getUniqueId(), board);
         kills.putIfAbsent(player.getUniqueId(), 0);
+        deaths.putIfAbsent(player.getUniqueId(), 0);
+        assists.putIfAbsent(player.getUniqueId(), 0);
         gold.putIfAbsent(player.getUniqueId(), 0);
-        levels.putIfAbsent(player.getUniqueId(), 0);
+        levels.putIfAbsent(player.getUniqueId(), 1);
+        exp.putIfAbsent(player.getUniqueId(), 0);
 
         player.setScoreboard(board);
         updatePlayer(player, 0);
@@ -45,9 +51,13 @@ public class GameScoreboardManager {
     public void remove(Player player) {
         boards.remove(player.getUniqueId());
         kills.remove(player.getUniqueId());
+        deaths.remove(player.getUniqueId());
+        assists.remove(player.getUniqueId());
         gold.remove(player.getUniqueId());
         levels.remove(player.getUniqueId());
+        exp.remove(player.getUniqueId());
         if (player.isOnline()) {
+            player.playerListName(null);
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
     }
@@ -59,8 +69,11 @@ public class GameScoreboardManager {
         }
         boards.clear();
         kills.clear();
+        deaths.clear();
+        assists.clear();
         gold.clear();
         levels.clear();
+        exp.clear();
     }
 
     // ── 갱신 ────────────────────────────────────────────────────────────────
@@ -69,25 +82,39 @@ public class GameScoreboardManager {
         Scoreboard board = boards.get(player.getUniqueId());
         if (board == null) return;
 
-        int k   = kills.getOrDefault(player.getUniqueId(), 0);
-        int g   = gold.getOrDefault(player.getUniqueId(), 0);
-        int lvl = levels.getOrDefault(player.getUniqueId(), 0);
+        int k    = kills.getOrDefault(player.getUniqueId(), 0);
+        int d    = deaths.getOrDefault(player.getUniqueId(), 0);
+        int a    = assists.getOrDefault(player.getUniqueId(), 0);
+        int g    = gold.getOrDefault(player.getUniqueId(), 0);
+        int lvl  = levels.getOrDefault(player.getUniqueId(), 1);
+        int curExp  = exp.getOrDefault(player.getUniqueId(), 0);
+        int reqExp  = expRequired(lvl);
 
-        String[] lines = {
-            "",
-            "골드: "      + g,
-            "킬: "        + k,
-            "레벨: "      + lvl,
-            "남은 시간: " + formatTime(remainingSeconds),
-            ""
+        Component[] lines = {
+            Component.empty(),
+            Component.text("시간  ", NamedTextColor.WHITE)
+                .append(Component.text(formatTime(remainingSeconds), NamedTextColor.AQUA)),
+            Component.text(String.valueOf(k), NamedTextColor.GREEN)
+                .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
+                .append(Component.text(String.valueOf(d), NamedTextColor.RED))
+                .append(Component.text(" / ", NamedTextColor.DARK_GRAY))
+                .append(Component.text(String.valueOf(a), NamedTextColor.AQUA)),
+            Component.text("레벨  ", NamedTextColor.WHITE)
+                .append(Component.text(lvl + " Lv", NamedTextColor.GREEN)),
+            Component.text("골드  ", NamedTextColor.WHITE)
+                .append(Component.text(g + " G", NamedTextColor.GOLD))
+                .append(Component.text("  " + curExp + "/" + reqExp + " Exp", NamedTextColor.DARK_GREEN)),
+            Component.empty()
         };
 
         for (int i = 0; i < lines.length; i++) {
             Team team = board.getTeam("line" + i);
             if (team != null) {
-                team.prefix(Component.text(lines[i], NamedTextColor.WHITE));
+                team.prefix(lines[i]);
             }
         }
+
+        updateTabListEntry(player);
     }
 
     public void updateAll(int remainingSeconds) {
@@ -97,10 +124,39 @@ public class GameScoreboardManager {
         }
     }
 
+    public void updateTabListEntry(Player player) {
+        int k  = kills.getOrDefault(player.getUniqueId(), 0);
+        int d  = deaths.getOrDefault(player.getUniqueId(), 0);
+        int a  = assists.getOrDefault(player.getUniqueId(), 0);
+        double hp = player.getHealth();
+
+        player.playerListName(Component.text()
+            .append(player.displayName())
+            .append(Component.text("  " + k + "/" + d + "/" + a, NamedTextColor.GRAY))
+            .appendNewline()
+            .append(Component.text("❤ " + String.format("%.1f", hp), NamedTextColor.RED))
+            .build());
+    }
+
     // ── 통계 ────────────────────────────────────────────────────────────────
 
     public void addKill(Player player) {
         kills.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
+    }
+
+    public void addDeath(Player player) {
+        deaths.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
+    }
+
+    public void addAssist(Player player) {
+        assists.merge(player.getUniqueId(), 1, Integer::sum);
+        updateTabListEntry(player);
+    }
+
+    public int getKills(UUID uuid) {
+        return kills.getOrDefault(uuid, 0);
     }
 
     public void addGold(Player player, int amount) {
@@ -111,12 +167,33 @@ public class GameScoreboardManager {
         return gold.getOrDefault(player.getUniqueId(), 0);
     }
 
+    public record ExpResult(int newLevel, boolean leveledUp) {}
+
+    public ExpResult addExp(Player player, int amount) {
+        UUID uuid = player.getUniqueId();
+        int curExp = exp.merge(uuid, amount, Integer::sum);
+        int lvl    = levels.getOrDefault(uuid, 1);
+        boolean leveled = false;
+        while (curExp >= expRequired(lvl)) {
+            curExp -= expRequired(lvl);
+            lvl++;
+            leveled = true;
+        }
+        exp.put(uuid, curExp);
+        levels.put(uuid, lvl);
+        return new ExpResult(lvl, leveled);
+    }
+
     public void setLevel(Player player, int level) {
         levels.put(player.getUniqueId(), level);
     }
 
     public int getLevel(Player player) {
-        return levels.getOrDefault(player.getUniqueId(), 0);
+        return levels.getOrDefault(player.getUniqueId(), 1);
+    }
+
+    private static int expRequired(int level) {
+        return 100 + (level - 1) * 50;
     }
 
     // ── 팀 ──────────────────────────────────────────────────────────────────

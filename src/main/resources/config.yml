@@ -121,3 +121,27 @@ augmentations:
     color: white
     description:
       - "낙하 피해를 받지 않습니다."
+
+  gangyakyakgang:
+    display-name: "강약약강"
+    icon: WITHER_ROSE
+    color: red
+    description:
+      - "상대 체력 50% 이하: (50 - 체력%)만큼 추가 피해."
+      - "상대 체력 50% 초과: 피해가 절반으로 줄어듭니다."
+
+  ganggangyakyak:
+    display-name: "강강약약"
+    icon: NETHER_STAR
+    color: gold
+    description:
+      - "가장 킬 수가 높은 적에게"
+      - "1.5배의 피해를 줍니다."
+
+  okgyeon:
+    display-name: "옥견"
+    icon: WOLF_SPAWN_EGG
+    color: white
+    description:
+      - "두 마리의 길들인 늑대가 당신을 도와 싸웁니다."
+      - "늑대는 사망 시 60초 후에 부활합니다."

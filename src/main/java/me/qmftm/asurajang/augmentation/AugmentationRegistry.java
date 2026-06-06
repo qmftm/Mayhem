@@ -2,6 +2,8 @@ package me.qmftm.asurajang.augmentation;
 
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BoogieWoogieEffect;
+import me.qmftm.asurajang.augmentation.effect.GanggangYakyakEffect;
+import me.qmftm.asurajang.augmentation.effect.GangyakYakgangEffect;
 import me.qmftm.asurajang.augmentation.effect.ByeontaeEffect;
 import me.qmftm.asurajang.augmentation.effect.DeadfulEffect;
 import me.qmftm.asurajang.augmentation.effect.GaebokChiEffect;
@@ -14,6 +16,7 @@ import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
 import me.qmftm.asurajang.augmentation.effect.LightLandingEffect;
 import me.qmftm.asurajang.augmentation.effect.MobangEffect;
 import me.qmftm.asurajang.augmentation.effect.NaengnyeolhanEffect;
+import me.qmftm.asurajang.augmentation.effect.OkgyeonEffect;
 import me.qmftm.asurajang.augmentation.effect.SelfDestructEffect;
 import me.qmftm.asurajang.augmentation.effect.SniperDuelEffect;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +45,9 @@ public class AugmentationRegistry {
         REGISTRY.put("glasscannon",   GlassCannonEffect::new);
         REGISTRY.put("cleanup",       CleanupEffect::new);
         REGISTRY.put("featherfalling",LightLandingEffect::new);
+        REGISTRY.put("okgyeon",        OkgyeonEffect::new);
+        REGISTRY.put("gangyakyakgang", GangyakYakgangEffect::new);
+        REGISTRY.put("ganggangyakyak", GanggangYakyakEffect::new);
     }
 
     @Nullable

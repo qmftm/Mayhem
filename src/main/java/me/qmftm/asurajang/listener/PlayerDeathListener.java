@@ -2,6 +2,9 @@ package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.event.PlayerExpRewardEvent;
+import me.qmftm.asurajang.event.PlayerGoldRewardEvent;
+import me.qmftm.asurajang.game.GameScoreboardManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -14,12 +17,18 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,9 +39,45 @@ public class PlayerDeathListener implements Listener {
     private static final int FIRST_BLOOD_BONUS = 25;
     private static final long MULTI_KILL_WINDOW_MS = 10_000L;
 
-    private final Map<UUID, Location> deathLocations = new HashMap<>();
-    private final Map<UUID, Integer> multiKillCounts = new HashMap<>();
-    private final Map<UUID, Long>    lastKillTimes   = new HashMap<>();
+    private static final long ASSIST_WINDOW_MS = 10_000L;
+
+    private final Map<UUID, Location>           deathLocations  = new HashMap<>();
+    private final Map<UUID, Integer>            multiKillCounts = new HashMap<>();
+    private final Map<UUID, Long>               lastKillTimes   = new HashMap<>();
+    // victim UUID → (attacker UUID → last hit timestamp)
+    private final Map<UUID, Map<UUID, Long>>    recentDamage    = new HashMap<>();
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player victim)) return;
+        if (!(event.getDamager() instanceof Player attacker)) return;
+        recentDamage
+            .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
+            .put(attacker.getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHealthChange(EntityDamageEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        scheduleTabListUpdate(player);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHealthRegen(EntityRegainHealthEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (!(event.getEntity() instanceof Player player)) return;
+        scheduleTabListUpdate(player);
+    }
+
+    private void scheduleTabListUpdate(Player player) {
+        Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> {
+            if (player.isOnline() && Asurajang.getInstance().getGameManager().isRunning()) {
+                Asurajang.getInstance().getScoreboardManager().updateTabListEntry(player);
+            }
+        }, 1L);
+    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -45,6 +90,7 @@ public class PlayerDeathListener implements Listener {
 
         Player player = event.getPlayer();
         deathLocations.put(player.getUniqueId(), player.getLocation().clone());
+        Asurajang.getInstance().getScoreboardManager().addDeath(player);
 
         // 킬 추적
         Player killer = player.getKiller();
@@ -62,8 +108,27 @@ public class PlayerDeathListener implements Listener {
 
             int reward = KILL_GOLD_REWARD + (firstBlood ? FIRST_BLOOD_BONUS : 0) + multiKillBonus(multi);
 
-            Asurajang.getInstance().getScoreboardManager().addKill(killer);
-            Asurajang.getInstance().getScoreboardManager().addGold(killer, reward);
+            // 어시스터 수집 (킬 보상 분배를 위해 먼저 계산)
+            Map<UUID, Long> damagers = recentDamage.remove(player.getUniqueId());
+            List<Player> assisters = new ArrayList<>();
+            if (damagers != null) {
+                for (Map.Entry<UUID, Long> entry : damagers.entrySet()) {
+                    if (entry.getKey().equals(kid)) continue;
+                    if (now - entry.getValue() > ASSIST_WINDOW_MS) continue;
+                    Player assister = Bukkit.getPlayer(entry.getKey());
+                    if (assister == null || !assister.isOnline()) continue;
+                    assisters.add(assister);
+                }
+            }
+
+            // 어시스트가 있으면 킬러는 절반, 어시스터는 총량의 1/n
+            int killerGold   = assisters.isEmpty() ? reward : reward / 2;
+            int assisterGold = assisters.isEmpty() ? 0      : reward / assisters.size();
+
+            Asurajang plugin = Asurajang.getInstance();
+            plugin.getScoreboardManager().addKill(killer);
+            plugin.getScoreboardManager().addGold(killer, killerGold);
+            GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, 100);
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
@@ -78,16 +143,23 @@ public class PlayerDeathListener implements Listener {
                 .build();
             event.deathMessage(message);
 
-            // 킬 메시지(데스 이벤트 방송) 이후에 골드 메시지 표시
-            final Component goldMsg = Component.text()
-                .append(multiKillLabel(multi))
-                .append(Component.text("+" + reward + " 골드", NamedTextColor.GOLD))
-                .append(firstBlood
-                    ? Component.text(" (선취점 보너스)", NamedTextColor.GRAY)
-                    : Component.empty())
-                .build();
-            Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
-                () -> killer.sendMessage(goldMsg), 1L);
+            // 골드·경험치 이벤트 발사 → RewardMessageListener가 합쳐서 표시
+            List<String> reasons = buildReasons(multi, firstBlood, !assisters.isEmpty());
+            Bukkit.getPluginManager().callEvent(
+                new PlayerGoldRewardEvent(killer, killerGold, multiKillLabel(multi), reasons));
+            Bukkit.getPluginManager().callEvent(
+                new PlayerExpRewardEvent(killer, 100, expResult.newLevel(), expResult.leveledUp()));
+
+            // 어시스터 처리
+            for (Player assister : assisters) {
+                plugin.getScoreboardManager().addAssist(assister);
+                plugin.getScoreboardManager().addGold(assister, assisterGold);
+                Bukkit.getPluginManager().callEvent(
+                    new PlayerGoldRewardEvent(assister, assisterGold, Component.empty(),
+                        List.of("어시스트 " + player.getName())));
+            }
+        } else {
+            recentDamage.remove(player.getUniqueId());
         }
 
         // 흑섬 발동으로 사망 시 파티클
@@ -148,6 +220,25 @@ public class PlayerDeathListener implements Listener {
             case 4 -> 15;
             case 5 -> 20;
             default -> count >= 6 ? 25 : 0;
+        };
+    }
+
+    private static List<String> buildReasons(int multi, boolean firstBlood, boolean hasAssist) {
+        List<String> reasons = new ArrayList<>();
+        if (firstBlood) reasons.add("선취점 +" + FIRST_BLOOD_BONUS);
+        int multiBonus = multiKillBonus(multi);
+        if (multiBonus > 0) reasons.add(multiKillName(multi) + " +" + multiBonus);
+        if (hasAssist) reasons.add("어시스트 분배");
+        return reasons;
+    }
+
+    private static String multiKillName(int count) {
+        return switch (count) {
+            case 2 -> "더블킬";
+            case 3 -> "트리플킬";
+            case 4 -> "쿼드라킬";
+            case 5 -> "펜타킬";
+            default -> "전설적인킬";
         };
     }
 
