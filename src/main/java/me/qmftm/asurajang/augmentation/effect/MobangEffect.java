@@ -14,32 +14,46 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MobangEffect implements AugmentationEffect {
 
-    @Override public void onActivate(Player player) {}
+    private static final int MAX_COPIES = 3;
+    private int remainingCopies = MAX_COPIES;
+
+    @Override
+    public void onActivate(Player player) {
+        remainingCopies = MAX_COPIES;
+    }
+
     @Override public void onDeactivate(Player player) {}
 
     @Override
     public void onKillEnemy(Player player, Player victim) {
+        if (remainingCopies <= 0) return;
+
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         Set<String> mine   = mgr.getActiveEffects(player.getUniqueId()).keySet();
         Set<String> theirs = mgr.getActiveEffects(victim.getUniqueId()).keySet();
 
         if (theirs.isEmpty()) return;
 
-        // 내가 없는 증강 우선
         List<String> notHave = new ArrayList<>();
         for (String id : theirs) {
-            if (!mine.contains(id)) notHave.add(id);
+            if (!mine.contains(id) && !id.equals("Copy")) notHave.add(id);
         }
 
-        if (notHave.isEmpty()) return; // 전부 동일 → 효과 없음
+        if (notHave.isEmpty()) return;
 
         String toGet = notHave.get(ThreadLocalRandom.current().nextInt(notHave.size()));
-        mgr.deactivateSingle(player, "copy");
+        remainingCopies--;
+
+        if (remainingCopies <= 0) {
+            mgr.deactivateSingle(player, "Copy");
+        }
+
         mgr.activateFor(player, toGet);
 
         String augName = mgr.get(toGet) != null ? mgr.get(toGet).getDisplayName() : toGet;
         player.sendMessage(Component.text("[모방] ", NamedTextColor.LIGHT_PURPLE)
-            .append(Component.text(augName + " 증강을 복사했습니다.", NamedTextColor.GRAY)));
+            .append(Component.text(augName + " 증강을 복사했습니다.", NamedTextColor.GRAY))
+            .append(Component.text(" (남은 모방 횟수: " + remainingCopies + "/" + MAX_COPIES + ")", NamedTextColor.DARK_GRAY)));
         player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 1.0f, 1.0f);
     }
 }

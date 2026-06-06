@@ -16,11 +16,17 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
+import me.qmftm.asurajang.game.GameManager;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 
 public class AugmentationEffectListener implements Listener {
@@ -45,7 +51,8 @@ public class AugmentationEffectListener implements Listener {
             Vector kb = event.getFinalKnockback();
             event.setFinalKnockback(new Vector(kb.getX() * 4.0, kb.getY(), kb.getZ() * 4.0));
         } else if (GyeongjeongwonEffect.pendingDoubleKnockback.remove(attacker.getUniqueId())) {
-            event.setFinalKnockback(event.getFinalKnockback().multiply(2.0));
+            Vector kb = event.getFinalKnockback();
+            event.setFinalKnockback(new Vector(kb.getX() * 2.0, kb.getY(), kb.getZ() * 2.0));
         }
     }
 
@@ -69,24 +76,37 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
-        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(attacker.getUniqueId()).values())) {
+        java.util.Map<String, AugmentationEffect> effects = mgr.getActiveEffects(attacker.getUniqueId());
+        boolean hasDivergentFist = effects.containsKey("DivergentFist");
+        for (AugmentationEffect effect : new ArrayList<>(effects.values())) {
+            // 경정권이 있으면 흑섬은 이 공격에서 발동하지 않음
+            if (hasDivergentFist && effect instanceof HeugsomEffect) continue;
             effect.onDamageAsAttacker(attacker, event);
         }
     }
 
-    // HotbarButtonListener(LOW)가 먼저 실행되어 상점/증강 버튼을 취소하므로
-    // ignoreCancelled = true 로 취소된 이벤트는 무시
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
-        Action action = event.getAction();
-        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() == EquipmentSlot.OFF_HAND) return;
+        if (!event.getAction().isRightClick()) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         Player player = event.getPlayer();
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onRightClick(player, event);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onInteractEntity(PlayerInteractEntityEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+
+        Player player = event.getPlayer();
+        AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
+            effect.onInteractEntity(player, event);
         }
     }
 
@@ -107,7 +127,7 @@ public class AugmentationEffectListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (Asurajang.getInstance().getAugmentationManager()
-                .getActiveEffects(player.getUniqueId()).containsKey("featherfalling")) {
+                .getActiveEffects(player.getUniqueId()).containsKey("FeatherFalling")) {
             event.setCancelled(true);
         }
     }
@@ -116,5 +136,31 @@ public class AugmentationEffectListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         Asurajang.getInstance().getAugmentationManager().deactivateFor(event.getPlayer());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    public void onTeamDamage(EntityDamageByEntityEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (Asurajang.getInstance().getGameManager().getGameMode() != GameManager.GameMode.TEAM) return;
+        int attackerTeam = getEntityTeam(event.getDamager());
+        if (attackerTeam == -1) return;
+        int victimTeam = getEntityTeam(event.getEntity());
+        if (victimTeam == -1) return;
+        if (attackerTeam == victimTeam) event.setCancelled(true);
+    }
+
+    private static int getEntityTeam(Entity entity) {
+        GameManager gm = Asurajang.getInstance().getGameManager();
+        if (entity instanceof Player p) return gm.getTeam(p.getUniqueId());
+        if (entity instanceof Projectile proj && proj.getShooter() instanceof Player p) {
+            return gm.getTeam(p.getUniqueId());
+        }
+        Scoreboard main = Bukkit.getScoreboardManager().getMainScoreboard();
+        String entry = entity.getUniqueId().toString();
+        Team red  = main.getTeam("mayhem_red");
+        Team blue = main.getTeam("mayhem_blue");
+        if (red  != null && red.hasEntry(entry))  return 0;
+        if (blue != null && blue.hasEntry(entry)) return 1;
+        return -1;
     }
 }

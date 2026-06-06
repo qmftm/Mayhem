@@ -27,7 +27,7 @@ public class BattlefieldManager {
     private static final List<Biome> BIOME_POOL = List.of(
         Biome.PLAINS,          Biome.CHERRY_GROVE,
         Biome.DESERT,          Biome.SNOWY_PLAINS,
-        Biome.JAGGED_PEAKS,    Biome.BADLANDS,
+        Biome.FROZEN_PEAKS,    Biome.BADLANDS,
         Biome.MEADOW,          Biome.WINDSWEPT_HILLS,
         Biome.SUNFLOWER_PLAINS, Biome.STONY_PEAKS
     );
@@ -37,7 +37,7 @@ public class BattlefieldManager {
         Biome.CHERRY_GROVE,     "벚꽃 숲",
         Biome.DESERT,           "사막",
         Biome.SNOWY_PLAINS,     "눈 덮인 평원",
-        Biome.JAGGED_PEAKS,     "역고드름",
+        Biome.FROZEN_PEAKS,     "역고드름",
         Biome.BADLANDS,         "메사",
         Biome.MEADOW,           "목초지",
         Biome.WINDSWEPT_HILLS,  "바람이 세찬 언덕",
@@ -50,7 +50,7 @@ public class BattlefieldManager {
         "벚꽃 숲",          NamedTextColor.LIGHT_PURPLE,
         "사막",             NamedTextColor.GOLD,
         "눈 덮인 평원",     NamedTextColor.AQUA,
-        "역고드름",         NamedTextColor.GRAY,
+        "역고드름",         NamedTextColor.WHITE,
         "메사",             NamedTextColor.RED,
         "목초지",           NamedTextColor.DARK_GREEN,
         "바람이 세찬 언덕", NamedTextColor.DARK_GRAY,

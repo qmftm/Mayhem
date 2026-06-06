@@ -2,11 +2,10 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.MaxHealthModifier;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -14,22 +13,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GaebokChiEffect implements AugmentationEffect {
 
-    private static final double HALF_HEALTH    = 10.0; // 5칸
-    private static final double DEFAULT_HEALTH = 20.0;
+    @Override public void onActivate(Player player) {}
+    @Override public void onDeactivate(Player player) {}
 
     @Override
-    public void onActivate(Player player) {
-        AttributeInstance attr = player.getAttribute(Attribute.MAX_HEALTH);
-        if (attr != null) {
-            attr.setBaseValue(HALF_HEALTH);
-            if (player.getHealth() > HALF_HEALTH) player.setHealth(HALF_HEALTH);
-        }
-    }
-
-    @Override
-    public void onDeactivate(Player player) {
-        AttributeInstance attr = player.getAttribute(Attribute.MAX_HEALTH);
-        if (attr != null) attr.setBaseValue(DEFAULT_HEALTH);
+    public MaxHealthModifier getMaxHealthModifier() {
+        return new MaxHealthModifier.Fixed(0.5); // 기본 최대 체력의 50%
     }
 
     @Override
@@ -37,11 +26,11 @@ public class GaebokChiEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target)) return;
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
-        if (mgr.getActiveEffects(target.getUniqueId()).containsKey("molamola")) return;
+        if (mgr.getActiveEffects(target.getUniqueId()).containsKey("MolaMola")) return;
         if (ThreadLocalRandom.current().nextDouble() >= 0.10) return;
 
-        mgr.deactivateSingle(player, "molamola");
-        mgr.activateFor(target, "molamola");
+        mgr.deactivateSingle(player, "MolaMola");
+        mgr.activateFor(target, "MolaMola");
 
         player.sendActionBar(Component.text("개복치 이전됨!", NamedTextColor.GREEN));
         target.sendActionBar(Component.text("개복치 감염됨!", NamedTextColor.RED));

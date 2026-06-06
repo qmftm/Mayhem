@@ -13,30 +13,17 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class BoogieWoogieEffect implements AugmentationEffect {
 
-    private static final double RANGE_SQ   = 20.0 * 20.0; // 20블록 이내 (거리² 비교)
+    private static final double RANGE_SQ    = 20.0 * 20.0;
     private static final long   COOLDOWN_MS = 5_000;
 
     private long lastUsed = 0;
-    private BukkitTask actionBarTask;
+    private BukkitTask cooldownNotifyTask;
 
-    @Override
-    public void onActivate(Player player) {
-        actionBarTask = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
-            if (!player.isOnline()) return;
-            long elapsed = System.currentTimeMillis() - lastUsed;
-            if (elapsed < COOLDOWN_MS) {
-                long remaining = (COOLDOWN_MS - elapsed + 999) / 1000;
-                player.sendActionBar(Component.text("부기우기 쿨타임: " + remaining + "초", NamedTextColor.RED));
-            }
-        }, 0L, 20L);
-    }
+    @Override public void onActivate(Player player) {}
 
     @Override
     public void onDeactivate(Player player) {
-        if (actionBarTask != null) {
-            actionBarTask.cancel();
-            actionBarTask = null;
-        }
+        if (cooldownNotifyTask != null) { cooldownNotifyTask.cancel(); cooldownNotifyTask = null; }
     }
 
     @Override
@@ -44,7 +31,6 @@ public class BoogieWoogieEffect implements AugmentationEffect {
         long now = System.currentTimeMillis();
         if (now - lastUsed < COOLDOWN_MS) return;
 
-        // 20블록 내 가장 가까운 생존 플레이어 탐색
         Player target = null;
         double minDistSq = RANGE_SQ;
 
@@ -59,7 +45,7 @@ public class BoogieWoogieEffect implements AugmentationEffect {
 
         if (target == null) return;
 
-        event.setCancelled(true); // 아이템 교환 방지
+        event.setCancelled(true);
 
         final Player finalTarget = target;
         Asurajang plugin = Asurajang.getInstance();
@@ -67,18 +53,17 @@ public class BoogieWoogieEffect implements AugmentationEffect {
             Location playerLoc = player.getLocation().clone();
             Location targetLoc = finalTarget.getLocation().clone();
 
-            Location newPlayerLoc = targetLoc.clone().add(0, 0.5, 0);
+            Location newPlayerLoc = targetLoc.clone().add(0, 1.0, 0);
             newPlayerLoc.setYaw(playerLoc.getYaw());
             newPlayerLoc.setPitch(playerLoc.getPitch());
 
-            Location newTargetLoc = playerLoc.clone().add(0, 0.5, 0);
+            Location newTargetLoc = playerLoc.clone().add(0, 1.0, 0);
             newTargetLoc.setYaw(targetLoc.getYaw());
             newTargetLoc.setPitch(targetLoc.getPitch());
 
             player.teleport(newPlayerLoc);
             finalTarget.teleport(newTargetLoc);
 
-            // 박수 효과음: 스네어 + 하이햇 레이어를 3회 연속 (짝짝짝)
             long[] delays = {0L, 3L, 6L};
             for (long delay : delays) {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -91,5 +76,14 @@ public class BoogieWoogieEffect implements AugmentationEffect {
         });
 
         lastUsed = now;
+        if (cooldownNotifyTask != null) cooldownNotifyTask.cancel();
+        cooldownNotifyTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (player.isOnline()) {
+                player.sendActionBar(Component.text("[부기우기]", NamedTextColor.LIGHT_PURPLE)
+                        .append(Component.text("를 다시 사용 가능합니다", NamedTextColor.GREEN)));
+                player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
+            }
+            cooldownNotifyTask = null;
+        }, COOLDOWN_MS / 50);
     }
 }

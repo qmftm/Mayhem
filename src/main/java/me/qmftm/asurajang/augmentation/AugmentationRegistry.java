@@ -2,6 +2,8 @@ package me.qmftm.asurajang.augmentation;
 
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BoogieWoogieEffect;
+import me.qmftm.asurajang.augmentation.effect.DivineLoveEffect;
+import me.qmftm.asurajang.augmentation.effect.WindBurstEffect;
 import me.qmftm.asurajang.augmentation.effect.GanggangYakyakEffect;
 import me.qmftm.asurajang.augmentation.effect.GangyakYakgangEffect;
 import me.qmftm.asurajang.augmentation.effect.ByeontaeEffect;
@@ -30,24 +32,26 @@ public class AugmentationRegistry {
     private static final Map<String, Supplier<AugmentationEffect>> REGISTRY = new HashMap<>();
 
     static {
-        REGISTRY.put("blackflash",    HeugsomEffect::new);
-        REGISTRY.put("deadful",       DeadfulEffect::new);
-        REGISTRY.put("boogiewoogie",  BoogieWoogieEffect::new);
-        REGISTRY.put("molamola",      GaebokChiEffect::new);
-        REGISTRY.put("hentai",        ByeontaeEffect::new);
-        REGISTRY.put("copy",          MobangEffect::new);
-        REGISTRY.put("sniperduel",    SniperDuelEffect::new);
-        REGISTRY.put("divergentfist", GyeongjeongwonEffect::new);
-        REGISTRY.put("coldblood",     NaengnyeolhanEffect::new);
-        REGISTRY.put("heavyforce",    HeavyForceEffect::new);
-        REGISTRY.put("selfbomber",    SelfDestructEffect::new);
-        REGISTRY.put("guiltpleasure", GuiltPleasureEffect::new);
-        REGISTRY.put("glasscannon",   GlassCannonEffect::new);
-        REGISTRY.put("cleanup",       CleanupEffect::new);
-        REGISTRY.put("featherfalling",LightLandingEffect::new);
-        REGISTRY.put("okgyeon",        OkgyeonEffect::new);
-        REGISTRY.put("gangyakyakgang", GangyakYakgangEffect::new);
-        REGISTRY.put("ganggangyakyak", GanggangYakyakEffect::new);
+        REGISTRY.put("BlackFlash",    HeugsomEffect::new);
+        REGISTRY.put("Deadful",       DeadfulEffect::new);
+        REGISTRY.put("BoogieWoogie",  BoogieWoogieEffect::new);
+        REGISTRY.put("MolaMola",      GaebokChiEffect::new);
+        REGISTRY.put("Hentai",        ByeontaeEffect::new);
+        REGISTRY.put("Copy",          MobangEffect::new);
+        REGISTRY.put("SniperDuel",    SniperDuelEffect::new);
+        REGISTRY.put("DivergentFist", GyeongjeongwonEffect::new);
+        REGISTRY.put("ColdBlood",     NaengnyeolhanEffect::new);
+        REGISTRY.put("HeavyForce",    HeavyForceEffect::new);
+        REGISTRY.put("SelfBomber",    SelfDestructEffect::new);
+        REGISTRY.put("GuiltPleasure", GuiltPleasureEffect::new);
+        REGISTRY.put("GlassCannon",   GlassCannonEffect::new);
+        REGISTRY.put("CleanUp",       CleanupEffect::new);
+        REGISTRY.put("FeatherFalling",LightLandingEffect::new);
+        REGISTRY.put("DivineDogs",    OkgyeonEffect::new);
+        REGISTRY.put("StrongWeak",    GangyakYakgangEffect::new);
+        REGISTRY.put("StrongStrong",  GanggangYakyakEffect::new);
+        REGISTRY.put("WindBurst",     WindBurstEffect::new);
+        REGISTRY.put("DivineLove",    DivineLoveEffect::new);
     }
 
     @Nullable

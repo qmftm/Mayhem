@@ -6,6 +6,7 @@ import me.qmftm.asurajang.command.AsurajangCommand;
 import me.qmftm.asurajang.game.BattlefieldManager;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.game.GameScoreboardManager;
+import me.qmftm.asurajang.game.MaxHealthManager;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
 import me.qmftm.asurajang.listener.AugmentationEffectListener;
@@ -31,6 +32,7 @@ public final class Asurajang extends JavaPlugin {
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
     private GameScoreboardManager scoreboardManager;
+    private MaxHealthManager maxHealthManager;
 
     public static Asurajang getInstance() {
         return instance;
@@ -45,6 +47,7 @@ public final class Asurajang extends JavaPlugin {
         battlefieldManager   = new BattlefieldManager();
         gameManager          = new GameManager();
         scoreboardManager    = new GameScoreboardManager();
+        maxHealthManager     = new MaxHealthManager();
 
         getServer().getPluginManager().registerEvents(new AugmentationSelectListener(), this);
         getServer().getPluginManager().registerEvents(new AugmentationEffectListener(), this);
@@ -110,5 +113,9 @@ public final class Asurajang extends JavaPlugin {
 
     public GameScoreboardManager getScoreboardManager() {
         return scoreboardManager;
+    }
+
+    public MaxHealthManager getMaxHealthManager() {
+        return maxHealthManager;
     }
 }

@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.augmentation.effect;
 
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 
 public class GuiltPleasureEffect implements AugmentationEffect {
@@ -11,5 +12,8 @@ public class GuiltPleasureEffect implements AugmentationEffect {
     public void onKillEnemy(Player player, Player victim) {
         double heal = player.getMaxHealth() * 0.2;
         player.setHealth(Math.min(player.getHealth() + heal, player.getMaxHealth()));
+
+        player.getWorld().spawnParticle(Particle.HEART, player.getLocation().add(0, 1.5, 0),
+            10, 0.4, 0.4, 0.4, 0);
     }
 }

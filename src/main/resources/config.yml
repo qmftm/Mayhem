@@ -1,33 +1,28 @@
 # Asurajang 설정 파일
 
 augmentations:
-  blackflash:
-    display-name: "흑섬"
-    icon: OBSIDIAN
-    color: dark_gray
+  FeatherFalling:
+    display-name: "가벼운 착지"
+    icon: FEATHER
+    color: white
     description:
-      - "공격마다 5% 확률로 발동합니다."
-      - "발동 시 2.5배 피해를 줍니다."
-      - "발동 후 3번의 공격 동안 확률이 증가합니다."
+      - "낙하 피해를 받지 않습니다."
 
-  deadful:
-    display-name: "DeadFul"
-    icon: FERMENTED_SPIDER_EYE
+  StrongStrong:
+    display-name: "강강약약"
+    icon: NETHER_STAR
+    color: gold
+    description:
+      - "가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다."
+
+  StrongWeak:
+    display-name: "강약약강"
+    icon: WITHER_ROSE
     color: red
     description:
-      - "최대 체력이 5칸으로 고정되며"
-      - "1초마다 즉시 치유 I를 받습니다."
+      - "상대에게 (50 - 상대의 체력 비율)% 만큼의 추가 피해를 줍니다"
 
-  boogiewoogie:
-    display-name: "부기우기"
-    icon: SHEARS
-    color: light_purple
-    description:
-      - "F키(양손 교환) 사용 시 20블록 내"
-      - "가장 가까운 적과 위치를 교환합니다."
-      - "쿨타임: 5초"
-
-  molamola:
+  MolaMola:
     display-name: "개복치"
     icon: PUFFERFISH
     color: aqua
@@ -35,71 +30,73 @@ augmentations:
       - "최대체력이 절반 감소합니다."
       - "적을 때릴 때마다 10% 확률로 능력을 이전 시킵니다."
 
-  hentai:
+  DivergentFist:
+    display-name: "경정권"
+    icon: NAUTILUS_SHELL
+    color: aqua
+    description:
+      - "공격 시 80%의 피해를 준 뒤"
+      - "0.5초 후 40%의 피해와 2배의 넉백을 추가로 줍니다."
+      - "쿨타임: 15초"
+
+  ColdBlood:
+    display-name: "냉혈한"
+    icon: SNOWBALL
+    color: aqua
+    description:
+      - "적을 우클릭하면 해당 대상에게 구속과 나약함을 3초간 부여합니다."
+      - "쿨타임: 45초"
+
+  Deadful:
+    display-name: "데드풀"
+    icon: FERMENTED_SPIDER_EYE
+    color: red
+    description:
+      - "최대 체력이 5칸으로 고정되며"
+      - "1초마다 즉시 치유 I를 받습니다."
+
+  Copy:
+    display-name: "모방"
+    icon: MAGENTA_DYE
+    color: light_purple
+    description:
+      - "적을 죽일 시 적의 증강 중 하나를 복사합니다."
+      - "3회 복사 후 이 증강이 사라집니다."
+
+  Hentai:
     display-name: "변태"
     icon: ARMOR_STAND
     color: yellow
     description:
       - "적을 때릴 때마다 3% 확률로 갑옷 부위를 벗깁니다."
 
-  copy:
-    display-name: "모방"
-    icon: MAGENTA_DYE
+  BoogieWoogie:
+    display-name: "부기우기"
+    icon: SHEARS
     color: light_purple
     description:
-      - "적을 죽일 시 적의 증강 중 하나를 복사합니다."
-
-  sniperduel:
-    display-name: "저격 대결"
-    icon: BOW
-    color: yellow
-    description:
-      - "12칸 이상 거리의 적을 공격 시"
-      - "피해가 50% 증가합니다."
-
-  divergentfist:
-    display-name: "경정권"
-    icon: NAUTILUS_SHELL
-    color: aqua
-    description:
-      - "공격 시 80%의 피해를 준 뒤"
-      - "0.5초 후 40%의 피해와"
-      - "2배의 넉백을 추가로 줍니다."
-
-  coldblood:
-    display-name: "냉혈한"
-    icon: SNOWBALL
-    color: aqua
-    description:
-      - "우클릭으로 5칸 내 적에게"
-      - "구속과 나약함을 3초간 부여합니다."
+      - "양손 맞바꾸기 키로 20블록 내의"
+      - "가장 가까운 적과 위치를 교환합니다."
       - "쿨타임: 5초"
 
-  heavyforce:
-    display-name: "육중한 힘"
-    icon: IRON_AXE
-    color: gray
+  WindBurst:
+    display-name: "붕뜨네"
+    icon: WIND_CHARGE
+    color: aqua
     description:
-      - "공격력이 20% 증가합니다."
+      - "검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다."
+      - "쿨타임: 20초"
 
-  selfbomber:
-    display-name: "자폭"
-    icon: TNT
-    color: red
+  DivineDogs:
+    display-name: "옥견"
+    icon: WOLF_SPAWN_EGG
+    color: white
     description:
-      - "25초마다 폭탄이 부착됩니다."
-      - "폭탄은 5초 후 폭발하며 주변 범위 내의 적에게"
-      - "최대 체력의 20%인 고정 피해를 줍니다."
+      - "두 마리의 길들인 늑대가 당신을 도와 싸웁니다."
+      - "늑대는 사망 시 60초 후에 부활합니다."
+      - "당신이 사망하면 늑대도 같이 사라지며 같이 부활합니다."
 
-  guiltpleasure:
-    display-name: "죄책감의 쾌락"
-    icon: REDSTONE
-    color: red
-    description:
-      - "적 플레이어를 처치 시"
-      - "최대 체력의 20%를 회복합니다."
-
-  glasscannon:
+  GlassCannon:
     display-name: "유리 대포"
     icon: GLASS_BOTTLE
     color: white
@@ -107,7 +104,48 @@ augmentations:
       - "최대 체력이 30% 감소합니다."
       - "주는 대미지의 15%를 추가로 입힙니다."
 
-  cleanup:
+  HeavyForce:
+    display-name: "육중한 힘"
+    icon: IRON_AXE
+    color: gray
+    description:
+      - "공격력이 20% 증가합니다."
+
+  SelfBomber:
+    display-name: "자폭"
+    icon: TNT
+    color: red
+    description:
+      - "35초마다 머리 위에 TNT가 부착됩니다."
+      - "부착 시 5초 간 신속을 받은 뒤 폭발하며"
+      - "반경 5칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다."
+      - "폭탄 보유 중 사망하면 즉시 폭발합니다."
+
+  SniperDuel:
+    display-name: "저격 대결"
+    icon: BOW
+    color: yellow
+    description:
+      - "12칸 이상 거리의 적을 공격 시"
+      - "피해가 50% 증가합니다."
+
+  GuiltPleasure:
+    display-name: "죄책감의 쾌락"
+    icon: REDSTONE
+    color: red
+    description:
+      - "적 플레이어를 처치 시 최대 체력의 20%를 회복합니다."
+
+  DivineLove:
+    display-name: "주님의 사랑"
+    icon: BLAZE_POWDER
+    color: gold
+    description:
+      - "검 우클릭 시 바라보는 방향으로"
+      - "화염구를 3회 연달아 날립니다."
+      - "쿨타임: 25초"
+
+  CleanUp:
     display-name: "클린업"
     icon: SUGAR
     color: white
@@ -115,33 +153,10 @@ augmentations:
       - "체력 30% 이하인 적이 10칸 내에 있으면"
       - "이동 속도가 50% 증가합니다."
 
-  featherfalling:
-    display-name: "가벼운 착지"
-    icon: FEATHER
-    color: white
+  BlackFlash:
+    display-name: "흑섬"
+    icon: OBSIDIAN
+    color: dark_gray
     description:
-      - "낙하 피해를 받지 않습니다."
-
-  gangyakyakgang:
-    display-name: "강약약강"
-    icon: WITHER_ROSE
-    color: red
-    description:
-      - "상대 체력 50% 이하: (50 - 체력%)만큼 추가 피해."
-      - "상대 체력 50% 초과: 피해가 절반으로 줄어듭니다."
-
-  ganggangyakyak:
-    display-name: "강강약약"
-    icon: NETHER_STAR
-    color: gold
-    description:
-      - "가장 킬 수가 높은 적에게"
-      - "1.5배의 피해를 줍니다."
-
-  okgyeon:
-    display-name: "옥견"
-    icon: WOLF_SPAWN_EGG
-    color: white
-    description:
-      - "두 마리의 길들인 늑대가 당신을 도와 싸웁니다."
-      - "늑대는 사망 시 60초 후에 부활합니다."
+      - "공격마다 3% 확률로 2.5배의 피해를 줍니다."
+      - "발동 후 3번의 공격 동안 확률이 증가합니다."

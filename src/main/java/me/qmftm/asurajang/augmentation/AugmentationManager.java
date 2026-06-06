@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.augmentation;
 
+import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -74,12 +75,14 @@ public class AugmentationManager {
         playerEffects.computeIfAbsent(player.getUniqueId(), k -> new HashMap<>())
                      .put(augId, effect);
         effect.onActivate(player);
+        Asurajang.getInstance().getMaxHealthManager().recalculate(player);
     }
 
     public void deactivateFor(Player player) {
         Map<String, AugmentationEffect> effects = playerEffects.remove(player.getUniqueId());
         if (effects == null) return;
         effects.values().forEach(effect -> effect.onDeactivate(player));
+        if (player.isOnline()) Asurajang.getInstance().getMaxHealthManager().recalculate(player);
     }
 
     public void deactivateSingle(Player player, String augId) {
@@ -87,6 +90,7 @@ public class AugmentationManager {
         if (effects == null) return;
         AugmentationEffect effect = effects.remove(augId);
         if (effect != null) effect.onDeactivate(player);
+        Asurajang.getInstance().getMaxHealthManager().recalculate(player);
     }
 
     public void deactivateAll(Iterable<? extends Player> players) {

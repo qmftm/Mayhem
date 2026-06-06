@@ -48,18 +48,19 @@ public class HeugsomEffect implements AugmentationEffect {
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
         double chance = switch (streakRemaining) {
-            case 3 -> 0.40;
-            case 2 -> 0.30;
-            case 1 -> 0.20;
-            default -> 0.05;
+            case 3 -> 0.36;
+            case 2 -> 0.18;
+            case 1 -> 0.06;
+            default -> 0.03;
         };
         if (streakRemaining > 0) streakRemaining--;
+
+        LivingEntity target = (LivingEntity) event.getEntity();
 
         if (debugProc || ThreadLocalRandom.current().nextDouble() < chance) {
             streakRemaining = 3;
             event.setDamage(event.getDamage() * 2.5);
 
-            LivingEntity target = (LivingEntity) event.getEntity();
             World world = target.getWorld();
 
             // 넉백 4배: EntityKnockbackByEntityEvent에서 처리
@@ -115,6 +116,9 @@ public class HeugsomEffect implements AugmentationEffect {
                 spawnBlackLightning(target.getLocation().add(0, 1, 0), world);
                 count[0]++;
             }, 0L, 2L);
+        } else {
+            // proc 실패 시 이 공격자가 등록한 사망 파티클만 제거
+            pendingDeathParticle.remove(target.getUniqueId(), player.getUniqueId());
         }
     }
 

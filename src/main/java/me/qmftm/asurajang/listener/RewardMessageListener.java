@@ -54,7 +54,7 @@ public class RewardMessageListener implements Listener {
         Pending p = pending.remove(uuid);
         if (p == null || !player.isOnline()) return;
 
-        Component.Builder b = Component.text();
+        var b = Component.text();
 
         if (p.gold > 0) {
             b.append(p.multiKillLabel);
@@ -66,9 +66,6 @@ public class RewardMessageListener implements Listener {
 
         if (p.exp > 0) {
             if (p.gold > 0) b.append(Component.text("  ", NamedTextColor.WHITE));
-            if (p.leveledUp) {
-                b.append(Component.text("레벨 업 " + p.newLevel + " Lv  ", NamedTextColor.GREEN));
-            }
             b.append(Component.text("+" + p.exp + " Exp", NamedTextColor.DARK_GREEN));
         }
 

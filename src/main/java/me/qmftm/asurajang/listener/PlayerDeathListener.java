@@ -1,7 +1,10 @@
 package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.event.PlayerExpRewardEvent;
 import me.qmftm.asurajang.event.PlayerGoldRewardEvent;
 import me.qmftm.asurajang.game.GameScoreboardManager;
@@ -128,13 +131,16 @@ public class PlayerDeathListener implements Listener {
             Asurajang plugin = Asurajang.getInstance();
             plugin.getScoreboardManager().addKill(killer);
             plugin.getScoreboardManager().addGold(killer, killerGold);
-            GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, 100);
+            int killerLevel  = plugin.getScoreboardManager().getLevel(killer);
+            int victimKills  = plugin.getScoreboardManager().getKills(player.getUniqueId());
+            int expAmount    = killerLevel * 10 + victimKills * 2 + 75;
+            GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, expAmount);
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
-                .append(killer.displayName())
+                .append(teamColoredName(killer))
                 .append(Component.text("님이 ", NamedTextColor.GRAY))
-                .append(player.displayName())
+                .append(teamColoredName(player))
                 .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
                 .append(firstBlood
                     ? Component.text(". ", NamedTextColor.GRAY)
@@ -148,7 +154,7 @@ public class PlayerDeathListener implements Listener {
             Bukkit.getPluginManager().callEvent(
                 new PlayerGoldRewardEvent(killer, killerGold, multiKillLabel(multi), reasons));
             Bukkit.getPluginManager().callEvent(
-                new PlayerExpRewardEvent(killer, 100, expResult.newLevel(), expResult.leveledUp()));
+                new PlayerExpRewardEvent(killer, expAmount, expResult.newLevel(), expResult.leveledUp()));
 
             // 어시스터 처리
             for (Player assister : assisters) {
@@ -166,6 +172,11 @@ public class PlayerDeathListener implements Listener {
         UUID procAttacker = HeugsomEffect.pendingDeathParticle.remove(player.getUniqueId());
         if (procAttacker != null && killer != null && killer.getUniqueId().equals(procAttacker)) {
             spawnHeugsomDeathBurst(player.getLocation(), player.getWorld());
+        }
+
+        AugmentationManager augMgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(augMgr.getActiveEffects(player.getUniqueId()).values())) {
+            effect.onOwnerDeath(player);
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
@@ -211,6 +222,18 @@ public class PlayerDeathListener implements Listener {
 
             startSpectatorTimer(player);
         }, 1L);
+    }
+
+    private static Component teamColoredName(Player player) {
+        GameManager gm = Asurajang.getInstance().getGameManager();
+        NamedTextColor color;
+        if (gm.getGameMode() == GameManager.GameMode.TEAM) {
+            int team = gm.getTeam(player.getUniqueId());
+            color = team == 0 ? NamedTextColor.RED : NamedTextColor.BLUE;
+        } else {
+            color = NamedTextColor.WHITE;
+        }
+        return Component.text(player.getName(), color);
     }
 
     private static int multiKillBonus(int count) {
@@ -269,6 +292,11 @@ public class PlayerDeathListener implements Listener {
                 player.setGameMode(GameMode.SURVIVAL);
                 Location spawn = plugin.getBattlefieldManager().getRandomSpawn();
                 player.teleport(spawn != null ? spawn : player.getWorld().getSpawnLocation());
+                AugmentationManager augMgr = plugin.getAugmentationManager();
+                for (AugmentationEffect effect : new ArrayList<>(augMgr.getActiveEffects(player.getUniqueId()).values())) {
+                    effect.onOwnerRespawn(player);
+                }
+                plugin.getMaxHealthManager().recalculate(player);
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.8f, 1.4f);
                 player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.9f, 1.2f);
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.6f, 1.1f);

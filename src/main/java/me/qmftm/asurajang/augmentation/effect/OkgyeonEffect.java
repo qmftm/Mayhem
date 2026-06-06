@@ -5,10 +5,14 @@ import me.qmftm.asurajang.game.GameManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.DyeColor;
-import org.bukkit.HandlerList;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
@@ -41,6 +45,23 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
         removeWolf(blackUuid);
         snowyUuid = null;
         blackUuid = null;
+    }
+
+    @Override
+    public void onOwnerDeath(Player player) {
+        if (snowyRespawnTask != null) { snowyRespawnTask.cancel(); snowyRespawnTask = null; }
+        if (blackRespawnTask != null) { blackRespawnTask.cancel(); blackRespawnTask = null; }
+        killWolfWithParticles(snowyUuid);
+        killWolfWithParticles(blackUuid);
+        snowyUuid = null;
+        blackUuid = null;
+    }
+
+    @Override
+    public void onOwnerRespawn(Player player) {
+        this.owner = player;
+        spawnSnowy();
+        spawnBlack();
     }
 
     @EventHandler
@@ -82,7 +103,7 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
     }
 
     private Wolf spawnWolf(Wolf.Variant variant, String name, DyeColor collarColor) {
-        return owner.getWorld().spawn(owner.getLocation(), Wolf.class, w -> {
+        Wolf wolf = owner.getWorld().spawn(owner.getLocation(), Wolf.class, w -> {
             w.setVariant(variant);
             w.setTamed(true);
             w.setOwner(owner);
@@ -91,6 +112,8 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
             w.setCollarColor(collarColor);
             w.setAngry(false);
         });
+        Asurajang.getInstance().getScoreboardManager().addEntityToOwnerTeam(wolf, owner.getUniqueId());
+        return wolf;
     }
 
     private DyeColor getCollarColor(Wolf.Variant variant) {
@@ -102,9 +125,25 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
         return variant == Wolf.Variant.SNOWY ? DyeColor.WHITE : DyeColor.BLACK;
     }
 
+    private void killWolfWithParticles(UUID uuid) {
+        if (uuid == null) return;
+        Entity entity = Asurajang.getInstance().getServer().getEntity(uuid);
+        if (entity == null) return;
+
+        Location loc = entity.getLocation().add(0, 0.5, 0);
+        entity.getWorld().spawnParticle(Particle.SQUID_INK, loc, 25, 0.3, 0.3, 0.3, 0.15);
+        entity.getWorld().playSound(loc, Sound.ENTITY_SQUID_DEATH, 1.0f, 1.2f);
+
+        Asurajang.getInstance().getScoreboardManager().removeEntityFromTeams(entity);
+        entity.remove();
+    }
+
     private void removeWolf(UUID uuid) {
         if (uuid == null) return;
-        var entity = Asurajang.getInstance().getServer().getEntity(uuid);
-        if (entity != null) entity.remove();
+        Entity entity = Asurajang.getInstance().getServer().getEntity(uuid);
+        if (entity != null) {
+            Asurajang.getInstance().getScoreboardManager().removeEntityFromTeams(entity);
+            entity.remove();
+        }
     }
 }

@@ -3,17 +3,16 @@ package me.qmftm.asurajang.augmentation.effect;
 import me.qmftm.asurajang.Asurajang;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.entity.WindCharge;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitTask;
 
-public class NaengnyeolhanEffect implements AugmentationEffect {
+public class WindBurstEffect implements AugmentationEffect {
 
-    private static final long COOLDOWN_MS = 45_000;
-
+    private static final long COOLDOWN_MS = 20_000;
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
 
@@ -25,26 +24,31 @@ public class NaengnyeolhanEffect implements AugmentationEffect {
     }
 
     @Override
-    public void onInteractEntity(Player player, PlayerInteractEntityEvent event) {
-        if (!(event.getRightClicked() instanceof Player target)) return;
-        if (target.equals(player)) return;
+    public void onRightClick(Player player, PlayerInteractEvent event) {
+        if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
         long now = System.currentTimeMillis();
         if (now - lastUsed < COOLDOWN_MS) return;
-
-        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 3, false, true));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, true));
-
-        player.sendActionBar(Component.text("냉혈한 발동!", NamedTextColor.AQUA));
-        player.playSound(player.getLocation(), Sound.BLOCK_POWDER_SNOW_STEP, 1.0f, 0.5f);
-
         lastUsed = now;
+
+        event.setCancelled(true);
+
+        Location eye = player.getEyeLocation();
+        var dir = eye.getDirection();
+
+        player.getWorld().spawn(eye.clone().add(dir), WindCharge.class, wc -> {
+            wc.setShooter(player);
+            wc.setVelocity(dir.clone().multiply(2.5));
+        });
+
+        player.playSound(player.getLocation(), Sound.ENTITY_BREEZE_SHOOT, 1.0f, 1.0f);
+
         Asurajang plugin = Asurajang.getInstance();
         if (cooldownNotifyTask != null) cooldownNotifyTask.cancel();
         cooldownNotifyTask = plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
             if (player.isOnline()) {
-                player.sendActionBar(Component.text("[냉혈한]", NamedTextColor.AQUA)
-                        .append(Component.text("을 다시 사용 가능합니다", NamedTextColor.GREEN)));
+                player.sendActionBar(Component.text("[붕뜨네]", NamedTextColor.AQUA)
+                    .append(Component.text("를 다시 사용 가능합니다", NamedTextColor.GREEN)));
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
