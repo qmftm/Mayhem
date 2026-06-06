@@ -2,6 +2,9 @@ package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.event.PlayerExpRewardEvent;
+import me.qmftm.asurajang.event.PlayerGoldRewardEvent;
+import me.qmftm.asurajang.game.GameScoreboardManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -125,7 +128,7 @@ public class PlayerDeathListener implements Listener {
             Asurajang plugin = Asurajang.getInstance();
             plugin.getScoreboardManager().addKill(killer);
             plugin.getScoreboardManager().addGold(killer, killerGold);
-            plugin.getScoreboardManager().addExp(killer, 100);
+            GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, 100);
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()
@@ -140,19 +143,20 @@ public class PlayerDeathListener implements Listener {
                 .build();
             event.deathMessage(message);
 
-            final Component goldMsg = buildGoldMessage(multi, firstBlood, killerGold, !assisters.isEmpty());
-            Bukkit.getScheduler().runTaskLater(plugin, () -> killer.sendMessage(goldMsg), 1L);
+            // 골드·경험치 이벤트 발사 → RewardMessageListener가 합쳐서 표시
+            List<String> reasons = buildReasons(multi, firstBlood, !assisters.isEmpty());
+            Bukkit.getPluginManager().callEvent(
+                new PlayerGoldRewardEvent(killer, killerGold, multiKillLabel(multi), reasons));
+            Bukkit.getPluginManager().callEvent(
+                new PlayerExpRewardEvent(killer, 100, expResult.newLevel(), expResult.leveledUp()));
 
             // 어시스터 처리
             for (Player assister : assisters) {
                 plugin.getScoreboardManager().addAssist(assister);
                 plugin.getScoreboardManager().addGold(assister, assisterGold);
-                final int ag = assisterGold;
-                assister.sendMessage(Component.text()
-                    .append(Component.text("어시스트 ", NamedTextColor.AQUA))
-                    .append(player.displayName())
-                    .append(Component.text("  +" + ag + " 골드", NamedTextColor.GOLD))
-                    .build());
+                Bukkit.getPluginManager().callEvent(
+                    new PlayerGoldRewardEvent(assister, assisterGold, Component.empty(),
+                        List.of("어시스트 " + player.getName())));
             }
         } else {
             recentDamage.remove(player.getUniqueId());
@@ -219,21 +223,13 @@ public class PlayerDeathListener implements Listener {
         };
     }
 
-    private static Component buildGoldMessage(int multi, boolean firstBlood, int total, boolean hasAssist) {
-        int multiBonus = multiKillBonus(multi);
-        Component.Builder b = Component.text();
-        b.append(multiKillLabel(multi));
-        b.append(Component.text("+" + total + " 골드 획득", NamedTextColor.GOLD));
-
+    private static List<String> buildReasons(int multi, boolean firstBlood, boolean hasAssist) {
         List<String> reasons = new ArrayList<>();
         if (firstBlood) reasons.add("선취점 +" + FIRST_BLOOD_BONUS);
+        int multiBonus = multiKillBonus(multi);
         if (multiBonus > 0) reasons.add(multiKillName(multi) + " +" + multiBonus);
         if (hasAssist) reasons.add("어시스트 분배");
-
-        if (!reasons.isEmpty()) {
-            b.append(Component.text(" (" + String.join(", ", reasons) + ")", NamedTextColor.GRAY));
-        }
-        return b.build();
+        return reasons;
     }
 
     private static String multiKillName(int count) {

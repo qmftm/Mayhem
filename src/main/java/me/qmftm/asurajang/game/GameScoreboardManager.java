@@ -167,18 +167,21 @@ public class GameScoreboardManager {
         return gold.getOrDefault(player.getUniqueId(), 0);
     }
 
-    public void addExp(Player player, int amount) {
+    public record ExpResult(int newLevel, boolean leveledUp) {}
+
+    public ExpResult addExp(Player player, int amount) {
         UUID uuid = player.getUniqueId();
         int curExp = exp.merge(uuid, amount, Integer::sum);
         int lvl    = levels.getOrDefault(uuid, 1);
+        boolean leveled = false;
         while (curExp >= expRequired(lvl)) {
             curExp -= expRequired(lvl);
             lvl++;
-            exp.put(uuid, curExp);
-            levels.put(uuid, lvl);
-            player.sendMessage(Component.text("레벨 업! ", NamedTextColor.GREEN)
-                .append(Component.text(lvl + " Lv", NamedTextColor.YELLOW)));
+            leveled = true;
         }
+        exp.put(uuid, curExp);
+        levels.put(uuid, lvl);
+        return new ExpResult(lvl, leveled);
     }
 
     public void setLevel(Player player, int level) {
