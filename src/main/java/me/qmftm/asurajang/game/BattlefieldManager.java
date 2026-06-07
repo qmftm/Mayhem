@@ -160,8 +160,9 @@ public class BattlefieldManager implements Listener {
                     dry.getBlockX() + 0.5, y + 1, dry.getBlockZ() + 0.5);
 
                 boolean biomeOk = isBorderEdgeBiomeConsistent(world, candidate, target);
-                boolean baseModeEnabled = Asurajang.getInstance().getGameManager().isBaseModeEnabled();
-                boolean baseHeightOk = !baseModeEnabled || isBaseHeightDifferenceAcceptable(world, candidate);
+                GameManager gm = Asurajang.getInstance().getGameManager();
+                boolean baseModeActive = gm.isBaseModeEnabled() && gm.getGameMode() == GameManager.GameMode.TEAM;
+                boolean baseHeightOk = !baseModeActive || isBaseHeightDifferenceAcceptable(world, candidate);
 
                 if (attempt < MAX_SEARCH_ATTEMPTS && (!biomeOk || !baseHeightOk)) {
                     attemptSearch(world, target, attempt + 1, onComplete);
