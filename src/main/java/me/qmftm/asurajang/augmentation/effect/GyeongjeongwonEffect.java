@@ -19,6 +19,9 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
 
     // AugmentationEffectListener에서 참조해 2배 넉백 처리
     public static final Set<UUID> pendingDoubleKnockback = ConcurrentHashMap.newKeySet();
+    // 이번 타격에서 경정권이 실제로 발동했는지 (쿨타임 중이 아닌지) AugmentationEffectListener가 확인용으로 참조
+    // → 발동했을 때만 같은 타격에서 흑섬을 막음 (쿨타임 중에는 흑섬이 정상적으로 터질 수 있음)
+    public static final Set<UUID> activatedOnThisHit = ConcurrentHashMap.newKeySet();
     // 2타 재귀 방지
     private static final Set<UUID> secondaryHit = ConcurrentHashMap.newKeySet();
 
@@ -42,6 +45,7 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
         long now = System.currentTimeMillis();
         if (now - lastUsed < COOLDOWN_MS) return;
         lastUsed = now;
+        activatedOnThisHit.add(player.getUniqueId());
 
         double original = event.getDamage();
         event.setDamage(original * 0.8);

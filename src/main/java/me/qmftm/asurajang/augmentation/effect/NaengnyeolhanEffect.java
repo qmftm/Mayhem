@@ -30,7 +30,12 @@ public class NaengnyeolhanEffect implements AugmentationEffect {
         if (target.equals(player)) return;
 
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) return;
+        if (now - lastUsed < COOLDOWN_MS) {
+            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+            player.sendMessage(Component.text("[냉혈한] ", NamedTextColor.AQUA)
+                    .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
+            return;
+        }
 
         target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 3, false, true));
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, true));

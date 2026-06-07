@@ -79,6 +79,22 @@ augmentations:
       - "가장 가까운 적과 위치를 교환합니다."
       - "쿨타임: 5초"
 
+  Unbreakable:
+    display-name: "불괴"
+    icon: BEDROCK
+    color: dark_gray
+    description:
+      - "아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다."
+
+  Immortal:
+    display-name: "불멸"
+    icon: TOTEM_OF_UNDYING
+    color: gold
+    description:
+      - "사망 시 35%의 확률로 부활합니다."
+      - "부활 시 전체 체력의 절반인 상태로 부활하며"
+      - "죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다."
+
   WindBurst:
     display-name: "붕뜨네"
     icon: WIND_CHARGE
@@ -118,7 +134,8 @@ augmentations:
     description:
       - "35초마다 머리 위에 TNT가 부착됩니다."
       - "부착 시 5초 간 신속을 받은 뒤 폭발하며"
-      - "반경 5칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다."
+      - "반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다."
+      - "자신은 그 피해의 50%만 받습니다."
       - "폭탄 보유 중 사망하면 즉시 폭발합니다."
 
   SniperDuel:
@@ -152,6 +169,14 @@ augmentations:
     description:
       - "체력 30% 이하인 적이 10칸 내에 있으면"
       - "이동 속도가 50% 증가합니다."
+
+  SaturatedFat:
+    display-name: "포화지방산"
+    icon: COOKED_PORKCHOP
+    color: yellow
+    description:
+      - "배고픔이 소모되지 않습니다."
+      - "음식을 먹을 때마다 즉시 치유 효과를 받습니다."
 
   BlackFlash:
     display-name: "흑섬"

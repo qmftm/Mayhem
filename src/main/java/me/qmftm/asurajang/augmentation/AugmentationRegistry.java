@@ -2,6 +2,9 @@ package me.qmftm.asurajang.augmentation;
 
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BoogieWoogieEffect;
+import me.qmftm.asurajang.augmentation.effect.BulgwaeEffect;
+import me.qmftm.asurajang.augmentation.effect.BulmyeolEffect;
+import me.qmftm.asurajang.augmentation.effect.PohwaJibangsanEffect;
 import me.qmftm.asurajang.augmentation.effect.DivineLoveEffect;
 import me.qmftm.asurajang.augmentation.effect.WindBurstEffect;
 import me.qmftm.asurajang.augmentation.effect.GanggangYakyakEffect;
@@ -52,6 +55,9 @@ public class AugmentationRegistry {
         REGISTRY.put("StrongStrong",  GanggangYakyakEffect::new);
         REGISTRY.put("WindBurst",     WindBurstEffect::new);
         REGISTRY.put("DivineLove",    DivineLoveEffect::new);
+        REGISTRY.put("Unbreakable",   BulgwaeEffect::new);
+        REGISTRY.put("Immortal",      BulmyeolEffect::new);
+        REGISTRY.put("SaturatedFat",  PohwaJibangsanEffect::new);
     }
 
     @Nullable

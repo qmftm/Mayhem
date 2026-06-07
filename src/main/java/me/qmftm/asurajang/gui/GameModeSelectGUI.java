@@ -18,15 +18,16 @@ public class GameModeSelectGUI implements InventoryHolder {
 
     public static final int TEAM_SLOT = 11;
     public static final int SOLO_SLOT = 15;
+    public static final int BASE_MODE_SLOT = 22;
 
     private static final ItemStack BACKGROUND = buildBackground();
 
     private final Inventory inventory;
 
-    public GameModeSelectGUI() {
-        this.inventory = Bukkit.createInventory(this, 27, Component.text("게임 모드 선택"));
+    public GameModeSelectGUI(boolean baseModeEnabled) {
+        this.inventory = Bukkit.createInventory(this, 36, Component.text("게임 모드 선택"));
         fillBackground();
-        populate();
+        populate(baseModeEnabled);
     }
 
     private static ItemStack buildBackground() {
@@ -38,14 +39,14 @@ public class GameModeSelectGUI implements InventoryHolder {
     }
 
     private void fillBackground() {
-        for (int i = 0; i < 27; i++) {
+        for (int i = 0; i < 36; i++) {
             inventory.setItem(i, BACKGROUND);
         }
     }
 
-    private void populate() {
+    private void populate(boolean baseModeEnabled) {
         inventory.setItem(TEAM_SLOT, buildChoice(
-            Material.CYAN_BUNDLE,
+            Material.MUSIC_DISC_PRECIPICE,
             Component.text("팀전", NamedTextColor.GREEN),
             Component.text("팀을 나눠 싸우는 모드", NamedTextColor.GRAY)
         ));
@@ -54,6 +55,18 @@ public class GameModeSelectGUI implements InventoryHolder {
             Component.text("개인전", NamedTextColor.GOLD),
             Component.text("혼자 싸우는 모드", NamedTextColor.GRAY)
         ));
+        inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseModeEnabled));
+    }
+
+    public static ItemStack buildBaseModeItem(boolean enabled) {
+        return buildChoice(
+            enabled ? Material.BEACON : Material.OBSIDIAN,
+            Component.text("기지 모드", NamedTextColor.AQUA),
+            Component.text("현재: ", NamedTextColor.GRAY)
+                .append(enabled
+                    ? Component.text("켜짐", NamedTextColor.GREEN)
+                    : Component.text("꺼짐", NamedTextColor.RED))
+        );
     }
 
     private static ItemStack buildChoice(Material material, Component name, Component loreLine) {

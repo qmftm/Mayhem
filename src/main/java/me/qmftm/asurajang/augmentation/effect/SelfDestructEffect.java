@@ -19,7 +19,7 @@ public class SelfDestructEffect implements AugmentationEffect {
 
     private static final long   BOMB_INTERVAL = 700L; // 35초
     private static final int    FUSE_SECONDS  = 5;
-    private static final double RADIUS        = 5.0;
+    private static final double RADIUS        = 8.0;
 
     private BukkitTask bombTimer;
     private BukkitTask fuseTask;
@@ -131,10 +131,14 @@ public class SelfDestructEffect implements AugmentationEffect {
         loc.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 1.0f);
 
         for (Player target : player.getWorld().getPlayers()) {
-            if (target.equals(player) || target.getGameMode() == GameMode.SPECTATOR) continue;
+            if (target.getGameMode() == GameMode.SPECTATOR) continue;
             if (target.getLocation().distance(loc) > RADIUS) continue;
 
-            target.damage(target.getMaxHealth() * 0.2, player);
+            boolean isSelf = target.equals(player);
+            double damage = target.getMaxHealth() * 0.2 * (isSelf ? 0.5 : 1.0);
+            target.damage(damage, player);
+
+            if (isSelf) continue;
 
             Vector dir = target.getLocation().subtract(loc).toVector().setY(0);
             if (dir.lengthSquared() > 0.001) dir.normalize();

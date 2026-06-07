@@ -29,16 +29,21 @@ public class DivineLoveEffect implements AugmentationEffect {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) return;
+        if (now - lastUsed < COOLDOWN_MS) {
+            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+            player.sendMessage(Component.text("[주님의 사랑] ", NamedTextColor.GOLD)
+                    .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
+            return;
+        }
         lastUsed = now;
 
         event.setCancelled(true);
 
         Asurajang plugin = Asurajang.getInstance();
 
-        // 3발을 15틱(0.75초) 간격으로 발사
+        // 3발을 7틱(0.35초) 간격으로 발사
         for (int i = 0; i < 3; i++) {
-            final long delay = i * 15L;
+            final long delay = i * 7L;
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 if (!player.isOnline() || !plugin.getGameManager().isRunning()) return;
                 Location eye = player.getEyeLocation();

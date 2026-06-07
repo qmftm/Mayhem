@@ -29,7 +29,12 @@ public class BoogieWoogieEffect implements AugmentationEffect {
     @Override
     public void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) return;
+        if (now - lastUsed < COOLDOWN_MS) {
+            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+            player.sendMessage(Component.text("[부기우기] ", NamedTextColor.LIGHT_PURPLE)
+                    .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
+            return;
+        }
 
         Player target = null;
         double minDistSq = RANGE_SQ;

@@ -18,7 +18,9 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -43,6 +45,8 @@ public class PlayerDeathListener implements Listener {
     private static final long MULTI_KILL_WINDOW_MS = 10_000L;
 
     private static final long ASSIST_WINDOW_MS = 10_000L;
+    // getKiller()가 투사체/지연 피해 등으로 null을 반환할 때 대신 사용할 폴백 추적 기간
+    private static final long KILLER_FALLBACK_WINDOW_MS = 8_000L;
 
     private final Map<UUID, Location>           deathLocations  = new HashMap<>();
     private final Map<UUID, Integer>            multiKillCounts = new HashMap<>();
@@ -54,10 +58,40 @@ public class PlayerDeathListener implements Listener {
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (!(event.getEntity() instanceof Player victim)) return;
-        if (!(event.getDamager() instanceof Player attacker)) return;
+        Player attacker = resolveAttacker(event.getDamager());
+        if (attacker == null) return;
         recentDamage
             .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
             .put(attacker.getUniqueId(), System.currentTimeMillis());
+    }
+
+    // 직접 피해를 준 플레이어, 또는 플레이어가 발사한 투사체(화염구·돌풍구 등)의 발사자를 추적
+    private static Player resolveAttacker(Entity damager) {
+        if (damager instanceof Player player) return player;
+        if (damager instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) return shooter;
+        return null;
+    }
+
+    // getKiller()가 null을 반환할 때(투사체·지연 피해 등으로 콤뱃 트래커가 갱신되지 않는 경우)
+    // 최근에 피해를 입힌 플레이어를 대신 킬러로 사용
+    private Player resolveFallbackKiller(UUID victimId) {
+        Map<UUID, Long> damagers = recentDamage.get(victimId);
+        if (damagers == null || damagers.isEmpty()) return null;
+
+        long now = System.currentTimeMillis();
+        UUID latestId = null;
+        long latestTime = 0L;
+        for (Map.Entry<UUID, Long> entry : damagers.entrySet()) {
+            if (entry.getKey().equals(victimId)) continue; // 자신에게 입힌 피해(자폭 등)는 제외
+            if (now - entry.getValue() > KILLER_FALLBACK_WINDOW_MS) continue;
+            if (entry.getValue() > latestTime) {
+                latestTime = entry.getValue();
+                latestId = entry.getKey();
+            }
+        }
+        if (latestId == null) return null;
+        Player attacker = Bukkit.getPlayer(latestId);
+        return (attacker != null && attacker.isOnline()) ? attacker : null;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -95,8 +129,9 @@ public class PlayerDeathListener implements Listener {
         deathLocations.put(player.getUniqueId(), player.getLocation().clone());
         Asurajang.getInstance().getScoreboardManager().addDeath(player);
 
-        // 킬 추적
+        // 킬 추적 (getKiller()가 투사체·지연 피해 등으로 null이면 최근 공격자로 대체)
         Player killer = player.getKiller();
+        if (killer == null) killer = resolveFallbackKiller(player.getUniqueId());
         if (killer != null) {
             boolean firstBlood = Asurajang.getInstance().getGameManager().claimFirstBlood();
 
@@ -290,7 +325,13 @@ public class PlayerDeathListener implements Listener {
             if (timer[0] <= 0) {
                 task.cancel();
                 player.setGameMode(GameMode.SURVIVAL);
-                Location spawn = plugin.getBattlefieldManager().getRandomSpawn();
+                GameManager gm = plugin.getGameManager();
+                Location spawn;
+                if (gm.getGameMode() == GameManager.GameMode.TEAM && gm.isBaseModeEnabled()) {
+                    spawn = plugin.getBattlefieldManager().getTeamCornerSpawn(gm.getTeam(player.getUniqueId()), true);
+                } else {
+                    spawn = plugin.getBattlefieldManager().getRandomSpawn();
+                }
                 player.teleport(spawn != null ? spawn : player.getWorld().getSpawnLocation());
                 AugmentationManager augMgr = plugin.getAugmentationManager();
                 for (AugmentationEffect effect : new ArrayList<>(augMgr.getActiveEffects(player.getUniqueId()).values())) {

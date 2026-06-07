@@ -21,6 +21,16 @@ public class GameModeSelectListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         int slot = event.getRawSlot();
+
+        if (slot == GameModeSelectGUI.BASE_MODE_SLOT) {
+            GameManager gm = Asurajang.getInstance().getGameManager();
+            boolean enabled = !gm.isBaseModeEnabled();
+            gm.setBaseModeEnabled(enabled);
+            event.getInventory().setItem(GameModeSelectGUI.BASE_MODE_SLOT, GameModeSelectGUI.buildBaseModeItem(enabled));
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, enabled ? 1.4f : 0.8f);
+            return;
+        }
+
         if (slot != GameModeSelectGUI.TEAM_SLOT && slot != GameModeSelectGUI.SOLO_SLOT) return;
 
         player.closeInventory();

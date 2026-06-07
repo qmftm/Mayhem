@@ -77,10 +77,19 @@ public class AugmentationEffectListener implements Listener {
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         java.util.Map<String, AugmentationEffect> effects = mgr.getActiveEffects(attacker.getUniqueId());
-        boolean hasDivergentFist = effects.containsKey("DivergentFist");
+
+        // 경정권을 먼저 처리해 이번 타격에서 실제로 발동했는지 확인
+        // (쿨타임 중이라 발동하지 않았다면 흑섬은 평소처럼 터질 수 있음)
+        AugmentationEffect divergentFist = effects.get("DivergentFist");
+        boolean blockHeugsom = false;
+        if (divergentFist != null) {
+            divergentFist.onDamageAsAttacker(attacker, event);
+            blockHeugsom = GyeongjeongwonEffect.activatedOnThisHit.remove(attacker.getUniqueId());
+        }
+
         for (AugmentationEffect effect : new ArrayList<>(effects.values())) {
-            // 경정권이 있으면 흑섬은 이 공격에서 발동하지 않음
-            if (hasDivergentFist && effect instanceof HeugsomEffect) continue;
+            if (effect == divergentFist) continue; // 위에서 이미 처리함
+            if (blockHeugsom && effect instanceof HeugsomEffect) continue;
             effect.onDamageAsAttacker(attacker, event);
         }
     }

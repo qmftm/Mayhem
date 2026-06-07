@@ -56,17 +56,18 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
+        getServer().getPluginManager().registerEvents(battlefieldManager, this);
 
         AsurajangCommand cmd = new AsurajangCommand();
         Objects.requireNonNull(getCommand("mayhem")).setExecutor(cmd);
         Objects.requireNonNull(getCommand("mayhem")).setTabCompleter(cmd);
 
-        getLogger().info("Asurajang v" + getPluginMeta().getVersion() + " 활성화되었습니다.");
+        getLogger().info("Asurajang v" + getPluginMeta().getVersion() + " 이 활성화되었습니다.");
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("Asurajang 비활성화되었습니다.");
+        getLogger().info("Asurajang 이 비활성화되었습니다.");
         instance = null;
     }
 

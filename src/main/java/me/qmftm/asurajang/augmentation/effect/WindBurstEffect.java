@@ -28,7 +28,12 @@ public class WindBurstEffect implements AugmentationEffect {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) return;
+        if (now - lastUsed < COOLDOWN_MS) {
+            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+            player.sendMessage(Component.text("[붕뜨네] ", NamedTextColor.AQUA)
+                    .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
+            return;
+        }
         lastUsed = now;
 
         event.setCancelled(true);

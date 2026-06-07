@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION = 600; // 10분
+    private static final int GAME_DURATION = 900; // 15분
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -35,6 +35,17 @@ public class GameManager {
     private BukkitTask timerTask;
     private BukkitTask timeTask;
     private boolean firstBloodClaimed = false;
+
+    // 게임이 끝나도 유지되는 설정
+    private boolean baseModeEnabled = false;
+
+    public boolean isBaseModeEnabled() {
+        return baseModeEnabled;
+    }
+
+    public void setBaseModeEnabled(boolean enabled) {
+        this.baseModeEnabled = enabled;
+    }
 
     public boolean start(GameMode mode, Player sender) {
         if (state != State.WAITING) return false;
@@ -206,7 +217,7 @@ public class GameManager {
                 DefaultKit.apply(p);
                 Location spawn;
                 if (gameMode == GameMode.TEAM) {
-                    spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0));
+                    spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0), baseModeEnabled);
                 } else {
                     spawn = bm.getRandomSpawn();
                 }
