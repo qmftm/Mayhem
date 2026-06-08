@@ -21,26 +21,31 @@ import org.jetbrains.annotations.Nullable;
 // 프리즘 증강 선택 메뉴. 클릭한 부위의 인챈트 다이아 갑옷을 그대로 지급한다.
 public class PrismAugmentationSelectGUI implements InventoryHolder {
 
-    private static final int[] ITEM_SLOTS = {11, 12, 14, 15};
+    private static final int[] ITEM_SLOTS = {11, 12, 13, 14, 15};
 
     private final Inventory inventory;
 
     private static final ItemStack BACKGROUND = buildBackground();
     private static final ItemStack[] ITEMS = {
-        buildArmor(Material.DIAMOND_HELMET, "프리즘 투구",
+        buildEnchanted(Material.DIAMOND_HELMET,
             new Enchant(EnchantmentKeys.PROTECTION, 2),
             new Enchant(EnchantmentKeys.UNBREAKING, 2),
             new Enchant(EnchantmentKeys.RESPIRATION, 1)
         ),
-        buildArmor(Material.DIAMOND_CHESTPLATE, "프리즘 흉갑",
+        buildEnchanted(Material.DIAMOND_CHESTPLATE,
             new Enchant(EnchantmentKeys.PROTECTION, 2),
             new Enchant(EnchantmentKeys.UNBREAKING, 2)
         ),
-        buildArmor(Material.DIAMOND_LEGGINGS, "프리즘 각반",
+        buildEnchanted(Material.DIAMOND_SWORD,
+            new Enchant(EnchantmentKeys.SHARPNESS, 2),
+            new Enchant(EnchantmentKeys.UNBREAKING, 2),
+            new Enchant(EnchantmentKeys.FIRE_ASPECT, 1)
+        ),
+        buildEnchanted(Material.DIAMOND_LEGGINGS,
             new Enchant(EnchantmentKeys.PROTECTION, 2),
             new Enchant(EnchantmentKeys.UNBREAKING, 2)
         ),
-        buildArmor(Material.DIAMOND_BOOTS, "프리즘 부츠",
+        buildEnchanted(Material.DIAMOND_BOOTS,
             new Enchant(EnchantmentKeys.PROTECTION, 2),
             new Enchant(EnchantmentKeys.UNBREAKING, 2),
             new Enchant(EnchantmentKeys.FEATHER_FALLING, 2)
@@ -90,10 +95,9 @@ public class PrismAugmentationSelectGUI implements InventoryHolder {
 
     private record Enchant(TypedKey<Enchantment> key, int level) {}
 
-    private static ItemStack buildArmor(Material material, String name, Enchant... enchants) {
+    private static ItemStack buildEnchanted(Material material, Enchant... enchants) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(name, NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false));
         for (Enchant enchant : enchants) {
             meta.addEnchant(enchantment(enchant.key()), enchant.level(), true);
         }
@@ -103,5 +107,21 @@ public class PrismAugmentationSelectGUI implements InventoryHolder {
 
     private static Enchantment enchantment(TypedKey<Enchantment> key) {
         return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).getOrThrow(key);
+    }
+
+    // ── 프리즘 비용 ──────────────────────────────────────────────────────────
+
+    private static final ItemStack PRISM = buildPrism();
+
+    public static ItemStack createPrism() {
+        return PRISM.clone();
+    }
+
+    private static ItemStack buildPrism() {
+        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text("프리즘", NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false));
+        item.setItemMeta(meta);
+        return item;
     }
 }

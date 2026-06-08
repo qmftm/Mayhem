@@ -33,11 +33,17 @@ public class AugmentationSelectListener implements Listener {
         ItemStack item = gui.getItemAt(event.getRawSlot());
         if (item == null) return;
 
+        ItemStack prism = PrismAugmentationSelectGUI.createPrism();
+        if (!player.getInventory().containsAtLeast(prism, 1)) {
+            player.sendMessage(Component.text("[프리즘] 이(가) 부족합니다.", NamedTextColor.RED));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.5f);
+            return;
+        }
+
+        player.getInventory().removeItem(prism);
         player.closeInventory();
         player.getInventory().addItem(item.clone());
-        player.sendMessage(Component.text("[", NamedTextColor.LIGHT_PURPLE)
-                .append(item.getItemMeta().displayName())
-                .append(Component.text("] 을(를) 획득했습니다.", NamedTextColor.LIGHT_PURPLE)));
+        player.sendMessage(Component.text("[프리즘] 1개를 사용해 아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
     }
 
