@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class AugmentationSelectListener implements Listener {
 
@@ -24,8 +25,20 @@ public class AugmentationSelectListener implements Listener {
 
     @EventHandler
     public void onPrismSelectClick(InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof PrismAugmentationSelectGUI)) return;
+        if (!(event.getInventory().getHolder() instanceof PrismAugmentationSelectGUI gui)) return;
         event.setCancelled(true);
+
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+
+        ItemStack item = gui.getItemAt(event.getRawSlot());
+        if (item == null) return;
+
+        player.closeInventory();
+        player.getInventory().addItem(item.clone());
+        player.sendMessage(Component.text("[", NamedTextColor.LIGHT_PURPLE)
+                .append(item.getItemMeta().displayName())
+                .append(Component.text("] 을(를) 획득했습니다.", NamedTextColor.LIGHT_PURPLE)));
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
     }
 
     @EventHandler

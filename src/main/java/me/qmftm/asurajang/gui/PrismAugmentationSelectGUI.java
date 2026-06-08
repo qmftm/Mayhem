@@ -16,23 +16,17 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-// 프리즘 증강 선택 메뉴. 프리즘 증강 자체는 아직 구현되지 않아
-// 보상으로 지급될 인챈트 다이아 갑옷 세트를 미리보기로만 표시한다.
+// 프리즘 증강 선택 메뉴. 클릭한 부위의 인챈트 다이아 갑옷을 그대로 지급한다.
 public class PrismAugmentationSelectGUI implements InventoryHolder {
 
-    private static final int[] PREVIEW_SLOTS = {11, 12, 14, 15};
-    private static final List<String> PREVIEW_LORE = List.of(
-        "프리즘 증강 보상 미리보기",
-        "아직 준비 중인 기능입니다."
-    );
+    private static final int[] ITEM_SLOTS = {11, 12, 14, 15};
 
     private final Inventory inventory;
 
     private static final ItemStack BACKGROUND = buildBackground();
-    private static final ItemStack[] PREVIEW_ITEMS = {
+    private static final ItemStack[] ITEMS = {
         buildArmor(Material.DIAMOND_HELMET, "프리즘 투구",
             new Enchant(EnchantmentKeys.PROTECTION, 2),
             new Enchant(EnchantmentKeys.UNBREAKING, 2),
@@ -56,9 +50,17 @@ public class PrismAugmentationSelectGUI implements InventoryHolder {
     public PrismAugmentationSelectGUI() {
         this.inventory = Bukkit.createInventory(this, 27, Component.text("프리즘 증강 선택", NamedTextColor.LIGHT_PURPLE));
         fillBackground();
-        for (int i = 0; i < PREVIEW_SLOTS.length; i++) {
-            inventory.setItem(PREVIEW_SLOTS[i], PREVIEW_ITEMS[i].clone());
+        for (int i = 0; i < ITEM_SLOTS.length; i++) {
+            inventory.setItem(ITEM_SLOTS[i], ITEMS[i].clone());
         }
+    }
+
+    @Nullable
+    public ItemStack getItemAt(int rawSlot) {
+        for (int i = 0; i < ITEM_SLOTS.length; i++) {
+            if (ITEM_SLOTS[i] == rawSlot) return ITEMS[i];
+        }
+        return null;
     }
 
     private static ItemStack buildBackground() {
@@ -84,7 +86,7 @@ public class PrismAugmentationSelectGUI implements InventoryHolder {
         return inventory;
     }
 
-    // ── 미리보기 아이템 빌드 ─────────────────────────────────────────────────
+    // ── 지급 아이템 빌드 ─────────────────────────────────────────────────────
 
     private record Enchant(TypedKey<Enchantment> key, int level) {}
 
@@ -92,9 +94,6 @@ public class PrismAugmentationSelectGUI implements InventoryHolder {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(name, NamedTextColor.LIGHT_PURPLE).decoration(TextDecoration.ITALIC, false));
-        meta.lore(PREVIEW_LORE.stream()
-            .map(l -> Component.text(l, NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false))
-            .toList());
         for (Enchant enchant : enchants) {
             meta.addEnchant(enchantment(enchant.key()), enchant.level(), true);
         }
