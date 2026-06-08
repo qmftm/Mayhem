@@ -42,7 +42,7 @@ BoogieWoogie:
   range: 20.0
   cooldown-ticks: 100
 
-Unbreakable:
+UnBreakable:
   negate-chance: 0.75
 
 UnRuin:

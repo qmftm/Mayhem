@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class UnbreakableEffect implements AugmentationEffect, Listener {
+public class UnBreakableEffect implements AugmentationEffect, Listener {
 
     private Player owner;
 
@@ -32,7 +32,7 @@ public class UnbreakableEffect implements AugmentationEffect, Listener {
         if (!event.getPlayer().equals(owner)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
-        if (ThreadLocalRandom.current().nextDouble() < AugmentSettings.getDouble("Unbreakable", "negate-chance", 0.75)) {
+        if (ThreadLocalRandom.current().nextDouble() < AugmentSettings.getDouble("UnBreakable", "negate-chance", 0.75)) {
             event.setCancelled(true);
         }
     }

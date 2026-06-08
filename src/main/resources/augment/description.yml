@@ -78,7 +78,7 @@ BoogieWoogie:
     - "가장 가까운 적과 위치를 교환합니다."
     - "쿨타임: 5초"
 
-Unbreakable:
+UnBreakable:
   display-name: "불괴"
   icon: BEDROCK
   color: dark_gray
