@@ -545,7 +545,8 @@ public class BattlefieldManager implements Listener {
             double distance = toTarget.length();
             if (distance <= GUARDIAN_PROJECTILE_HIT_RADIUS) {
                 applyGuardianProjectileHit(guardian, target, defenderTeam);
-                world.spawnParticle(Particle.FLASH, current, 1);
+                world.spawnParticle(Particle.DUST, current, 14, 0.2, 0.2, 0.2, 0.0, dust);
+                world.spawnParticle(Particle.CRIT, current, 6, 0.15, 0.15, 0.15, 0.05);
                 world.playSound(current, Sound.ENTITY_SHULKER_BULLET_HIT, 1.0f, 1.0f);
                 projTask.cancel();
                 return;
