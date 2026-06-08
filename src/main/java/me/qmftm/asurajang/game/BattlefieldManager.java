@@ -90,7 +90,7 @@ public class BattlefieldManager implements Listener {
     private static final int BASE_SIZE = 3; // 3x1x3 기지 크기
     private static final int BEACON_HEIGHT = 3; // 콘크리트 거점 위 신호기 높이
     private static final int GUARDIAN_SLIME_SIZE = 3; // 거점 히트박스용 슬라임 크기
-    // 라이프 개수·체력, 회복 시간, 어그로·투사체·공격 주기 등은 nexus.guardian 설정에서 읽어온다 (NexusSettings 참고)
+    // 라이프 개수·체력, 회복 시간, 어그로·투사체·공격 주기 등은 nexus.yml의 guardian 설정에서 읽어온다 (NexusSettings 참고)
 
     private static final class GuardianState {
         final BossBar bar;
@@ -672,7 +672,7 @@ public class BattlefieldManager implements Listener {
         // 무적(회복) 중에는 보스바를 흰색으로 바꿔 체력이 서서히 차오르는 연출을 보여줌
         state.bar.color(BossBar.Color.WHITE);
 
-        // 다음 라이프의 체력은 nexus.guardian.life-health 순서대로 점점 늘어남 (200 -> 300 -> 400)
+        // 다음 라이프의 체력은 nexus.yml의 guardian.life-health 순서대로 점점 늘어남 (200 -> 300 -> 400)
         double nextMaxHealth = NexusSettings.lifeHealth()[state.totalLives - state.lives];
 
         Asurajang plugin = Asurajang.getInstance();

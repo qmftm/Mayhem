@@ -1,0 +1,103 @@
+# Asurajang 증강 수치 설정 (확률·피해량·쿨타임 등)
+
+StrongStrong:
+  damage-multiplier: 1.5
+
+StrongWeak:
+  threshold-percent: 50.0
+  high-health-multiplier: 0.5
+  low-health-bonus-scale: 100.0
+
+MolaMola:
+  max-health-fixed: 0.5
+  transfer-chance: 0.10
+
+DivergentFist:
+  cooldown-ms: 15000
+  first-hit-multiplier: 0.8
+  second-hit-multiplier: 0.4
+  delay-ticks: 10
+  knockback-multiplier: 2.0
+
+ColdBlood:
+  cooldown-ms: 45000
+  slowness-duration: 60
+  slowness-amplifier: 3
+  weakness-duration: 60
+  weakness-amplifier: 0
+
+Deadful:
+  max-health-fixed: 0.5
+  heal-interval-ticks: 20
+
+Copy:
+  max-copies: 3
+
+Hentai:
+  strip-chance: 0.03
+  particle-count-base: 10
+  particle-count-random: 6
+
+BoogieWoogie:
+  range: 20.0
+  cooldown-ms: 5000
+
+Unbreakable:
+  negate-chance: 0.75
+
+UnRuin:
+  revive-chance: 0.35
+  revive-radius: 10.0
+  revive-health-fraction: 0.5
+
+WindBurst:
+  cooldown-ms: 20000
+  velocity-multiplier: 2.5
+
+DivineDogs:
+  respawn-delay-ticks: 1200
+
+GlassCannon:
+  max-health-multiplier: 0.7
+  damage-multiplier: 1.15
+
+HeavyForce:
+  damage-multiplier: 1.2
+
+SelfBomber:
+  bomb-interval-ticks: 700
+  fuse-seconds: 5
+  radius: 8.0
+  damage-fraction: 0.2
+  self-damage-multiplier: 0.5
+  knockback-horizontal: 1.5
+  knockback-vertical: 0.4
+
+SniperDuel:
+  min-distance: 12.0
+  damage-multiplier: 1.5
+
+GuiltPleasure:
+  heal-fraction: 0.2
+
+DivineLove:
+  cooldown-ms: 25000
+  fireball-count: 3
+  spacing-ticks: 7
+  velocity-multiplier: 1.5
+
+CleanUp:
+  range: 10.0
+  health-threshold: 0.3
+  speed-bonus: 0.5
+  check-interval-ticks: 4
+
+SaturatedFat:
+  fixed-food-level: 19
+
+BlackFlash:
+  streak-chances: [0.36, 0.18, 0.06]
+  base-chance: 0.03
+  streak-reset: 3
+  damage-multiplier: 2.5
+  knockback-multiplier: 4.0

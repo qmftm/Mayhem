@@ -3,6 +3,7 @@ package me.qmftm.asurajang;
 import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.command.AsurajangCommand;
+import me.qmftm.asurajang.config.YamlResource;
 import me.qmftm.asurajang.game.BattlefieldManager;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.game.GameScoreboardManager;
@@ -18,6 +19,7 @@ import me.qmftm.asurajang.listener.RewardMessageListener;
 import me.qmftm.asurajang.listener.ShopListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,6 +30,9 @@ import java.util.Set;
 public final class Asurajang extends JavaPlugin {
 
     private static Asurajang instance;
+    private YamlResource augmentDescriptionConfig;
+    private YamlResource augmentSettingConfig;
+    private YamlResource nexusConfig;
     private AugmentationManager augmentationManager;
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
@@ -43,7 +48,10 @@ public final class Asurajang extends JavaPlugin {
         instance = this;
 
         saveDefaultConfig();
-        augmentationManager  = new AugmentationManager(getConfig());
+        augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
+        augmentSettingConfig     = new YamlResource(this, "augment/setting.yml");
+        nexusConfig              = new YamlResource(this, "nexus.yml");
+        augmentationManager  = new AugmentationManager(augmentDescriptionConfig.get());
         battlefieldManager   = new BattlefieldManager();
         gameManager          = new GameManager();
         scoreboardManager    = new GameScoreboardManager();
@@ -98,6 +106,25 @@ public final class Asurajang extends JavaPlugin {
         }
 
         new AugmentationListGUI(active, Component.text("내 증강", NamedTextColor.LIGHT_PURPLE)).open(player);
+    }
+
+    // augment/description.yml, augment/setting.yml, nexus.yml을 다시 읽어들인다
+    public void reloadExtraConfigs() {
+        augmentDescriptionConfig.reload();
+        augmentSettingConfig.reload();
+        nexusConfig.reload();
+    }
+
+    public FileConfiguration getAugmentDescriptionConfig() {
+        return augmentDescriptionConfig.get();
+    }
+
+    public FileConfiguration getAugmentSettingConfig() {
+        return augmentSettingConfig.get();
+    }
+
+    public FileConfiguration getNexusConfig() {
+        return nexusConfig.get();
     }
 
     public AugmentationManager getAugmentationManager() {

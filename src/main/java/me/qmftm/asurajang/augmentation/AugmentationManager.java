@@ -29,11 +29,9 @@ public class AugmentationManager {
 
     private void load(FileConfiguration config) {
         augmentations.clear();
-        ConfigurationSection section = config.getConfigurationSection("augment.description");
-        if (section == null) return;
 
-        for (String id : section.getKeys(false)) {
-            ConfigurationSection entry = section.getConfigurationSection(id);
+        for (String id : config.getKeys(false)) {
+            ConfigurationSection entry = config.getConfigurationSection(id);
             if (entry == null) continue;
 
             String displayName = entry.getString("display-name", id);

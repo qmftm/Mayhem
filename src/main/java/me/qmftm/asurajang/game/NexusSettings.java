@@ -6,8 +6,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 /**
- * config.yml의 nexus.guardian.<key> 경로에서 거점 가디언 관련 수치를 읽어오는 유틸리티.
- * 매번 config에서 직접 읽어오므로 /mayhem reload로 즉시 반영된다.
+ * nexus.yml의 guardian.<key> 경로에서 거점 가디언 관련 수치를 읽어오는 유틸리티.
+ * 매번 파일에서 직접 읽어오므로 /mayhem reload로 즉시 반영된다.
  */
 public final class NexusSettings {
 
@@ -15,7 +15,7 @@ public final class NexusSettings {
     }
 
     private static ConfigurationSection guardianSection() {
-        return Asurajang.getInstance().getConfig().getConfigurationSection("nexus.guardian");
+        return Asurajang.getInstance().getNexusConfig().getConfigurationSection("guardian");
     }
 
     public static double[] lifeHealth() {
