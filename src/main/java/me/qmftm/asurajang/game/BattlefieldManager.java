@@ -95,12 +95,12 @@ public class BattlefieldManager implements Listener {
     private static final int GUARDIAN_RECOVERY_SECONDS = 20; // 체력 소진 후 공격 불가 + 회복까지 걸리는 시간
 
     private static final double GUARDIAN_AGGRO_RANGE = 16.0; // 적팀 탐지 범위 (블록)
-    private static final double GUARDIAN_PROJECTILE_DAMAGE = 6.0; // 투사체 1회 명중 피해량
+    private static final double GUARDIAN_PROJECTILE_DAMAGE = 4.0; // 투사체 1회 명중 피해량
     private static final double GUARDIAN_PROJECTILE_SPEED = 1.1; // 투사체 이동 속도 (블록/틱)
     private static final double GUARDIAN_PROJECTILE_HIT_RADIUS = 1.0; // 명중 판정 반경
     private static final int GUARDIAN_PROJECTILE_MAX_LIFE_TICKS = 100; // 투사체 최대 생존 시간 (5초, 표적 이탈 시 안전 소멸)
     private static final long GUARDIAN_ATTACK_TICK_PERIOD = 5L; // 공격 루프가 표적/쿨다운을 점검하는 주기
-    private static final long[] GUARDIAN_ATTACK_INTERVAL_TICKS = {50L, 35L, 20L}; // 라이프 단계별 공격 주기 (라이프가 회복될수록 더 빨라짐: 2.5s -> 1.75s -> 1s)
+    private static final long[] GUARDIAN_ATTACK_INTERVAL_TICKS = {65L, 45L, 28L}; // 라이프 단계별 공격 주기 (라이프가 회복될수록 더 빨라짐: 3.25s -> 2.25s -> 1.4s)
 
     private static final class GuardianState {
         final BossBar bar;
