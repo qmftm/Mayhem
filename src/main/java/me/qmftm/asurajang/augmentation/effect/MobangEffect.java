@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -14,12 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MobangEffect implements AugmentationEffect {
 
-    private static final int MAX_COPIES = 3;
-    private int remainingCopies = MAX_COPIES;
+    private int remainingCopies;
 
     @Override
     public void onActivate(Player player) {
-        remainingCopies = MAX_COPIES;
+        remainingCopies = AugmentSettings.getInt("Copy", "max-copies", 3);
     }
 
     @Override public void onDeactivate(Player player) {}
@@ -53,7 +53,7 @@ public class MobangEffect implements AugmentationEffect {
         String augName = mgr.get(toGet) != null ? mgr.get(toGet).getDisplayName() : toGet;
         player.sendMessage(Component.text("[모방] ", NamedTextColor.LIGHT_PURPLE)
             .append(Component.text(augName + " 증강을 복사했습니다.", NamedTextColor.GRAY))
-            .append(Component.text(" (남은 모방 횟수: " + remainingCopies + "/" + MAX_COPIES + ")", NamedTextColor.DARK_GRAY)));
+            .append(Component.text(" (남은 모방 횟수: " + remainingCopies + "/" + AugmentSettings.getInt("Copy", "max-copies", 3) + ")", NamedTextColor.DARK_GRAY)));
         player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 1.0f, 1.0f);
     }
 }

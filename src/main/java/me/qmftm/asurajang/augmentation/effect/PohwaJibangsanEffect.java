@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -12,14 +13,12 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PohwaJibangsanEffect implements AugmentationEffect, Listener {
 
-    private static final int FIXED_FOOD_LEVEL = 19; // 9칸 반
-
     private Player owner;
 
     @Override
     public void onActivate(Player player) {
         this.owner = player;
-        player.setFoodLevel(FIXED_FOOD_LEVEL);
+        player.setFoodLevel(AugmentSettings.getInt("SaturatedFat", "fixed-food-level", 19));
         Asurajang.getInstance().getServer().getPluginManager()
             .registerEvents(this, Asurajang.getInstance());
     }
@@ -34,7 +33,7 @@ public class PohwaJibangsanEffect implements AugmentationEffect, Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (!(event.getEntity() instanceof Player player) || !player.equals(owner)) return;
         event.setCancelled(true);
-        player.setFoodLevel(FIXED_FOOD_LEVEL);
+        player.setFoodLevel(AugmentSettings.getInt("SaturatedFat", "fixed-food-level", 19));
     }
 
     @EventHandler(ignoreCancelled = true)

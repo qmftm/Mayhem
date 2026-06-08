@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -16,10 +17,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 public class SelfDestructEffect implements AugmentationEffect {
-
-    private static final long   BOMB_INTERVAL = 700L; // 35초
-    private static final int    FUSE_SECONDS  = 5;
-    private static final double RADIUS        = 8.0;
 
     private BukkitTask bombTimer;
     private BukkitTask fuseTask;
@@ -67,15 +64,17 @@ public class SelfDestructEffect implements AugmentationEffect {
 
     private void scheduleBomb(Player player) {
         Asurajang plugin = Asurajang.getInstance();
+        long bombInterval = AugmentSettings.getLong("SelfBomber", "bomb-interval-ticks", 700L);
         bombTimer = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if (!player.isOnline() || !plugin.getGameManager().isRunning()) return;
             bombTimer = null;
             startFuse(player);
-        }, BOMB_INTERVAL);
+        }, bombInterval);
     }
 
     private void startFuse(Player player) {
         Asurajang plugin = Asurajang.getInstance();
+        int fuseSeconds = AugmentSettings.getInt("SelfBomber", "fuse-seconds", 5);
 
         tntEntity = player.getWorld().spawn(player.getLocation().add(0, 2.5, 0), TNTPrimed.class, tnt -> {
             tnt.setFuseTicks(Integer.MAX_VALUE);
@@ -83,7 +82,7 @@ public class SelfDestructEffect implements AugmentationEffect {
             tnt.setInvulnerable(true);
             tnt.setYield(0);
         });
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, FUSE_SECONDS * 20, 1, false, true));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, fuseSeconds * 20, 1, false, true));
 
         tntFollowTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (tntEntity != null && tntEntity.isValid()) {
@@ -91,7 +90,7 @@ public class SelfDestructEffect implements AugmentationEffect {
             }
         }, 0L, 1L);
 
-        int[] fuse = {FUSE_SECONDS};
+        int[] fuse = {fuseSeconds};
         fuseTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (!player.isOnline() || !plugin.getGameManager().isRunning()) {
                 if (fuseTask      != null) { fuseTask.cancel();      fuseTask      = null; }
@@ -110,7 +109,7 @@ public class SelfDestructEffect implements AugmentationEffect {
             player.sendActionBar(Component.text(
                 "폭발까지 " + fuse[0] + "초!", NamedTextColor.RED));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f,
-                0.5f + (FUSE_SECONDS - fuse[0]) * 0.1f);
+                0.5f + (fuseSeconds - fuse[0]) * 0.1f);
             fuse[0]--;
         }, 0L, 20L);
     }
@@ -130,19 +129,25 @@ public class SelfDestructEffect implements AugmentationEffect {
         loc.getWorld().spawnParticle(Particle.EXPLOSION, loc, 12, 1.2, 0.6, 1.2, 0.05);
         loc.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2.0f, 1.0f);
 
+        double radius = AugmentSettings.getDouble("SelfBomber", "radius", 8.0);
+        double damageFraction = AugmentSettings.getDouble("SelfBomber", "damage-fraction", 0.2);
+        double selfDamageMultiplier = AugmentSettings.getDouble("SelfBomber", "self-damage-multiplier", 0.5);
+        double knockbackHorizontal = AugmentSettings.getDouble("SelfBomber", "knockback-horizontal", 1.5);
+        double knockbackVertical = AugmentSettings.getDouble("SelfBomber", "knockback-vertical", 0.4);
+
         for (Player target : player.getWorld().getPlayers()) {
             if (target.getGameMode() == GameMode.SPECTATOR) continue;
-            if (target.getLocation().distance(loc) > RADIUS) continue;
+            if (target.getLocation().distance(loc) > radius) continue;
 
             boolean isSelf = target.equals(player);
-            double damage = target.getMaxHealth() * 0.2 * (isSelf ? 0.5 : 1.0);
+            double damage = target.getMaxHealth() * damageFraction * (isSelf ? selfDamageMultiplier : 1.0);
             target.damage(damage, player);
 
             if (isSelf) continue;
 
             Vector dir = target.getLocation().subtract(loc).toVector().setY(0);
             if (dir.lengthSquared() > 0.001) dir.normalize();
-            target.setVelocity(dir.multiply(1.5).setY(0.4));
+            target.setVelocity(dir.multiply(knockbackHorizontal).setY(knockbackVertical));
         }
     }
 }

@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.augmentation.effect;
 
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -21,7 +22,7 @@ public class ByeontaeEffect implements AugmentationEffect {
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player target)) return;
-        if (ThreadLocalRandom.current().nextDouble() >= 0.03) return;
+        if (ThreadLocalRandom.current().nextDouble() >= AugmentSettings.getDouble("Hentai", "strip-chance", 0.03)) return;
 
         PlayerInventory inv = target.getInventory();
 
@@ -43,7 +44,9 @@ public class ByeontaeEffect implements AugmentationEffect {
         Map<Integer, ItemStack> leftover = inv.addItem(stripped);
         leftover.values().forEach(item -> target.getWorld().dropItemNaturally(target.getLocation(), item));
 
-        int heartCount = 10 + ThreadLocalRandom.current().nextInt(6); // 10~15개
+        int heartCountBase = AugmentSettings.getInt("Hentai", "particle-count-base", 10);
+        int heartCountRandom = AugmentSettings.getInt("Hentai", "particle-count-random", 6);
+        int heartCount = heartCountBase + ThreadLocalRandom.current().nextInt(heartCountRandom); // 10~15개
         target.getWorld().spawnParticle(Particle.HEART, target.getLocation().add(0, 1, 0),
             heartCount, 0.5, 0.5, 0.5, 0);
 

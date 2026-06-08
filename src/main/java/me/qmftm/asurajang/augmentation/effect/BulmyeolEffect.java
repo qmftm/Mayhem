@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
@@ -18,9 +19,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BulmyeolEffect implements AugmentationEffect, Listener {
-
-    private static final double REVIVE_CHANCE = 0.35;
-    private static final double REVIVE_RADIUS = 10.0;
 
     private Player owner;
 
@@ -42,7 +40,7 @@ public class BulmyeolEffect implements AugmentationEffect, Listener {
         if (!(event.getEntity() instanceof Player player) || !player.equals(owner)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (player.getHealth() - event.getFinalDamage() > 0) return;
-        if (ThreadLocalRandom.current().nextDouble() >= REVIVE_CHANCE) return;
+        if (ThreadLocalRandom.current().nextDouble() >= AugmentSettings.getDouble("Immortal", "revive-chance", 0.35)) return;
 
         event.setCancelled(true);
         revive(player);
@@ -70,7 +68,7 @@ public class BulmyeolEffect implements AugmentationEffect, Listener {
         Location deathLoc = player.getLocation().clone();
         ThreadLocalRandom rng = ThreadLocalRandom.current();
         double angle = rng.nextDouble() * Math.PI * 2;
-        double dist  = rng.nextDouble() * REVIVE_RADIUS;
+        double dist  = rng.nextDouble() * AugmentSettings.getDouble("Immortal", "revive-radius", 10.0);
 
         Location target = deathLoc.clone().add(Math.cos(angle) * dist, 0, Math.sin(angle) * dist);
         target = clampToBorder(target);
@@ -78,7 +76,8 @@ public class BulmyeolEffect implements AugmentationEffect, Listener {
         target.setYaw(deathLoc.getYaw());
         target.setPitch(deathLoc.getPitch());
 
-        player.setHealth(Math.max(1.0, player.getMaxHealth() / 2.0));
+        double reviveHealthFraction = AugmentSettings.getDouble("Immortal", "revive-health-fraction", 0.5);
+        player.setHealth(Math.max(1.0, player.getMaxHealth() * reviveHealthFraction));
         player.teleport(target);
 
         player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING,

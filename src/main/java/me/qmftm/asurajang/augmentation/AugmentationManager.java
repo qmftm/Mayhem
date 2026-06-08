@@ -29,7 +29,7 @@ public class AugmentationManager {
 
     private void load(FileConfiguration config) {
         augmentations.clear();
-        ConfigurationSection section = config.getConfigurationSection("augmentations");
+        ConfigurationSection section = config.getConfigurationSection("augment.description");
         if (section == null) return;
 
         for (String id : section.getKeys(false)) {

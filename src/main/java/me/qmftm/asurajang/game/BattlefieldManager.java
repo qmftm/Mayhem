@@ -90,17 +90,7 @@ public class BattlefieldManager implements Listener {
     private static final int BASE_SIZE = 3; // 3x1x3 기지 크기
     private static final int BEACON_HEIGHT = 3; // 콘크리트 거점 위 신호기 높이
     private static final int GUARDIAN_SLIME_SIZE = 3; // 거점 히트박스용 슬라임 크기
-    private static final double[] GUARDIAN_LIFE_HEALTH = {200.0, 300.0, 400.0}; // 라이프 1~3회차 체력 (회복할수록 증가)
-    private static final int GUARDIAN_LIVES = GUARDIAN_LIFE_HEALTH.length; // 거점 라이프 수
-    private static final int GUARDIAN_RECOVERY_SECONDS = 20; // 체력 소진 후 공격 불가 + 회복까지 걸리는 시간
-
-    private static final double GUARDIAN_AGGRO_RANGE = 16.0; // 적팀 탐지 범위 (블록)
-    private static final double GUARDIAN_PROJECTILE_DAMAGE = 5.0; // 투사체 1회 명중 피해량
-    private static final double GUARDIAN_PROJECTILE_SPEED = 1.1; // 투사체 이동 속도 (블록/틱)
-    private static final double GUARDIAN_PROJECTILE_HIT_RADIUS = 1.0; // 명중 판정 반경
-    private static final int GUARDIAN_PROJECTILE_MAX_LIFE_TICKS = 100; // 투사체 최대 생존 시간 (5초, 표적 이탈 시 안전 소멸)
-    private static final long GUARDIAN_ATTACK_TICK_PERIOD = 5L; // 공격 루프가 표적/쿨다운을 점검하는 주기
-    private static final long[] GUARDIAN_ATTACK_INTERVAL_TICKS = {65L, 45L, 28L}; // 라이프 단계별 공격 주기 (라이프가 회복될수록 더 빨라짐: 3.25s -> 2.25s -> 1.4s)
+    // 라이프 개수·체력, 회복 시간, 어그로·투사체·공격 주기 등은 nexus.guardian 설정에서 읽어온다 (NexusSettings 참고)
 
     private static final class GuardianState {
         final BossBar bar;
@@ -442,7 +432,8 @@ public class BattlefieldManager implements Listener {
         NamedTextColor nameColor = (teamIndex == 0) ? NamedTextColor.RED : NamedTextColor.BLUE;
         BossBar.Color barColor = (teamIndex == 0) ? BossBar.Color.RED : BossBar.Color.BLUE;
 
-        double initialHealth = GUARDIAN_LIFE_HEALTH[0];
+        double[] lifeHealth = NexusSettings.lifeHealth();
+        double initialHealth = lifeHealth[0];
         Slime guardian = world.spawn(loc, Slime.class, s -> {
             s.setSize(GUARDIAN_SLIME_SIZE);
             s.setAI(false);
@@ -461,7 +452,7 @@ public class BattlefieldManager implements Listener {
             guardianBarTitle(teamLabel, initialHealth, initialHealth, nameColor),
             1.0f, barColor, BossBar.Overlay.NOTCHED_10);
 
-        GuardianState state = new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, GUARDIAN_LIVES);
+        GuardianState state = new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, lifeHealth.length);
         guardianStates.put(guardian.getUniqueId(), state);
         if (Asurajang.getInstance().getGameManager().isGuardianAttackEnabled()) {
             state.attackTask = startGuardianAttackLoop(guardian, state);
@@ -471,6 +462,7 @@ public class BattlefieldManager implements Listener {
 
     // 거점 라이프 단계에 맞는 주기로 어그로 범위 내 상대팀을 탐지해 투사체를 발사하는 루프
     private BukkitTask startGuardianAttackLoop(LivingEntity guardian, GuardianState state) {
+        long tickPeriod = NexusSettings.attackTickPeriod();
         state.attackCooldownTicks = currentAttackInterval(state);
         return Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), task -> {
             if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
@@ -479,24 +471,26 @@ public class BattlefieldManager implements Listener {
             }
             if (state.recovering) return;
 
-            state.attackCooldownTicks -= GUARDIAN_ATTACK_TICK_PERIOD;
+            state.attackCooldownTicks -= NexusSettings.attackTickPeriod();
             if (state.attackCooldownTicks > 0) return;
 
             Player target = findNearestEnemy(guardian, state.teamIndex);
             if (target == null) {
-                state.attackCooldownTicks = GUARDIAN_ATTACK_TICK_PERIOD;
+                state.attackCooldownTicks = NexusSettings.attackTickPeriod();
                 return;
             }
 
             fireGuardianProjectile(guardian, target, state);
             state.attackCooldownTicks = currentAttackInterval(state);
-        }, 20L, GUARDIAN_ATTACK_TICK_PERIOD);
+        }, 20L, tickPeriod);
     }
 
     // 현재 라이프 단계의 공격 주기를 반환 (체력이 늘어난 단계일수록 더 빠르게 공격)
     private static long currentAttackInterval(GuardianState state) {
-        int stage = Math.max(0, Math.min(GUARDIAN_LIVES - state.lives, GUARDIAN_ATTACK_INTERVAL_TICKS.length - 1));
-        return GUARDIAN_ATTACK_INTERVAL_TICKS[stage];
+        double[] lifeHealth = NexusSettings.lifeHealth();
+        long[] intervals = NexusSettings.attackIntervalTicks();
+        int stage = Math.max(0, Math.min(lifeHealth.length - state.lives, intervals.length - 1));
+        return intervals[stage];
     }
 
     // 어그로 범위 안에서 가장 가까운 상대팀 플레이어를 찾는다 (관전·크리에이티브·아군·미배정 제외)
@@ -504,7 +498,8 @@ public class BattlefieldManager implements Listener {
     private Player findNearestEnemy(LivingEntity guardian, int defenderTeam) {
         GameManager gm = Asurajang.getInstance().getGameManager();
         Player nearest = null;
-        double nearestDistSq = GUARDIAN_AGGRO_RANGE * GUARDIAN_AGGRO_RANGE;
+        double aggroRange = NexusSettings.aggroRange();
+        double nearestDistSq = aggroRange * aggroRange;
 
         for (Player p : guardian.getWorld().getPlayers()) {
             if (p.getGameMode() == GameMode.SPECTATOR || p.getGameMode() == GameMode.CREATIVE) continue;
@@ -536,10 +531,13 @@ public class BattlefieldManager implements Listener {
 
         int defenderTeam = state.teamIndex;
         int[] elapsed = { 0 };
+        int maxLifeTicks = NexusSettings.projectileMaxLifeTicks();
+        double hitRadius = NexusSettings.projectileHitRadius();
+        double speed = NexusSettings.projectileSpeed();
 
         Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), projTask -> {
             if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())
-                || elapsed[0]++ > GUARDIAN_PROJECTILE_MAX_LIFE_TICKS) {
+                || elapsed[0]++ > maxLifeTicks) {
                 projTask.cancel();
                 return;
             }
@@ -550,7 +548,7 @@ public class BattlefieldManager implements Listener {
 
             Vector toTarget = target.getEyeLocation().toVector().subtract(current.toVector());
             double distance = toTarget.length();
-            if (distance <= GUARDIAN_PROJECTILE_HIT_RADIUS) {
+            if (distance <= hitRadius) {
                 applyGuardianProjectileHit(guardian, target, defenderTeam);
                 world.spawnParticle(Particle.DUST, current, 14, 0.2, 0.2, 0.2, 0.0, dust);
                 world.spawnParticle(Particle.CRIT, current, 6, 0.15, 0.15, 0.15, 0.05);
@@ -559,7 +557,7 @@ public class BattlefieldManager implements Listener {
                 return;
             }
 
-            current.add(toTarget.normalize().multiply(GUARDIAN_PROJECTILE_SPEED));
+            current.add(toTarget.normalize().multiply(speed));
 
             if (current.getBlock().getType().isSolid()) {
                 world.spawnParticle(Particle.CRIT, current, 6, 0.1, 0.1, 0.1, 0.05);
@@ -575,7 +573,7 @@ public class BattlefieldManager implements Listener {
     private void applyGuardianProjectileHit(LivingEntity guardian, Player target, int defenderTeam) {
         if (target.getGameMode() == GameMode.SPECTATOR) return;
         if (Asurajang.getInstance().getGameManager().getTeam(target.getUniqueId()) == defenderTeam) return;
-        target.damage(GUARDIAN_PROJECTILE_DAMAGE, guardian);
+        target.damage(NexusSettings.projectileDamage(), guardian);
     }
 
     private static Component guardianBarTitle(String teamLabel, double health, double maxHealth, NamedTextColor color) {
@@ -647,7 +645,8 @@ public class BattlefieldManager implements Listener {
     private void updateGuardianBar(LivingEntity guardian, GuardianState state) {
         if (!guardian.isValid() || state.recovering) return;
         var attr = guardian.getAttribute(Attribute.MAX_HEALTH);
-        double max = (attr != null) ? attr.getValue() : GUARDIAN_LIFE_HEALTH[GUARDIAN_LIVES - state.lives];
+        double[] lifeHealth = NexusSettings.lifeHealth();
+        double max = (attr != null) ? attr.getValue() : lifeHealth[lifeHealth.length - state.lives];
         double cur = Math.max(0, guardian.getHealth());
         state.bar.progress((float) Math.max(0.0, Math.min(1.0, cur / max)));
         state.bar.name(guardianBarTitle(state.teamLabel, cur, max, state.color));
@@ -673,8 +672,9 @@ public class BattlefieldManager implements Listener {
         // 무적(회복) 중에는 보스바를 흰색으로 바꿔 체력이 서서히 차오르는 연출을 보여줌
         state.bar.color(BossBar.Color.WHITE);
 
-        // 다음 라이프의 체력은 GUARDIAN_LIFE_HEALTH 순서대로 점점 늘어남 (150 -> 200 -> 250)
-        double nextMaxHealth = GUARDIAN_LIFE_HEALTH[GUARDIAN_LIVES - state.lives];
+        // 다음 라이프의 체력은 nexus.guardian.life-health 순서대로 점점 늘어남 (200 -> 300 -> 400)
+        double[] lifeHealth = NexusSettings.lifeHealth();
+        double nextMaxHealth = lifeHealth[lifeHealth.length - state.lives];
 
         Asurajang plugin = Asurajang.getInstance();
 
@@ -693,7 +693,7 @@ public class BattlefieldManager implements Listener {
             world.spawnParticle(Particle.DUST, particleLoc, 4, 0.4, 0.5, 0.4, 0.0, recoveryDust);
         }, 0L, 4L);
 
-        int total = GUARDIAN_RECOVERY_SECONDS;
+        int total = NexusSettings.recoverySeconds();
         int[] remaining = { total };
         Bukkit.getScheduler().runTaskTimer(plugin, task -> {
             if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
