@@ -41,13 +41,13 @@ public class DivergentFistEffect implements AugmentationEffect {
         if (secondaryHit.contains(player.getUniqueId())) return;
         if (!(event.getEntity() instanceof LivingEntity target)) return;
 
-        long cooldownMs = AugmentSettings.getLong("DivergentFist", "cooldown-ms", 15_000L);
+        long cooldownTicks = AugmentSettings.getLong("DivergentFist", "cooldown-ticks", 300L);
         double firstHitMultiplier = AugmentSettings.getDouble("DivergentFist", "first-hit-multiplier", 0.8);
         double secondHitMultiplier = AugmentSettings.getDouble("DivergentFist", "second-hit-multiplier", 0.4);
         long delayTicks = AugmentSettings.getLong("DivergentFist", "delay-ticks", 10L);
 
-        long now = System.currentTimeMillis();
-        if (now - lastUsed < cooldownMs) return;
+        long now = player.getWorld().getGameTime();
+        if (now - lastUsed < cooldownTicks) return;
         lastUsed = now;
         activatedOnThisHit.add(player.getUniqueId());
 
@@ -80,6 +80,6 @@ public class DivergentFistEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownMs / 50);
+        }, cooldownTicks);
     }
 }

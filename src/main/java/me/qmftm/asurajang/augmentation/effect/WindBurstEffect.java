@@ -27,12 +27,12 @@ public class WindBurstEffect implements AugmentationEffect {
     public void onRightClick(Player player, PlayerInteractEvent event) {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
-        long cooldownMs = AugmentSettings.getLong("WindBurst", "cooldown-ms", 20_000L);
+        long cooldownTicks = AugmentSettings.getLong("WindBurst", "cooldown-ticks", 400L);
         double velocityMultiplier = AugmentSettings.getDouble("WindBurst", "velocity-multiplier", 2.5);
 
-        long now = System.currentTimeMillis();
-        if (now - lastUsed < cooldownMs) {
-            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
+        long now = player.getWorld().getGameTime();
+        if (now - lastUsed < cooldownTicks) {
+            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[붕뜨네] ", NamedTextColor.AQUA)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -60,6 +60,6 @@ public class WindBurstEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownMs / 50);
+        }, cooldownTicks);
     }
 }

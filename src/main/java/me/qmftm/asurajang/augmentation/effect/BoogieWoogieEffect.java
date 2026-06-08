@@ -26,12 +26,12 @@ public class BoogieWoogieEffect implements AugmentationEffect {
 
     @Override
     public void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {
-        long cooldownMs = AugmentSettings.getLong("BoogieWoogie", "cooldown-ms", 5_000L);
+        long cooldownTicks = AugmentSettings.getLong("BoogieWoogie", "cooldown-ticks", 100L);
         double range = AugmentSettings.getDouble("BoogieWoogie", "range", 20.0);
 
-        long now = System.currentTimeMillis();
-        if (now - lastUsed < cooldownMs) {
-            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
+        long now = player.getWorld().getGameTime();
+        if (now - lastUsed < cooldownTicks) {
+            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[부기우기] ", NamedTextColor.LIGHT_PURPLE)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -90,6 +90,6 @@ public class BoogieWoogieEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownMs / 50);
+        }, cooldownTicks);
     }
 }

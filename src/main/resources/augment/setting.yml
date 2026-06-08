@@ -13,14 +13,14 @@ MolaMola:
   transfer-chance: 0.10
 
 DivergentFist:
-  cooldown-ms: 15000
+  cooldown-ticks: 300
   first-hit-multiplier: 0.8
   second-hit-multiplier: 0.4
   delay-ticks: 10
   knockback-multiplier: 2.0
 
 ColdBlood:
-  cooldown-ms: 45000
+  cooldown-ticks: 900
   slowness-duration: 60
   slowness-amplifier: 3
   weakness-duration: 60
@@ -40,7 +40,7 @@ Hentai:
 
 BoogieWoogie:
   range: 20.0
-  cooldown-ms: 5000
+  cooldown-ticks: 100
 
 Unbreakable:
   negate-chance: 0.75
@@ -51,7 +51,7 @@ UnRuin:
   revive-health-fraction: 0.5
 
 WindBurst:
-  cooldown-ms: 20000
+  cooldown-ticks: 400
   velocity-multiplier: 2.5
 
 DivineDogs:
@@ -81,7 +81,7 @@ GuiltPleasure:
   heal-fraction: 0.2
 
 DivineLove:
-  cooldown-ms: 25000
+  cooldown-ticks: 500
   fireball-count: 3
   spacing-ticks: 7
   velocity-multiplier: 1.5
