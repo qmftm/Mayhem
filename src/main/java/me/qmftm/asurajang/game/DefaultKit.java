@@ -1,11 +1,16 @@
 package me.qmftm.asurajang.game;
 
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
+import io.papermc.paper.registry.keys.EnchantmentKeys;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -14,6 +19,30 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class DefaultKit {
+
+    private record Enchant(TypedKey<Enchantment> key, int level) {}
+
+    private static final ItemStack DIAMOND_HELMET = buildArmor(Material.DIAMOND_HELMET,
+        new Enchant(EnchantmentKeys.PROTECTION, 2),
+        new Enchant(EnchantmentKeys.UNBREAKING, 2),
+        new Enchant(EnchantmentKeys.RESPIRATION, 1)
+    );
+
+    private static final ItemStack DIAMOND_CHESTPLATE = buildArmor(Material.DIAMOND_CHESTPLATE,
+        new Enchant(EnchantmentKeys.PROTECTION, 2),
+        new Enchant(EnchantmentKeys.UNBREAKING, 2)
+    );
+
+    private static final ItemStack DIAMOND_LEGGINGS = buildArmor(Material.DIAMOND_LEGGINGS,
+        new Enchant(EnchantmentKeys.PROTECTION, 2),
+        new Enchant(EnchantmentKeys.UNBREAKING, 2)
+    );
+
+    private static final ItemStack DIAMOND_BOOTS = buildArmor(Material.DIAMOND_BOOTS,
+        new Enchant(EnchantmentKeys.PROTECTION, 2),
+        new Enchant(EnchantmentKeys.UNBREAKING, 2),
+        new Enchant(EnchantmentKeys.FEATHER_FALLING, 2)
+    );
 
     private static final ItemStack SHOP_BUTTON = buildItem(
         Material.EMERALD, "상점", NamedTextColor.GREEN,
@@ -40,10 +69,10 @@ public class DefaultKit {
         PlayerInventory inv = player.getInventory();
         inv.clear();
 
-        inv.setHelmet(new ItemStack(Material.LEATHER_HELMET));
-        inv.setChestplate(new ItemStack(Material.LEATHER_CHESTPLATE));
-        inv.setLeggings(new ItemStack(Material.LEATHER_LEGGINGS));
-        inv.setBoots(new ItemStack(Material.LEATHER_BOOTS));
+        inv.setHelmet(DIAMOND_HELMET.clone());
+        inv.setChestplate(DIAMOND_CHESTPLATE.clone());
+        inv.setLeggings(DIAMOND_LEGGINGS.clone());
+        inv.setBoots(DIAMOND_BOOTS.clone());
 
         inv.setItem(0, new ItemStack(Material.WOODEN_SWORD));
         inv.setItem(6, PRISM_AUG_BUTTON.clone());
@@ -60,5 +89,19 @@ public class DefaultKit {
             .toList());
         item.setItemMeta(meta);
         return item;
+    }
+
+    private static ItemStack buildArmor(Material material, Enchant... enchants) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        for (Enchant enchant : enchants) {
+            meta.addEnchant(enchantment(enchant.key()), enchant.level(), true);
+        }
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    private static Enchantment enchantment(TypedKey<Enchantment> key) {
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).getOrThrow(key);
     }
 }
