@@ -3,7 +3,7 @@ package me.qmftm.asurajang.listener;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
-import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.event.PlayerExpRewardEvent;
 import me.qmftm.asurajang.event.PlayerGoldRewardEvent;
@@ -204,7 +204,7 @@ public class PlayerDeathListener implements Listener {
         }
 
         // 흑섬 발동으로 사망 시 파티클
-        UUID procAttacker = HeugsomEffect.pendingDeathParticle.remove(player.getUniqueId());
+        UUID procAttacker = BlackFlashEffect.pendingDeathParticle.remove(player.getUniqueId());
         if (procAttacker != null && killer != null && killer.getUniqueId().equals(procAttacker)) {
             spawnHeugsomDeathBurst(player.getLocation(), player.getWorld());
         }

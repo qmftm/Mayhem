@@ -1,7 +1,7 @@
 package me.qmftm.asurajang.command;
 
 import me.qmftm.asurajang.Asurajang;
-import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.gui.DebugAugGiveGUI;
 import me.qmftm.asurajang.gui.GameModeSelectGUI;
@@ -94,10 +94,10 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             case "aug", "aug_1" -> plugin.openAugmentationSelect(player);
             case "aug_2" -> new DebugAugGiveGUI(plugin.getAugmentationManager().getAll()).open(player);
             case "proc" -> {
-                HeugsomEffect.debugProc = !HeugsomEffect.debugProc;
+                BlackFlashEffect.debugProc = !BlackFlashEffect.debugProc;
                 sender.sendMessage(Component.text(
-                    "확률 100% 디버그 모드: " + (HeugsomEffect.debugProc ? "ON" : "OFF"),
-                    HeugsomEffect.debugProc ? NamedTextColor.GREEN : NamedTextColor.RED
+                    "확률 100% 디버그 모드: " + (BlackFlashEffect.debugProc ? "ON" : "OFF"),
+                    BlackFlashEffect.debugProc ? NamedTextColor.GREEN : NamedTextColor.RED
                 ));
             }
             default -> sendDebugUsage(sender);

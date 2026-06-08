@@ -11,7 +11,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-public class CleanupEffect implements AugmentationEffect {
+public class CleanUpEffect implements AugmentationEffect {
 
     private BukkitTask task;
 

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.UUID;
 
-public class GanggangYakyakEffect implements AugmentationEffect {
+public class StrongStrongEffect implements AugmentationEffect {
 
     @Override
     public void onActivate(Player player) {}

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MobangEffect implements AugmentationEffect {
+public class CopyEffect implements AugmentationEffect {
 
     private int remainingCopies;
 

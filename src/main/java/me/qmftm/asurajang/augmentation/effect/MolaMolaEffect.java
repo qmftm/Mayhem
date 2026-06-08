@@ -12,7 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GaebokChiEffect implements AugmentationEffect {
+public class MolaMolaEffect implements AugmentationEffect {
 
     @Override public void onActivate(Player player) {}
     @Override public void onDeactivate(Player player) {}

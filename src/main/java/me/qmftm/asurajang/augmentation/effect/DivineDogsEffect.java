@@ -20,7 +20,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
-public class OkgyeonEffect implements AugmentationEffect, Listener {
+public class DivineDogsEffect implements AugmentationEffect, Listener {
 
     private UUID snowyUuid;
     private UUID blackUuid;

@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
-public class NaengnyeolhanEffect implements AugmentationEffect {
+public class ColdBloodEffect implements AugmentationEffect {
 
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;

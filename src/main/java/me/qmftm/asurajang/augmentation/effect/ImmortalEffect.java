@@ -18,7 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BulmyeolEffect implements AugmentationEffect, Listener {
+public class ImmortalEffect implements AugmentationEffect, Listener {
 
     private Player owner;
 

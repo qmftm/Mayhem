@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class GyeongjeongwonEffect implements AugmentationEffect {
+public class DivergentFistEffect implements AugmentationEffect {
 
     // AugmentationEffectListener에서 참조해 2배 넉백 처리
     public static final Set<UUID> pendingDoubleKnockback = ConcurrentHashMap.newKeySet();

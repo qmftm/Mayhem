@@ -23,7 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class HeugsomEffect implements AugmentationEffect {
+public class BlackFlashEffect implements AugmentationEffect {
 
     public static boolean debugProc = false;
     public static final Set<UUID> pendingKnockback    = ConcurrentHashMap.newKeySet();

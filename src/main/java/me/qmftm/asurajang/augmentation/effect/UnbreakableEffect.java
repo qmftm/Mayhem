@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class BulgwaeEffect implements AugmentationEffect, Listener {
+public class UnbreakableEffect implements AugmentationEffect, Listener {
 
     private Player owner;
 

@@ -4,8 +4,8 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
-import me.qmftm.asurajang.augmentation.effect.GyeongjeongwonEffect;
-import me.qmftm.asurajang.augmentation.effect.HeugsomEffect;
+import me.qmftm.asurajang.augmentation.effect.DivergentFistEffect;
+import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
@@ -48,11 +48,11 @@ public class AugmentationEffectListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onKnockback(EntityKnockbackByEntityEvent event) {
         if (!(event.getSourceEntity() instanceof Player attacker)) return;
-        if (HeugsomEffect.pendingKnockback.remove(attacker.getUniqueId())) {
+        if (BlackFlashEffect.pendingKnockback.remove(attacker.getUniqueId())) {
             double mult = AugmentSettings.getDouble("BlackFlash", "knockback-multiplier", 4.0);
             Vector kb = event.getFinalKnockback();
             event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY(), kb.getZ() * mult));
-        } else if (GyeongjeongwonEffect.pendingDoubleKnockback.remove(attacker.getUniqueId())) {
+        } else if (DivergentFistEffect.pendingDoubleKnockback.remove(attacker.getUniqueId())) {
             double mult = AugmentSettings.getDouble("DivergentFist", "knockback-multiplier", 2.0);
             Vector kb = event.getFinalKnockback();
             event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY(), kb.getZ() * mult));
@@ -87,12 +87,12 @@ public class AugmentationEffectListener implements Listener {
         boolean blockHeugsom = false;
         if (divergentFist != null) {
             divergentFist.onDamageAsAttacker(attacker, event);
-            blockHeugsom = GyeongjeongwonEffect.activatedOnThisHit.remove(attacker.getUniqueId());
+            blockHeugsom = DivergentFistEffect.activatedOnThisHit.remove(attacker.getUniqueId());
         }
 
         for (AugmentationEffect effect : new ArrayList<>(effects.values())) {
             if (effect == divergentFist) continue; // 위에서 이미 처리함
-            if (blockHeugsom && effect instanceof HeugsomEffect) continue;
+            if (blockHeugsom && effect instanceof BlackFlashEffect) continue;
             effect.onDamageAsAttacker(attacker, event);
         }
     }

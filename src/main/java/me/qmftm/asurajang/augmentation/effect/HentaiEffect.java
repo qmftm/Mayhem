@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ByeontaeEffect implements AugmentationEffect {
+public class HentaiEffect implements AugmentationEffect {
 
     @Override public void onActivate(Player player) {}
     @Override public void onDeactivate(Player player) {}

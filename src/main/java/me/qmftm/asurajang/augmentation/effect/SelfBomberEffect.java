@@ -16,7 +16,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-public class SelfDestructEffect implements AugmentationEffect {
+public class SelfBomberEffect implements AugmentationEffect {
 
     private BukkitTask bombTimer;
     private BukkitTask fuseTask;

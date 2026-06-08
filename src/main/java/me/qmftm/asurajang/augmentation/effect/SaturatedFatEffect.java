@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class PohwaJibangsanEffect implements AugmentationEffect, Listener {
+public class SaturatedFatEffect implements AugmentationEffect, Listener {
 
     private Player owner;
 
