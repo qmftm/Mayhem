@@ -611,6 +611,10 @@ public class BattlefieldManager implements Listener {
             return;
         }
 
+        // 실제로 피해가 들어갈 때마다 시련의 방 탐지 파티클로 "피격" 연출
+        Location hitLoc = guardian.getLocation().add(0, 0.5, 0);
+        guardian.getWorld().spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, hitLoc, 6, 0.5, 0.6, 0.5, 0);
+
         // 이번 피해로 체력이 모두 소진되면 실제로 죽이지 않고 라이프 차감 절차로 전환
         if (event.getFinalDamage() >= guardian.getHealth()) {
             event.setCancelled(true);
@@ -672,8 +676,8 @@ public class BattlefieldManager implements Listener {
 
         Asurajang plugin = Asurajang.getInstance();
 
-        // 공격 불가(무적) 상태인 동안 거점 주변에 시련의 방 탐지 파티클(불길한 변형 포함)과
-        // 팀 색상 빛가루를 함께 표시해 "재정비 중"인 분위기를 연출
+        // 공격 불가(무적) 상태인 동안 거점 주변에 불길한 징조(RAID_OMEN) · 시련의 징조(TRIAL_OMEN)와
+        // 팀 색상 빛가루를 함께 표시해 "다음 라이프를 예고하는 재정비 중" 분위기를 연출
         Particle.DustOptions recoveryDust = teamDustOptions(state.teamIndex, 1.0f);
         Bukkit.getScheduler().runTaskTimer(plugin, smokeTask -> {
             if (!guardian.isValid() || !state.recovering) {
@@ -682,8 +686,8 @@ public class BattlefieldManager implements Listener {
             }
             Location particleLoc = guardian.getLocation().add(0, 0.5, 0);
             World world = guardian.getWorld();
-            world.spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, particleLoc, 4, 0.45, 0.5, 0.45, 0);
-            world.spawnParticle(Particle.TRIAL_SPAWNER_DETECTION_OMINOUS, particleLoc, 2, 0.45, 0.5, 0.45, 0);
+            world.spawnParticle(Particle.RAID_OMEN, particleLoc, 2, 0.45, 0.5, 0.45, 0);
+            world.spawnParticle(Particle.TRIAL_OMEN, particleLoc, 2, 0.45, 0.5, 0.45, 0);
             world.spawnParticle(Particle.DUST, particleLoc, 4, 0.4, 0.5, 0.4, 0.0, recoveryDust);
         }, 0L, 4L);
 
