@@ -518,12 +518,17 @@ public class BattlefieldManager implements Listener {
         return nearest;
     }
 
+    // 팀 색상에 맞춘 더스트 파티클 옵션 (레드팀은 붉은빛, 블루팀은 푸른빛)
+    private static Particle.DustOptions teamDustOptions(int teamIndex, float size) {
+        return new Particle.DustOptions(
+            teamIndex == 0 ? Color.fromRGB(255, 70, 70) : Color.fromRGB(80, 130, 255), size);
+    }
+
     // 표적을 향해 유도되는 빛의 탄환을 발사 (틱마다 위치를 갱신하는 파티클 기반 커스텀 투사체)
     private void fireGuardianProjectile(LivingEntity guardian, Player target, GuardianState state) {
         World world = guardian.getWorld();
         Location current = guardian.getLocation().add(0, 0.5, 0);
-        Particle.DustOptions dust = new Particle.DustOptions(
-            state.teamIndex == 0 ? Color.fromRGB(255, 70, 70) : Color.fromRGB(80, 130, 255), 1.2f);
+        Particle.DustOptions dust = teamDustOptions(state.teamIndex, 1.2f);
 
         world.playSound(current, Sound.ENTITY_BLAZE_SHOOT, 1.0f, state.teamIndex == 0 ? 0.7f : 1.3f);
 
@@ -667,14 +672,19 @@ public class BattlefieldManager implements Listener {
 
         Asurajang plugin = Asurajang.getInstance();
 
-        // 공격 불가(무적) 상태인 동안 거점 주변에 연기 파티클을 표시
+        // 공격 불가(무적) 상태인 동안 거점 주변에 시련의 방 탐지 파티클(불길한 변형 포함)과
+        // 팀 색상 빛가루를 함께 표시해 "재정비 중"인 분위기를 연출
+        Particle.DustOptions recoveryDust = teamDustOptions(state.teamIndex, 1.0f);
         Bukkit.getScheduler().runTaskTimer(plugin, smokeTask -> {
             if (!guardian.isValid() || !state.recovering) {
                 smokeTask.cancel();
                 return;
             }
             Location particleLoc = guardian.getLocation().add(0, 0.5, 0);
-            guardian.getWorld().spawnParticle(Particle.SMOKE, particleLoc, 6, 0.4, 0.5, 0.4, 0.01);
+            World world = guardian.getWorld();
+            world.spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, particleLoc, 4, 0.45, 0.5, 0.45, 0);
+            world.spawnParticle(Particle.TRIAL_SPAWNER_DETECTION_OMINOUS, particleLoc, 2, 0.45, 0.5, 0.45, 0);
+            world.spawnParticle(Particle.DUST, particleLoc, 4, 0.4, 0.5, 0.4, 0.0, recoveryDust);
         }, 0L, 4L);
 
         int total = GUARDIAN_RECOVERY_SECONDS;
