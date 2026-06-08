@@ -1,11 +1,10 @@
 package me.qmftm.asurajang.augmentation.effect;
 
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class SniperDuelEffect implements AugmentationEffect {
-
-    private static final double MIN_DISTANCE = 12.0;
 
     @Override public void onActivate(Player player) {}
     @Override public void onDeactivate(Player player) {}
@@ -22,8 +21,8 @@ public class SniperDuelEffect implements AugmentationEffect {
 
     private static void applyBonus(Player attacker, EntityDamageByEntityEvent event) {
         double dist = attacker.getLocation().distance(event.getEntity().getLocation());
-        if (dist >= MIN_DISTANCE) {
-            event.setDamage(event.getDamage() * 1.5);
+        if (dist >= AugmentSettings.getDouble("SniperDuel", "min-distance", 12.0)) {
+            event.setDamage(event.getDamage() * AugmentSettings.getDouble("SniperDuel", "damage-multiplier", 1.5));
         }
     }
 }

@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.MaxHealthModifier;
 import net.kyori.adventure.text.Component;
@@ -18,7 +19,7 @@ public class GaebokChiEffect implements AugmentationEffect {
 
     @Override
     public MaxHealthModifier getMaxHealthModifier() {
-        return new MaxHealthModifier.Fixed(0.5); // 기본 최대 체력의 50%
+        return new MaxHealthModifier.Fixed(AugmentSettings.getDouble("MolaMola", "max-health-fixed", 0.5));
     }
 
     @Override
@@ -27,7 +28,7 @@ public class GaebokChiEffect implements AugmentationEffect {
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         if (mgr.getActiveEffects(target.getUniqueId()).containsKey("MolaMola")) return;
-        if (ThreadLocalRandom.current().nextDouble() >= 0.10) return;
+        if (ThreadLocalRandom.current().nextDouble() >= AugmentSettings.getDouble("MolaMola", "transfer-chance", 0.10)) return;
 
         mgr.deactivateSingle(player, "MolaMola");
         mgr.activateFor(target, "MolaMola");

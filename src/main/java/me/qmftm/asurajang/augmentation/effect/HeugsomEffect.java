@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.ShadowColor;
@@ -47,19 +48,22 @@ public class HeugsomEffect implements AugmentationEffect {
 
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
-        double chance = switch (streakRemaining) {
-            case 3 -> 0.36;
-            case 2 -> 0.18;
-            case 1 -> 0.06;
-            default -> 0.03;
-        };
-        if (streakRemaining > 0) streakRemaining--;
+        java.util.List<Double> streakChances = AugmentSettings.getDoubleList("BlackFlash", "streak-chances", java.util.List.of(0.36, 0.18, 0.06));
+        double baseChance = AugmentSettings.getDouble("BlackFlash", "base-chance", 0.03);
+        int streakReset = AugmentSettings.getInt("BlackFlash", "streak-reset", 3);
+
+        double chance = baseChance;
+        if (streakRemaining > 0) {
+            int idx = streakReset - streakRemaining;
+            if (idx >= 0 && idx < streakChances.size()) chance = streakChances.get(idx);
+            streakRemaining--;
+        }
 
         LivingEntity target = (LivingEntity) event.getEntity();
 
         if (debugProc || ThreadLocalRandom.current().nextDouble() < chance) {
-            streakRemaining = 3;
-            event.setDamage(event.getDamage() * 2.5);
+            streakRemaining = streakReset;
+            event.setDamage(event.getDamage() * AugmentSettings.getDouble("BlackFlash", "damage-multiplier", 2.5));
 
             World world = target.getWorld();
 

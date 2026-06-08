@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.GyeongjeongwonEffect;
@@ -48,11 +49,13 @@ public class AugmentationEffectListener implements Listener {
     public void onKnockback(EntityKnockbackByEntityEvent event) {
         if (!(event.getSourceEntity() instanceof Player attacker)) return;
         if (HeugsomEffect.pendingKnockback.remove(attacker.getUniqueId())) {
+            double mult = AugmentSettings.getDouble("BlackFlash", "knockback-multiplier", 4.0);
             Vector kb = event.getFinalKnockback();
-            event.setFinalKnockback(new Vector(kb.getX() * 4.0, kb.getY(), kb.getZ() * 4.0));
+            event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY(), kb.getZ() * mult));
         } else if (GyeongjeongwonEffect.pendingDoubleKnockback.remove(attacker.getUniqueId())) {
+            double mult = AugmentSettings.getDouble("DivergentFist", "knockback-multiplier", 2.0);
             Vector kb = event.getFinalKnockback();
-            event.setFinalKnockback(new Vector(kb.getX() * 2.0, kb.getY(), kb.getZ() * 2.0));
+            event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY(), kb.getZ() * mult));
         }
     }
 

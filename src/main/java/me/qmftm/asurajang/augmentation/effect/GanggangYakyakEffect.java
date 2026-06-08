@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -32,7 +33,7 @@ public class GanggangYakyakEffect implements AugmentationEffect {
         }
 
         if (maxKills > 0 && victim.getUniqueId().equals(topKillerUuid)) {
-            event.setDamage(event.getDamage() * 1.5);
+            event.setDamage(event.getDamage() * AugmentSettings.getDouble("StrongStrong", "damage-multiplier", 1.5));
         }
     }
 }

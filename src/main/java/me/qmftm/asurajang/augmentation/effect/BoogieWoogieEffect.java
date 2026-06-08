@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -12,9 +13,6 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 public class BoogieWoogieEffect implements AugmentationEffect {
-
-    private static final double RANGE_SQ    = 20.0 * 20.0;
-    private static final long   COOLDOWN_MS = 5_000;
 
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
@@ -28,16 +26,19 @@ public class BoogieWoogieEffect implements AugmentationEffect {
 
     @Override
     public void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {
+        long cooldownMs = AugmentSettings.getLong("BoogieWoogie", "cooldown-ms", 5_000L);
+        double range = AugmentSettings.getDouble("BoogieWoogie", "range", 20.0);
+
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) {
-            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+        if (now - lastUsed < cooldownMs) {
+            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
             player.sendMessage(Component.text("[부기우기] ", NamedTextColor.LIGHT_PURPLE)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
         }
 
         Player target = null;
-        double minDistSq = RANGE_SQ;
+        double minDistSq = range * range;
 
         for (Player p : player.getWorld().getPlayers()) {
             if (p.equals(player) || p.getGameMode() == GameMode.SPECTATOR) continue;
@@ -89,6 +90,6 @@ public class BoogieWoogieEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, COOLDOWN_MS / 50);
+        }, cooldownMs / 50);
     }
 }

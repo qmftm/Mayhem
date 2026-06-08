@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.MaxHealthModifier;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,11 +15,12 @@ public class DeadfulEffect implements AugmentationEffect {
 
     @Override
     public void onActivate(Player player) {
+        long healInterval = AugmentSettings.getLong("Deadful", "heal-interval-ticks", 20L);
         healTask = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
             if (player.isOnline()) {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INSTANT_HEALTH, 1, 0, false, false));
             }
-        }, 0L, 20L);
+        }, 0L, healInterval);
     }
 
     @Override
@@ -31,6 +33,6 @@ public class DeadfulEffect implements AugmentationEffect {
 
     @Override
     public MaxHealthModifier getMaxHealthModifier() {
-        return new MaxHealthModifier.Fixed(0.5); // 기본 최대 체력의 50%
+        return new MaxHealthModifier.Fixed(AugmentSettings.getDouble("Deadful", "max-health-fixed", 0.5));
     }
 }

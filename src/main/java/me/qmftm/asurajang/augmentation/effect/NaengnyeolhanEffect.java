@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -11,8 +12,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
 public class NaengnyeolhanEffect implements AugmentationEffect {
-
-    private static final long COOLDOWN_MS = 45_000;
 
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
@@ -29,16 +28,23 @@ public class NaengnyeolhanEffect implements AugmentationEffect {
         if (!(event.getRightClicked() instanceof Player target)) return;
         if (target.equals(player)) return;
 
+        long cooldownMs = AugmentSettings.getLong("ColdBlood", "cooldown-ms", 45_000L);
+
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) {
-            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+        if (now - lastUsed < cooldownMs) {
+            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
             player.sendMessage(Component.text("[냉혈한] ", NamedTextColor.AQUA)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
         }
 
-        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 60, 3, false, true));
-        target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 60, 0, false, true));
+        int slownessDuration = AugmentSettings.getInt("ColdBlood", "slowness-duration", 60);
+        int slownessAmplifier = AugmentSettings.getInt("ColdBlood", "slowness-amplifier", 3);
+        int weaknessDuration = AugmentSettings.getInt("ColdBlood", "weakness-duration", 60);
+        int weaknessAmplifier = AugmentSettings.getInt("ColdBlood", "weakness-amplifier", 0);
+
+        target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, slownessDuration, slownessAmplifier, false, true));
+        target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, weaknessDuration, weaknessAmplifier, false, true));
 
         player.sendActionBar(Component.text("냉혈한 발동!", NamedTextColor.AQUA));
         player.playSound(player.getLocation(), Sound.BLOCK_POWDER_SNOW_STEP, 1.0f, 0.5f);
@@ -53,6 +59,6 @@ public class NaengnyeolhanEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, COOLDOWN_MS / 50);
+        }, cooldownMs / 50);
     }
 }

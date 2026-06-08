@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
@@ -13,7 +14,6 @@ import org.bukkit.util.Vector;
 
 public class DivineLoveEffect implements AugmentationEffect {
 
-    private static final long COOLDOWN_MS = 25_000;
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
 
@@ -28,9 +28,14 @@ public class DivineLoveEffect implements AugmentationEffect {
     public void onRightClick(Player player, PlayerInteractEvent event) {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
+        long cooldownMs = AugmentSettings.getLong("DivineLove", "cooldown-ms", 25_000L);
+        int fireballCount = AugmentSettings.getInt("DivineLove", "fireball-count", 3);
+        long spacingTicks = AugmentSettings.getLong("DivineLove", "spacing-ticks", 7L);
+        double velocityMultiplier = AugmentSettings.getDouble("DivineLove", "velocity-multiplier", 1.5);
+
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) {
-            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+        if (now - lastUsed < cooldownMs) {
+            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
             player.sendMessage(Component.text("[주님의 사랑] ", NamedTextColor.GOLD)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -41,16 +46,16 @@ public class DivineLoveEffect implements AugmentationEffect {
 
         Asurajang plugin = Asurajang.getInstance();
 
-        // 3발을 7틱(0.35초) 간격으로 발사
-        for (int i = 0; i < 3; i++) {
-            final long delay = i * 7L;
+        // 0.35초(7틱) 간격으로 연달아 발사
+        for (int i = 0; i < fireballCount; i++) {
+            final long delay = i * spacingTicks;
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 if (!player.isOnline() || !plugin.getGameManager().isRunning()) return;
                 Location eye = player.getEyeLocation();
                 Vector dir = eye.getDirection().normalize();
                 player.getWorld().spawn(eye.clone().add(dir), SmallFireball.class, fb -> {
                     fb.setShooter(player);
-                    fb.setDirection(dir.clone().multiply(1.5));
+                    fb.setDirection(dir.clone().multiply(velocityMultiplier));
                 });
                 player.playSound(player.getLocation(), Sound.ENTITY_BLAZE_SHOOT, 0.8f, 1.2f);
             }, delay);
@@ -64,6 +69,6 @@ public class DivineLoveEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, COOLDOWN_MS / 50);
+        }, cooldownMs / 50);
     }
 }

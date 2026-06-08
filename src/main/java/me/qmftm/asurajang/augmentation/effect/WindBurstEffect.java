@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
@@ -12,7 +13,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 public class WindBurstEffect implements AugmentationEffect {
 
-    private static final long COOLDOWN_MS = 20_000;
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
 
@@ -27,9 +27,12 @@ public class WindBurstEffect implements AugmentationEffect {
     public void onRightClick(Player player, PlayerInteractEvent event) {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
+        long cooldownMs = AugmentSettings.getLong("WindBurst", "cooldown-ms", 20_000L);
+        double velocityMultiplier = AugmentSettings.getDouble("WindBurst", "velocity-multiplier", 2.5);
+
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) {
-            long remain = (COOLDOWN_MS - (now - lastUsed) + 999) / 1000;
+        if (now - lastUsed < cooldownMs) {
+            long remain = (cooldownMs - (now - lastUsed) + 999) / 1000;
             player.sendMessage(Component.text("[붕뜨네] ", NamedTextColor.AQUA)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -43,7 +46,7 @@ public class WindBurstEffect implements AugmentationEffect {
 
         player.getWorld().spawn(eye.clone().add(dir), WindCharge.class, wc -> {
             wc.setShooter(player);
-            wc.setVelocity(dir.clone().multiply(2.5));
+            wc.setVelocity(dir.clone().multiply(velocityMultiplier));
         });
 
         player.playSound(player.getLocation(), Sound.ENTITY_BREEZE_SHOOT, 1.0f, 1.0f);
@@ -57,6 +60,6 @@ public class WindBurstEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, COOLDOWN_MS / 50);
+        }, cooldownMs / 50);
     }
 }

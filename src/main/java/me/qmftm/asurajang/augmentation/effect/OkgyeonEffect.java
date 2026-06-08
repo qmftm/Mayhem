@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.game.GameManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -69,6 +70,8 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
         if (!(event.getEntity() instanceof Wolf wolf)) return;
         UUID dead = wolf.getUniqueId();
 
+        long respawnDelay = AugmentSettings.getLong("DivineDogs", "respawn-delay-ticks", 60 * 20L);
+
         if (dead.equals(snowyUuid)) {
             snowyUuid = null;
             if (snowyRespawnTask != null) snowyRespawnTask.cancel();
@@ -77,7 +80,7 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
                     if (owner.isOnline() && Asurajang.getInstance().getGameManager().isRunning()) {
                         spawnSnowy();
                     }
-                }, 60 * 20L);
+                }, respawnDelay);
         } else if (dead.equals(blackUuid)) {
             blackUuid = null;
             if (blackRespawnTask != null) blackRespawnTask.cancel();
@@ -86,7 +89,7 @@ public class OkgyeonEffect implements AugmentationEffect, Listener {
                     if (owner.isOnline() && Asurajang.getInstance().getGameManager().isRunning()) {
                         spawnBlack();
                     }
-                }, 60 * 20L);
+                }, respawnDelay);
         }
     }
 

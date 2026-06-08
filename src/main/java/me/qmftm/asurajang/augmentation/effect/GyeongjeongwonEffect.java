@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -25,8 +26,6 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
     // 2타 재귀 방지
     private static final Set<UUID> secondaryHit = ConcurrentHashMap.newKeySet();
 
-    private static final long COOLDOWN_MS = 15_000;
-
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
 
@@ -42,13 +41,18 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
         if (secondaryHit.contains(player.getUniqueId())) return;
         if (!(event.getEntity() instanceof LivingEntity target)) return;
 
+        long cooldownMs = AugmentSettings.getLong("DivergentFist", "cooldown-ms", 15_000L);
+        double firstHitMultiplier = AugmentSettings.getDouble("DivergentFist", "first-hit-multiplier", 0.8);
+        double secondHitMultiplier = AugmentSettings.getDouble("DivergentFist", "second-hit-multiplier", 0.4);
+        long delayTicks = AugmentSettings.getLong("DivergentFist", "delay-ticks", 10L);
+
         long now = System.currentTimeMillis();
-        if (now - lastUsed < COOLDOWN_MS) return;
+        if (now - lastUsed < cooldownMs) return;
         lastUsed = now;
         activatedOnThisHit.add(player.getUniqueId());
 
         double original = event.getDamage();
-        event.setDamage(original * 0.8);
+        event.setDamage(original * firstHitMultiplier);
 
         Asurajang plugin = Asurajang.getInstance();
 
@@ -63,9 +67,9 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
                 secondaryHit.add(player.getUniqueId());
                 pendingDoubleKnockback.add(player.getUniqueId());
                 target.setNoDamageTicks(0);
-                target.damage(original * 0.4, player);
+                target.damage(original * secondHitMultiplier, player);
                 secondaryHit.remove(player.getUniqueId());
-            }, 10L);
+            }, delayTicks);
         });
 
         if (cooldownNotifyTask != null) cooldownNotifyTask.cancel();
@@ -76,6 +80,6 @@ public class GyeongjeongwonEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, COOLDOWN_MS / 50);
+        }, cooldownMs / 50);
     }
 }
