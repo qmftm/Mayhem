@@ -38,6 +38,7 @@ public class GameManager {
 
     // 게임이 끝나도 유지되는 설정
     private boolean baseModeEnabled = false;
+    private boolean guardianAttackEnabled = true;
 
     public boolean isBaseModeEnabled() {
         return baseModeEnabled;
@@ -45,6 +46,14 @@ public class GameManager {
 
     public void setBaseModeEnabled(boolean enabled) {
         this.baseModeEnabled = enabled;
+    }
+
+    public boolean isGuardianAttackEnabled() {
+        return guardianAttackEnabled;
+    }
+
+    public void setGuardianAttackEnabled(boolean enabled) {
+        this.guardianAttackEnabled = enabled;
     }
 
     public boolean start(GameMode mode, Player sender) {

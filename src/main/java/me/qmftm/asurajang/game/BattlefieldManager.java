@@ -463,7 +463,9 @@ public class BattlefieldManager implements Listener {
 
         GuardianState state = new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, GUARDIAN_LIVES);
         guardianStates.put(guardian.getUniqueId(), state);
-        state.attackTask = startGuardianAttackLoop(guardian, state);
+        if (Asurajang.getInstance().getGameManager().isGuardianAttackEnabled()) {
+            state.attackTask = startGuardianAttackLoop(guardian, state);
+        }
         for (Player p : Bukkit.getOnlinePlayers()) p.showBossBar(bar);
     }
 

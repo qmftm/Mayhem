@@ -27,6 +27,21 @@ public class GameModeSelectListener implements Listener {
             boolean enabled = !gm.isBaseModeEnabled();
             gm.setBaseModeEnabled(enabled);
             event.getInventory().setItem(GameModeSelectGUI.BASE_MODE_SLOT, GameModeSelectGUI.buildBaseModeItem(enabled));
+            // 기지 모드를 끄면 거점 공격 버튼도 함께 감춘다
+            event.getInventory().setItem(GameModeSelectGUI.GUARDIAN_ATTACK_SLOT, enabled
+                ? GameModeSelectGUI.buildGuardianAttackItem(gm.isGuardianAttackEnabled())
+                : GameModeSelectGUI.backgroundItem());
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, enabled ? 1.4f : 0.8f);
+            return;
+        }
+
+        if (slot == GameModeSelectGUI.GUARDIAN_ATTACK_SLOT) {
+            GameManager gm = Asurajang.getInstance().getGameManager();
+            if (!gm.isBaseModeEnabled()) return; // 기지 모드가 꺼져 있으면 보이지 않는 버튼이므로 무시
+
+            boolean enabled = !gm.isGuardianAttackEnabled();
+            gm.setGuardianAttackEnabled(enabled);
+            event.getInventory().setItem(GameModeSelectGUI.GUARDIAN_ATTACK_SLOT, GameModeSelectGUI.buildGuardianAttackItem(enabled));
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, enabled ? 1.4f : 0.8f);
             return;
         }

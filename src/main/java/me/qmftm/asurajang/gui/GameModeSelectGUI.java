@@ -19,15 +19,20 @@ public class GameModeSelectGUI implements InventoryHolder {
     public static final int TEAM_SLOT = 11;
     public static final int SOLO_SLOT = 15;
     public static final int BASE_MODE_SLOT = 22;
+    public static final int GUARDIAN_ATTACK_SLOT = 23;
 
     private static final ItemStack BACKGROUND = buildBackground();
 
     private final Inventory inventory;
 
-    public GameModeSelectGUI(boolean baseModeEnabled) {
+    public GameModeSelectGUI(boolean baseModeEnabled, boolean guardianAttackEnabled) {
         this.inventory = Bukkit.createInventory(this, 36, Component.text("게임 모드 선택"));
         fillBackground();
-        populate(baseModeEnabled);
+        populate(baseModeEnabled, guardianAttackEnabled);
+    }
+
+    public static ItemStack backgroundItem() {
+        return BACKGROUND;
     }
 
     private static ItemStack buildBackground() {
@@ -44,7 +49,7 @@ public class GameModeSelectGUI implements InventoryHolder {
         }
     }
 
-    private void populate(boolean baseModeEnabled) {
+    private void populate(boolean baseModeEnabled, boolean guardianAttackEnabled) {
         inventory.setItem(TEAM_SLOT, buildChoice(
             Material.MUSIC_DISC_PRECIPICE,
             Component.text("팀전", NamedTextColor.GREEN),
@@ -63,6 +68,10 @@ public class GameModeSelectGUI implements InventoryHolder {
             )
         ));
         inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseModeEnabled));
+        // 거점 공격 버튼은 기지 모드가 켜져 있을 때만 노출
+        if (baseModeEnabled) {
+            inventory.setItem(GUARDIAN_ATTACK_SLOT, buildGuardianAttackItem(guardianAttackEnabled));
+        }
     }
 
     public static ItemStack buildBaseModeItem(boolean enabled) {
@@ -73,6 +82,23 @@ public class GameModeSelectGUI implements InventoryHolder {
                 Component.text("팀 진영에 거점이 세워지고", NamedTextColor.GRAY),
                 Component.text("거점을 지키는 가디언을 쓰러뜨리면 거점이 파괴됩니다.", NamedTextColor.GRAY),
                 Component.text("팀전을 선택했을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
+                Component.empty(),
+                Component.text("현재: ", NamedTextColor.GRAY)
+                    .append(enabled
+                        ? Component.text("켜짐", NamedTextColor.GREEN)
+                        : Component.text("꺼짐", NamedTextColor.RED))
+            )
+        );
+    }
+
+    public static ItemStack buildGuardianAttackItem(boolean enabled) {
+        return buildChoice(
+            enabled ? Material.SPECTRAL_ARROW : Material.ARROW,
+            Component.text("거점 공격", NamedTextColor.LIGHT_PURPLE),
+            List.of(
+                Component.text("거점 가디언이 범위 안에 들어온 상대팀을", NamedTextColor.GRAY),
+                Component.text("투사체로 직접 공격할지 정합니다.", NamedTextColor.GRAY),
+                Component.text("기지 모드를 켰을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
                 Component.empty(),
                 Component.text("현재: ", NamedTextColor.GRAY)
                     .append(enabled
