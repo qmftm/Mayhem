@@ -3,7 +3,7 @@ package me.qmftm.asurajang.augmentation;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BoogieWoogieEffect;
 import me.qmftm.asurajang.augmentation.effect.UnbreakableEffect;
-import me.qmftm.asurajang.augmentation.effect.ImmortalEffect;
+import me.qmftm.asurajang.augmentation.effect.UnRuinEffect;
 import me.qmftm.asurajang.augmentation.effect.SaturatedFatEffect;
 import me.qmftm.asurajang.augmentation.effect.DivineLoveEffect;
 import me.qmftm.asurajang.augmentation.effect.WindBurstEffect;
@@ -56,7 +56,7 @@ public class AugmentationRegistry {
         REGISTRY.put("WindBurst",     WindBurstEffect::new);
         REGISTRY.put("DivineLove",    DivineLoveEffect::new);
         REGISTRY.put("Unbreakable",   UnbreakableEffect::new);
-        REGISTRY.put("Immortal",      ImmortalEffect::new);
+        REGISTRY.put("UnRuin",        UnRuinEffect::new);
         REGISTRY.put("SaturatedFat",  SaturatedFatEffect::new);
     }
 

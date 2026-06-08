@@ -18,7 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ImmortalEffect implements AugmentationEffect, Listener {
+public class UnRuinEffect implements AugmentationEffect, Listener {
 
     private Player owner;
 
@@ -40,7 +40,7 @@ public class ImmortalEffect implements AugmentationEffect, Listener {
         if (!(event.getEntity() instanceof Player player) || !player.equals(owner)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (player.getHealth() - event.getFinalDamage() > 0) return;
-        if (ThreadLocalRandom.current().nextDouble() >= AugmentSettings.getDouble("Immortal", "revive-chance", 0.35)) return;
+        if (ThreadLocalRandom.current().nextDouble() >= AugmentSettings.getDouble("UnRuin", "revive-chance", 0.35)) return;
 
         event.setCancelled(true);
         revive(player);
@@ -68,7 +68,7 @@ public class ImmortalEffect implements AugmentationEffect, Listener {
         Location deathLoc = player.getLocation().clone();
         ThreadLocalRandom rng = ThreadLocalRandom.current();
         double angle = rng.nextDouble() * Math.PI * 2;
-        double dist  = rng.nextDouble() * AugmentSettings.getDouble("Immortal", "revive-radius", 10.0);
+        double dist  = rng.nextDouble() * AugmentSettings.getDouble("UnRuin", "revive-radius", 10.0);
 
         Location target = deathLoc.clone().add(Math.cos(angle) * dist, 0, Math.sin(angle) * dist);
         target = clampToBorder(target);
@@ -76,7 +76,7 @@ public class ImmortalEffect implements AugmentationEffect, Listener {
         target.setYaw(deathLoc.getYaw());
         target.setPitch(deathLoc.getPitch());
 
-        double reviveHealthFraction = AugmentSettings.getDouble("Immortal", "revive-health-fraction", 0.5);
+        double reviveHealthFraction = AugmentSettings.getDouble("UnRuin", "revive-health-fraction", 0.5);
         player.setHealth(Math.max(1.0, player.getMaxHealth() * reviveHealthFraction));
         player.teleport(target);
 

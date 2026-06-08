@@ -88,7 +88,7 @@ augment:
       description:
         - "아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다."
 
-    Immortal:
+    UnRuin:
       display-name: "불멸"
       icon: TOTEM_OF_UNDYING
       color: gold
@@ -235,7 +235,7 @@ augment:
     Unbreakable:
       negate-chance: 0.75
 
-    Immortal:
+    UnRuin:
       revive-chance: 0.35
       revive-radius: 10.0
       revive-health-fraction: 0.5
