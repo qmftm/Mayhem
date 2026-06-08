@@ -25,6 +25,11 @@ public class DefaultKit {
         List.of("우클릭으로 증강을 선택합니다.")
     );
 
+    private static final ItemStack PRISM_AUG_BUTTON = buildItem(
+        Material.PRISMARINE_CRYSTALS, "프리즘 증강 선택", NamedTextColor.LIGHT_PURPLE,
+        List.of("우클릭으로 프리즘 증강을 선택합니다.")
+    );
+
     public static void apply(Player player) {
         // 체력·배고픔 완전 회복
         AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
@@ -41,6 +46,7 @@ public class DefaultKit {
         inv.setBoots(new ItemStack(Material.LEATHER_BOOTS));
 
         inv.setItem(0, new ItemStack(Material.WOODEN_SWORD));
+        inv.setItem(6, PRISM_AUG_BUTTON.clone());
         inv.setItem(7, SHOP_BUTTON.clone());
         inv.setItem(8, AUG_BUTTON.clone());
     }

@@ -41,6 +41,10 @@ public class HotbarButtonListener implements Listener {
         } else if (item.getType() == Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE && "증강 선택".equals(name)) {
             event.setCancelled(true);
             Asurajang.getInstance().openAugmentationSelect(player);
+
+        } else if (item.getType() == Material.PRISMARINE_CRYSTALS && "프리즘 증강 선택".equals(name)) {
+            event.setCancelled(true);
+            Asurajang.getInstance().openPrismAugmentationSelect(player);
         }
     }
 

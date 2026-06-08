@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
 import me.qmftm.asurajang.gui.DebugAugGiveGUI;
+import me.qmftm.asurajang.gui.PrismAugmentationSelectGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -18,6 +19,12 @@ public class AugmentationSelectListener implements Listener {
     @EventHandler
     public void onListClick(InventoryClickEvent event) {
         if (!(event.getInventory().getHolder() instanceof AugmentationListGUI)) return;
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPrismSelectClick(InventoryClickEvent event) {
+        if (!(event.getInventory().getHolder() instanceof PrismAugmentationSelectGUI)) return;
         event.setCancelled(true);
     }
 

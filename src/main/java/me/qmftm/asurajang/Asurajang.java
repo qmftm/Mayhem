@@ -10,6 +10,7 @@ import me.qmftm.asurajang.game.GameScoreboardManager;
 import me.qmftm.asurajang.game.MaxHealthManager;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
+import me.qmftm.asurajang.gui.PrismAugmentationSelectGUI;
 import me.qmftm.asurajang.listener.AugmentationEffectListener;
 import me.qmftm.asurajang.listener.AugmentationSelectListener;
 import me.qmftm.asurajang.listener.GameModeSelectListener;
@@ -86,6 +87,11 @@ public final class Asurajang extends JavaPlugin {
             .filter(aug -> !owned.contains(aug.getId()))
             .toList();
         new AugmentationSelectGUI(available).open(player);
+    }
+
+    // 프리즘 증강 선택 메뉴 오픈 (프리즘 증강 자체는 아직 미구현)
+    public void openPrismAugmentationSelect(Player player) {
+        new PrismAugmentationSelectGUI().open(player);
     }
 
     public void openAugmentationList(Player player) {
