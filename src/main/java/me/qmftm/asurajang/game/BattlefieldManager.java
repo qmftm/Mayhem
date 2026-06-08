@@ -95,7 +95,7 @@ public class BattlefieldManager implements Listener {
     private static final int GUARDIAN_RECOVERY_SECONDS = 20; // 체력 소진 후 공격 불가 + 회복까지 걸리는 시간
 
     private static final double GUARDIAN_AGGRO_RANGE = 16.0; // 적팀 탐지 범위 (블록)
-    private static final double GUARDIAN_PROJECTILE_DAMAGE = 4.0; // 투사체 1회 명중 피해량
+    private static final double GUARDIAN_PROJECTILE_DAMAGE = 5.0; // 투사체 1회 명중 피해량
     private static final double GUARDIAN_PROJECTILE_SPEED = 1.1; // 투사체 이동 속도 (블록/틱)
     private static final double GUARDIAN_PROJECTILE_HIT_RADIUS = 1.0; // 명중 판정 반경
     private static final int GUARDIAN_PROJECTILE_MAX_LIFE_TICKS = 100; // 투사체 최대 생존 시간 (5초, 표적 이탈 시 안전 소멸)
