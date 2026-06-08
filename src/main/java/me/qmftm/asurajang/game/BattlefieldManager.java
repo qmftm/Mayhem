@@ -5,9 +5,12 @@ import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
@@ -23,6 +26,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -89,6 +94,14 @@ public class BattlefieldManager implements Listener {
     private static final int GUARDIAN_LIVES = GUARDIAN_LIFE_HEALTH.length; // 거점 라이프 수
     private static final int GUARDIAN_RECOVERY_SECONDS = 20; // 체력 소진 후 공격 불가 + 회복까지 걸리는 시간
 
+    private static final double GUARDIAN_AGGRO_RANGE = 16.0; // 적팀 탐지 범위 (블록)
+    private static final double GUARDIAN_PROJECTILE_DAMAGE = 6.0; // 투사체 1회 명중 피해량
+    private static final double GUARDIAN_PROJECTILE_SPEED = 1.1; // 투사체 이동 속도 (블록/틱)
+    private static final double GUARDIAN_PROJECTILE_HIT_RADIUS = 1.0; // 명중 판정 반경
+    private static final int GUARDIAN_PROJECTILE_MAX_LIFE_TICKS = 100; // 투사체 최대 생존 시간 (5초, 표적 이탈 시 안전 소멸)
+    private static final long GUARDIAN_ATTACK_TICK_PERIOD = 5L; // 공격 루프가 표적/쿨다운을 점검하는 주기
+    private static final long[] GUARDIAN_ATTACK_INTERVAL_TICKS = {50L, 35L, 20L}; // 라이프 단계별 공격 주기 (라이프가 회복될수록 더 빨라짐: 2.5s -> 1.75s -> 1s)
+
     private static final class GuardianState {
         final BossBar bar;
         final String teamLabel;
@@ -97,6 +110,8 @@ public class BattlefieldManager implements Listener {
         final int teamIndex;
         int lives;
         boolean recovering;
+        @Nullable BukkitTask attackTask;
+        int attackCooldownTicks;
 
         GuardianState(BossBar bar, String teamLabel, NamedTextColor color, BossBar.Color barColor, int teamIndex, int lives) {
             this.bar = bar;
@@ -446,8 +461,113 @@ public class BattlefieldManager implements Listener {
             guardianBarTitle(teamLabel, initialHealth, initialHealth, nameColor),
             1.0f, barColor, BossBar.Overlay.NOTCHED_10);
 
-        guardianStates.put(guardian.getUniqueId(), new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, GUARDIAN_LIVES));
+        GuardianState state = new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, GUARDIAN_LIVES);
+        guardianStates.put(guardian.getUniqueId(), state);
+        state.attackTask = startGuardianAttackLoop(guardian, state);
         for (Player p : Bukkit.getOnlinePlayers()) p.showBossBar(bar);
+    }
+
+    // 거점 라이프 단계에 맞는 주기로 어그로 범위 내 상대팀을 탐지해 투사체를 발사하는 루프
+    private BukkitTask startGuardianAttackLoop(LivingEntity guardian, GuardianState state) {
+        state.attackCooldownTicks = currentAttackInterval(state);
+        return Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), task -> {
+            if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
+                task.cancel();
+                return;
+            }
+            if (state.recovering) return;
+
+            state.attackCooldownTicks -= GUARDIAN_ATTACK_TICK_PERIOD;
+            if (state.attackCooldownTicks > 0) return;
+
+            Player target = findNearestEnemy(guardian, state.teamIndex);
+            if (target == null) {
+                state.attackCooldownTicks = GUARDIAN_ATTACK_TICK_PERIOD;
+                return;
+            }
+
+            fireGuardianProjectile(guardian, target, state);
+            state.attackCooldownTicks = currentAttackInterval(state);
+        }, 20L, GUARDIAN_ATTACK_TICK_PERIOD);
+    }
+
+    // 현재 라이프 단계의 공격 주기를 반환 (체력이 늘어난 단계일수록 더 빠르게 공격)
+    private static long currentAttackInterval(GuardianState state) {
+        int stage = Math.max(0, Math.min(GUARDIAN_LIVES - state.lives, GUARDIAN_ATTACK_INTERVAL_TICKS.length - 1));
+        return GUARDIAN_ATTACK_INTERVAL_TICKS[stage];
+    }
+
+    // 어그로 범위 안에서 가장 가까운 상대팀 플레이어를 찾는다 (관전·크리에이티브·아군·미배정 제외)
+    @Nullable
+    private Player findNearestEnemy(LivingEntity guardian, int defenderTeam) {
+        GameManager gm = Asurajang.getInstance().getGameManager();
+        Player nearest = null;
+        double nearestDistSq = GUARDIAN_AGGRO_RANGE * GUARDIAN_AGGRO_RANGE;
+
+        for (Player p : guardian.getWorld().getPlayers()) {
+            if (p.getGameMode() == GameMode.SPECTATOR || p.getGameMode() == GameMode.CREATIVE) continue;
+            int team = gm.getTeam(p.getUniqueId());
+            if (team == defenderTeam || team == -1) continue;
+
+            double distSq = p.getLocation().distanceSquared(guardian.getLocation());
+            if (distSq <= nearestDistSq) {
+                nearest = p;
+                nearestDistSq = distSq;
+            }
+        }
+        return nearest;
+    }
+
+    // 표적을 향해 유도되는 빛의 탄환을 발사 (틱마다 위치를 갱신하는 파티클 기반 커스텀 투사체)
+    private void fireGuardianProjectile(LivingEntity guardian, Player target, GuardianState state) {
+        World world = guardian.getWorld();
+        Location current = guardian.getLocation().add(0, 0.5, 0);
+        Particle.DustOptions dust = new Particle.DustOptions(
+            state.teamIndex == 0 ? Color.fromRGB(255, 70, 70) : Color.fromRGB(80, 130, 255), 1.2f);
+
+        world.playSound(current, Sound.ENTITY_BLAZE_SHOOT, 1.0f, state.teamIndex == 0 ? 0.7f : 1.3f);
+
+        int defenderTeam = state.teamIndex;
+        int[] elapsed = { 0 };
+
+        Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), projTask -> {
+            if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())
+                || elapsed[0]++ > GUARDIAN_PROJECTILE_MAX_LIFE_TICKS) {
+                projTask.cancel();
+                return;
+            }
+            if (!target.isOnline() || target.isDead() || target.getGameMode() == GameMode.SPECTATOR) {
+                projTask.cancel();
+                return;
+            }
+
+            Vector toTarget = target.getEyeLocation().toVector().subtract(current.toVector());
+            double distance = toTarget.length();
+            if (distance <= GUARDIAN_PROJECTILE_HIT_RADIUS) {
+                applyGuardianProjectileHit(guardian, target, defenderTeam);
+                world.spawnParticle(Particle.FLASH, current, 1);
+                world.playSound(current, Sound.ENTITY_SHULKER_BULLET_HIT, 1.0f, 1.0f);
+                projTask.cancel();
+                return;
+            }
+
+            current.add(toTarget.normalize().multiply(GUARDIAN_PROJECTILE_SPEED));
+
+            if (current.getBlock().getType().isSolid()) {
+                world.spawnParticle(Particle.CRIT, current, 6, 0.1, 0.1, 0.1, 0.05);
+                projTask.cancel();
+                return;
+            }
+
+            world.spawnParticle(Particle.DUST, current, 3, 0.05, 0.05, 0.05, 0.0, dust);
+        }, 0L, 1L);
+    }
+
+    // 명중 시 피해 적용 (혹시 모를 팀 오인 명중을 한 번 더 차단하는 안전장치)
+    private void applyGuardianProjectileHit(LivingEntity guardian, Player target, int defenderTeam) {
+        if (target.getGameMode() == GameMode.SPECTATOR) return;
+        if (Asurajang.getInstance().getGameManager().getTeam(target.getUniqueId()) == defenderTeam) return;
+        target.damage(GUARDIAN_PROJECTILE_DAMAGE, guardian);
     }
 
     private static Component guardianBarTitle(String teamLabel, double health, double maxHealth, NamedTextColor color) {
@@ -508,6 +628,7 @@ public class BattlefieldManager implements Listener {
     public void onGuardianDeath(EntityDeathEvent event) {
         GuardianState state = guardianStates.remove(event.getEntity().getUniqueId());
         if (state == null) return;
+        if (state.attackTask != null) state.attackTask.cancel();
         for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
     }
 
@@ -528,6 +649,7 @@ public class BattlefieldManager implements Listener {
         if (state.lives <= 0) {
             Bukkit.broadcast(Component.text("[아수라장] ", NamedTextColor.GOLD)
                 .append(Component.text(state.teamLabel + " 거점이 파괴되었습니다!", state.color)));
+            if (state.attackTask != null) state.attackTask.cancel();
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             guardianStates.remove(guardian.getUniqueId());
             guardian.remove();
@@ -584,7 +706,9 @@ public class BattlefieldManager implements Listener {
     // 게임 시작/종료 시 잔여 거점 히트박스와 보스바를 정리
     private void clearBaseGuardians() {
         for (Map.Entry<UUID, GuardianState> entry : guardianStates.entrySet()) {
-            for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(entry.getValue().bar);
+            GuardianState state = entry.getValue();
+            if (state.attackTask != null) state.attackTask.cancel();
+            for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             Entity entity = Bukkit.getEntity(entry.getKey());
             if (entity != null) entity.remove();
         }
