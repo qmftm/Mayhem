@@ -48,12 +48,19 @@ public class GameModeSelectGUI implements InventoryHolder {
         inventory.setItem(TEAM_SLOT, buildChoice(
             Material.MUSIC_DISC_PRECIPICE,
             Component.text("팀전", NamedTextColor.GREEN),
-            Component.text("팀을 나눠 싸우는 모드", NamedTextColor.GRAY)
+            List.of(
+                Component.text("레드팀과 블루팀으로 나뉘어 싸웁니다.", NamedTextColor.GRAY),
+                Component.text("같은 팀끼리는 서로 공격할 수 없습니다.", NamedTextColor.GRAY),
+                Component.text("기지 모드를 함께 켤 수 있습니다.", NamedTextColor.DARK_GRAY)
+            )
         ));
         inventory.setItem(SOLO_SLOT, buildChoice(
             Material.BLADE_POTTERY_SHERD,
             Component.text("개인전", NamedTextColor.GOLD),
-            Component.text("혼자 싸우는 모드", NamedTextColor.GRAY)
+            List.of(
+                Component.text("모두가 적이 되어 싸웁니다.", NamedTextColor.GRAY),
+                Component.text("전장 곳곳에 무작위로 흩어져 시작합니다.", NamedTextColor.GRAY)
+            )
         ));
         inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseModeEnabled));
     }
@@ -62,18 +69,26 @@ public class GameModeSelectGUI implements InventoryHolder {
         return buildChoice(
             enabled ? Material.BEACON : Material.OBSIDIAN,
             Component.text("기지 모드", NamedTextColor.AQUA),
-            Component.text("현재: ", NamedTextColor.GRAY)
-                .append(enabled
-                    ? Component.text("켜짐", NamedTextColor.GREEN)
-                    : Component.text("꺼짐", NamedTextColor.RED))
+            List.of(
+                Component.text("팀 진영에 거점이 세워지고", NamedTextColor.GRAY),
+                Component.text("거점을 지키는 가디언을 쓰러뜨리면 거점이 파괴됩니다.", NamedTextColor.GRAY),
+                Component.text("팀전을 선택했을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
+                Component.empty(),
+                Component.text("현재: ", NamedTextColor.GRAY)
+                    .append(enabled
+                        ? Component.text("켜짐", NamedTextColor.GREEN)
+                        : Component.text("꺼짐", NamedTextColor.RED))
+            )
         );
     }
 
-    private static ItemStack buildChoice(Material material, Component name, Component loreLine) {
+    private static ItemStack buildChoice(Material material, Component name, List<Component> loreLines) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         meta.displayName(name.decoration(TextDecoration.ITALIC, false).decoration(TextDecoration.BOLD, true));
-        meta.lore(List.of(loreLine.decoration(TextDecoration.ITALIC, false)));
+        meta.lore(loreLines.stream()
+            .map(line -> line.decoration(TextDecoration.ITALIC, false))
+            .toList());
         item.setItemMeta(meta);
         return item;
     }
