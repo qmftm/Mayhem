@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -48,7 +49,7 @@ public class BlackFlashEffect implements AugmentationEffect {
 
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
-        java.util.List<Double> streakChances = AugmentSettings.getDoubleList("BlackFlash", "streak-chances", java.util.List.of(0.36, 0.18, 0.06));
+        List<Double> streakChances = AugmentSettings.getDoubleList("BlackFlash", "streak-chances", List.of(0.36, 0.18, 0.06));
         double baseChance = AugmentSettings.getDouble("BlackFlash", "base-chance", 0.03);
         int streakReset = AugmentSettings.getInt("BlackFlash", "streak-reset", 3);
 

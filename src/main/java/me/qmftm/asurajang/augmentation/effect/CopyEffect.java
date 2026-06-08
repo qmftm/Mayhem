@@ -15,11 +15,13 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CopyEffect implements AugmentationEffect {
 
+    private int maxCopies;
     private int remainingCopies;
 
     @Override
     public void onActivate(Player player) {
-        remainingCopies = AugmentSettings.getInt("Copy", "max-copies", 3);
+        maxCopies = AugmentSettings.getInt("Copy", "max-copies", 3);
+        remainingCopies = maxCopies;
     }
 
     @Override public void onDeactivate(Player player) {}
@@ -53,7 +55,7 @@ public class CopyEffect implements AugmentationEffect {
         String augName = mgr.get(toGet) != null ? mgr.get(toGet).getDisplayName() : toGet;
         player.sendMessage(Component.text("[모방] ", NamedTextColor.LIGHT_PURPLE)
             .append(Component.text(augName + " 증강을 복사했습니다.", NamedTextColor.GRAY))
-            .append(Component.text(" (남은 모방 횟수: " + remainingCopies + "/" + AugmentSettings.getInt("Copy", "max-copies", 3) + ")", NamedTextColor.DARK_GRAY)));
+            .append(Component.text(" (남은 모방 횟수: " + remainingCopies + "/" + maxCopies + ")", NamedTextColor.DARK_GRAY)));
         player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 1.0f, 1.0f);
     }
 }

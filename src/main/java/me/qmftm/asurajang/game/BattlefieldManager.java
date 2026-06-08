@@ -98,6 +98,7 @@ public class BattlefieldManager implements Listener {
         final NamedTextColor color;
         final BossBar.Color barColor;
         final int teamIndex;
+        final int totalLives;
         int lives;
         boolean recovering;
         @Nullable BukkitTask attackTask;
@@ -109,6 +110,7 @@ public class BattlefieldManager implements Listener {
             this.color = color;
             this.barColor = barColor;
             this.teamIndex = teamIndex;
+            this.totalLives = lives;
             this.lives = lives;
         }
     }
@@ -471,12 +473,12 @@ public class BattlefieldManager implements Listener {
             }
             if (state.recovering) return;
 
-            state.attackCooldownTicks -= NexusSettings.attackTickPeriod();
+            state.attackCooldownTicks -= tickPeriod;
             if (state.attackCooldownTicks > 0) return;
 
             Player target = findNearestEnemy(guardian, state.teamIndex);
             if (target == null) {
-                state.attackCooldownTicks = NexusSettings.attackTickPeriod();
+                state.attackCooldownTicks = tickPeriod;
                 return;
             }
 
@@ -487,9 +489,8 @@ public class BattlefieldManager implements Listener {
 
     // 현재 라이프 단계의 공격 주기를 반환 (체력이 늘어난 단계일수록 더 빠르게 공격)
     private static long currentAttackInterval(GuardianState state) {
-        double[] lifeHealth = NexusSettings.lifeHealth();
         long[] intervals = NexusSettings.attackIntervalTicks();
-        int stage = Math.max(0, Math.min(lifeHealth.length - state.lives, intervals.length - 1));
+        int stage = Math.max(0, Math.min(state.totalLives - state.lives, intervals.length - 1));
         return intervals[stage];
     }
 
@@ -645,8 +646,7 @@ public class BattlefieldManager implements Listener {
     private void updateGuardianBar(LivingEntity guardian, GuardianState state) {
         if (!guardian.isValid() || state.recovering) return;
         var attr = guardian.getAttribute(Attribute.MAX_HEALTH);
-        double[] lifeHealth = NexusSettings.lifeHealth();
-        double max = (attr != null) ? attr.getValue() : lifeHealth[lifeHealth.length - state.lives];
+        double max = (attr != null) ? attr.getValue() : NexusSettings.lifeHealth()[state.totalLives - state.lives];
         double cur = Math.max(0, guardian.getHealth());
         state.bar.progress((float) Math.max(0.0, Math.min(1.0, cur / max)));
         state.bar.name(guardianBarTitle(state.teamLabel, cur, max, state.color));
@@ -673,8 +673,7 @@ public class BattlefieldManager implements Listener {
         state.bar.color(BossBar.Color.WHITE);
 
         // 다음 라이프의 체력은 nexus.guardian.life-health 순서대로 점점 늘어남 (200 -> 300 -> 400)
-        double[] lifeHealth = NexusSettings.lifeHealth();
-        double nextMaxHealth = lifeHealth[lifeHealth.length - state.lives];
+        double nextMaxHealth = NexusSettings.lifeHealth()[state.totalLives - state.lives];
 
         Asurajang plugin = Asurajang.getInstance();
 
