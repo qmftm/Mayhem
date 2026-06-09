@@ -36,6 +36,7 @@ import java.util.Set;
 public final class Asurajang extends JavaPlugin {
 
     public static NamespacedKey PRISM_AUG_KEY;
+    public static NamespacedKey CONSUMABLE_AUG_KEY;
 
     private static Asurajang instance;
     private YamlResource augmentDescriptionConfig;
@@ -59,6 +60,7 @@ public final class Asurajang extends JavaPlugin {
     public void onEnable() {
         instance = this;
         PRISM_AUG_KEY = new NamespacedKey(this, "prism_aug_id");
+        CONSUMABLE_AUG_KEY = new NamespacedKey(this, "consumable_aug_id");
 
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");

@@ -8,6 +8,7 @@ ExecutionerSword:
   color: yellow
   active: true
   cooldown: 299
+  cooldown-on-use: false
   description:
     - "사용 시 날카로움 67, 내구도 1인 금 검을 지급합니다."
     - "재사용 대기시간: 299초"

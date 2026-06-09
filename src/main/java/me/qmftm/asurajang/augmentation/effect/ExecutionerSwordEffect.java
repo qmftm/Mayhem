@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.augmentation.effect;
 
+import me.qmftm.asurajang.Asurajang;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class ExecutionerSwordEffect implements AugmentationEffect {
 
@@ -33,6 +35,9 @@ public class ExecutionerSwordEffect implements AugmentationEffect {
         if (meta instanceof Damageable damageable) {
             damageable.setDamage(Material.GOLDEN_SWORD.getMaxDurability() - 1);
         }
+
+        meta.getPersistentDataContainer().set(
+            Asurajang.CONSUMABLE_AUG_KEY, PersistentDataType.STRING, "ExecutionerSword");
 
         sword.setItemMeta(meta);
         player.getInventory().addItem(sword);

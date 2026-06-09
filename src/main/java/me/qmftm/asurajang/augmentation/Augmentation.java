@@ -10,14 +10,16 @@ public class Augmentation {
     private final boolean prism;
     private final boolean active;
     private final int cooldown;
+    private final boolean cooldownOnUse;
 
-    public Augmentation(String id, String displayName, ItemStack icon, boolean prism, boolean active, int cooldown) {
+    public Augmentation(String id, String displayName, ItemStack icon, boolean prism, boolean active, int cooldown, boolean cooldownOnUse) {
         this.id = id;
         this.displayName = displayName;
         this.icon = icon;
         this.prism = prism;
         this.active = active;
         this.cooldown = cooldown;
+        this.cooldownOnUse = cooldownOnUse;
     }
 
     public String getId() { return id; }
@@ -26,4 +28,5 @@ public class Augmentation {
     public boolean isPrism() { return prism; }
     public boolean isActive() { return active; }
     public int getCooldown() { return cooldown; }
+    public boolean isCooldownOnUse() { return cooldownOnUse; }
 }
