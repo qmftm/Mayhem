@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
@@ -60,6 +61,12 @@ public class PrismItemManager {
                         .getRegistry(RegistryKey.ENCHANTMENT).get(typedKey);
                     if (ench != null) meta.addEnchant(ench, level, true);
                 }
+            }
+
+            if (entry.contains("durability") && meta instanceof Damageable damageable) {
+                int remaining = entry.getInt("durability");
+                int maxDur = material.getMaxDurability();
+                damageable.setDamage(Math.max(0, maxDur - remaining));
             }
 
             stack.setItemMeta(meta);
