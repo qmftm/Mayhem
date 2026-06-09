@@ -44,6 +44,7 @@ public class AugmentationManager {
             NamedTextColor color = NamedTextColor.NAMES.value(colorStr);
             if (color == null) color = NamedTextColor.WHITE;
 
+            boolean prism = entry.getBoolean("prism", false);
             List<String> descLines = entry.getStringList("description");
 
             ItemStack icon = new ItemStack(iconMat);
@@ -60,7 +61,7 @@ public class AugmentationManager {
 
             icon.setItemMeta(meta);
 
-            augmentations.put(id, new Augmentation(id, displayName, icon));
+            augmentations.put(id, new Augmentation(id, displayName, icon, prism));
         }
     }
 
@@ -108,6 +109,10 @@ public class AugmentationManager {
     }
 
     public List<Augmentation> getAll() {
-        return Collections.unmodifiableList(new ArrayList<>(augmentations.values()));
+        return augmentations.values().stream().filter(a -> !a.isPrism()).toList();
+    }
+
+    public List<Augmentation> getPrismAll() {
+        return augmentations.values().stream().filter(Augmentation::isPrism).toList();
     }
 }

@@ -5,7 +5,6 @@ import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
 import me.qmftm.asurajang.gui.DebugAugGiveGUI;
-import me.qmftm.asurajang.gui.PrismAugmentationSelectGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class AugmentationSelectListener implements Listener {
 
@@ -21,30 +19,6 @@ public class AugmentationSelectListener implements Listener {
     public void onListClick(InventoryClickEvent event) {
         if (!(event.getInventory().getHolder() instanceof AugmentationListGUI)) return;
         event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPrismSelectClick(InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof PrismAugmentationSelectGUI gui)) return;
-        event.setCancelled(true);
-
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-
-        ItemStack item = gui.getItemAt(event.getRawSlot());
-        if (item == null) return;
-
-        ItemStack prism = PrismAugmentationSelectGUI.createPrism();
-        if (!player.getInventory().containsAtLeast(prism, 1)) {
-            player.sendMessage(Component.text("[프리즘] 이(가) 부족합니다.", NamedTextColor.RED));
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.5f);
-            return;
-        }
-
-        player.getInventory().removeItem(prism);
-        player.closeInventory();
-        player.getInventory().addItem(item.clone());
-        player.sendMessage(Component.text("[프리즘] 1개를 사용해 아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
-        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
     }
 
     @EventHandler
