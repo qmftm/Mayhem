@@ -1,2 +1,11 @@
 # 프리즘 증강 수치 설정
 # 형식은 augment/config.yml과 동일합니다.
+
+GlassCannon:
+  max-health-multiplier: 0.7
+  fixed-damage-ratio: 0.15
+
+TabDancer:
+  speed-per-stack: 0.02
+  idle-ticks: 100
+  decay-interval-ticks: 2

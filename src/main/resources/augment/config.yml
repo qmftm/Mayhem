@@ -57,15 +57,6 @@ WindBurst:
 DivineDogs:
   respawn-delay-ticks: 1200
 
-GlassCannon:
-  max-health-multiplier: 0.7
-  fixed-damage-ratio: 0.15
-
-TabDancer:
-  speed-per-stack: 0.02
-  idle-ticks: 100
-  decay-interval-ticks: 2
-
 HeavyForce:
   damage-multiplier: 1.2
 

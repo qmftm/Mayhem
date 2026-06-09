@@ -180,6 +180,10 @@ public final class Asurajang extends JavaPlugin {
         return augmentSettingConfig.get();
     }
 
+    public FileConfiguration getPrismSettingConfig() {
+        return prismSettingConfig.get();
+    }
+
     public FileConfiguration getGamemodeConfig() {
         return gamemodeConfig.get();
     }
