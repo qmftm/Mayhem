@@ -4,14 +4,6 @@
 # enchantments: 인챈트 키(소문자 minecraft 이름): 레벨
 # durability: (선택) 남은 내구도
 
-FireSword:
-  material: DIAMOND_SWORD
-  name: "<#FF6A00>화염 검</#FF6A00>"
-  enchantments:
-    sharpness: 2
-    unbreaking: 2
-    fire_aspect: 1
-
 NetheriteHelmet:
   material: NETHERITE_HELMET
   enchantments:
@@ -37,6 +29,14 @@ NetheriteBoots:
     protection: 4
     unbreaking: 3
     feather_falling: 4
+
+FireSword:
+  material: DIAMOND_SWORD
+  name: "<#FF6A00>화염 검</#FF6A00>"
+  enchantments:
+    sharpness: 2
+    unbreaking: 2
+    fire_aspect: 1
 
 KnockbackSword:
   material: DIAMOND_SWORD
