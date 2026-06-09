@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -13,10 +14,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 public class TabDancerEffect implements AugmentationEffect {
-
-    private static final double SPEED_PER_STACK = 0.02;
-    private static final long IDLE_TICKS = 100L;
-    private static final long DECAY_INTERVAL_TICKS = 2L;
 
     private int stacks = 0;
     private BukkitTask idleTimer;
@@ -61,19 +58,21 @@ public class TabDancerEffect implements AugmentationEffect {
     private void resetIdleTimer(Player player) {
         if (idleTimer != null) idleTimer.cancel();
         if (decayTask != null) { decayTask.cancel(); decayTask = null; }
+        long idleTicks = AugmentSettings.getLong("TabDancer", "idle-ticks", 100L);
         idleTimer = Asurajang.getInstance().getServer().getScheduler().runTaskLater(
-            Asurajang.getInstance(), () -> startDecay(player), IDLE_TICKS);
+            Asurajang.getInstance(), () -> startDecay(player), idleTicks);
     }
 
     private void startDecay(Player player) {
         idleTimer = null;
+        long decayInterval = AugmentSettings.getLong("TabDancer", "decay-interval-ticks", 2L);
         decayTask = Asurajang.getInstance().getServer().getScheduler().runTaskTimer(
             Asurajang.getInstance(), () -> {
                 if (!player.isOnline()) { cancelTimers(); return; }
                 if (stacks <= 0) { cancelTimers(); return; }
                 stacks--;
                 updateSpeed(player);
-            }, 0L, DECAY_INTERVAL_TICKS);
+            }, 0L, decayInterval);
     }
 
     private void cancelTimers() {
@@ -95,7 +94,8 @@ public class TabDancerEffect implements AugmentationEffect {
             .findFirst()
             .ifPresent(attr::removeModifier);
         if (stacks > 0) {
-            attr.addModifier(new AttributeModifier(key, SPEED_PER_STACK * stacks, AttributeModifier.Operation.ADD_NUMBER));
+            double speedPerStack = AugmentSettings.getDouble("TabDancer", "speed-per-stack", 0.02);
+            attr.addModifier(new AttributeModifier(key, speedPerStack * stacks, AttributeModifier.Operation.ADD_NUMBER));
         }
     }
 
