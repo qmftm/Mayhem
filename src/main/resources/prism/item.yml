@@ -6,7 +6,7 @@
 
 DiamondSword:
   material: DIAMOND_SWORD
-  name: "<gold>화염 검</gold>"
+  name: "<#FF6A00>화염 검</#FF6A00>"
   enchantments:
     sharpness: 2
     unbreaking: 2
@@ -40,7 +40,7 @@ NetheriteBoots:
 
 KnockbackSword:
   material: DIAMOND_SWORD
-  name: "<aqua>밀치기 검</aqua>"
+  name: "<italic><aqua>밀치기 검</aqua></italic>"
   enchantments:
     knockback: 2
     unbreaking: 3

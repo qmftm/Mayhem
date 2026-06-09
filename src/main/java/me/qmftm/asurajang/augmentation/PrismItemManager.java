@@ -46,8 +46,9 @@ public class PrismItemManager {
 
             String name = entry.getString("name");
             if (name != null) {
-                Component displayName = MiniMessage.miniMessage().deserialize(name)
-                        .decoration(TextDecoration.ITALIC, false);
+                Component displayName = Component.empty()
+                        .decoration(TextDecoration.ITALIC, false)
+                        .append(MiniMessage.miniMessage().deserialize(name));
                 meta.displayName(displayName);
             }
 
