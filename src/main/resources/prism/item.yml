@@ -62,3 +62,11 @@ NetheriteBoots:
     protection: 4
     unbreaking: 3
     feather_falling: 4
+
+NetheriteSword:
+  material: NETHERITE_SWORD
+  enchantments:
+    sharpness: 5
+    unbreaking: 3
+    fire_aspect: 2
+    looting: 3
