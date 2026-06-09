@@ -22,6 +22,7 @@ import me.qmftm.asurajang.listener.PlayerDeathListener;
 import me.qmftm.asurajang.listener.PrismAugItemListener;
 import me.qmftm.asurajang.listener.RewardMessageListener;
 import me.qmftm.asurajang.listener.ShopListener;
+import me.qmftm.asurajang.listener.PlayerMenuListener;
 import me.qmftm.asurajang.listener.StatAnvilListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -44,6 +45,7 @@ public final class Asurajang extends JavaPlugin {
     public static NamespacedKey PRISM_AUG_KEY;
     public static NamespacedKey CONSUMABLE_AUG_KEY;
     public static NamespacedKey STAT_ANVIL_KEY;
+    public static NamespacedKey PLAYER_MENU_KEY;
 
     private static Asurajang instance;
     private YamlResource augmentDescriptionConfig;
@@ -71,6 +73,7 @@ public final class Asurajang extends JavaPlugin {
         PRISM_AUG_KEY = new NamespacedKey(this, "prism_aug_id");
         CONSUMABLE_AUG_KEY = new NamespacedKey(this, "consumable_aug_id");
         STAT_ANVIL_KEY = new NamespacedKey(this, "stat_anvil");
+        PLAYER_MENU_KEY = new NamespacedKey(this, "player_menu");
 
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
@@ -94,6 +97,7 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GameModeSelectListener(), this);
         getServer().getPluginManager().registerEvents(new ShopListener(), this);
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerMenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PrismAugItemListener(), this);
         getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
