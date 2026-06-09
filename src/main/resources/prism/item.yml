@@ -31,6 +31,7 @@ DiamondBoots:
 
 DiamondSword:
   material: DIAMOND_SWORD
+  name: "화염 검"
   enchantments:
     sharpness: 2
     unbreaking: 2
