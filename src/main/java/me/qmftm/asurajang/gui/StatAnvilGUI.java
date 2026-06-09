@@ -17,30 +17,42 @@ import java.util.List;
 public class StatAnvilGUI implements InventoryHolder {
 
     public enum Stat {
-        ATTACK    ("공격력",   Material.IRON_SWORD,      "+2 공격력",      NamedTextColor.RED),
-        DEFENSE   ("방어력",   Material.IRON_CHESTPLATE, "+1 방어력",      NamedTextColor.BLUE),
-        MAX_HEALTH("최대 체력", Material.GOLDEN_APPLE,   "+4 최대 체력",   NamedTextColor.GREEN),
-        SPEED     ("이동속도", Material.FEATHER,          "+0.01 이동속도", NamedTextColor.AQUA);
+        BULKY   ("맷집", Material.HEART_POTTERY_SHERD,    4.0, 0.5, 0.01, NamedTextColor.RED,
+                 List.of("§7+4 최대 체력 (2 하트)", "§7+0.5 공격력", "§7+0.01 이동속도")),
+        STRENGTH("근력", Material.BLADE_POTTERY_SHERD,    1.0, 2.0, 0.01, NamedTextColor.GOLD,
+                 List.of("§7+1 최대 체력 (0.5 하트)", "§7+2 공격력", "§7+0.01 이동속도")),
+        AGILITY ("민첩", Material.EXPLORER_POTTERY_SHERD, 1.0, 0.5, 0.03, NamedTextColor.AQUA,
+                 List.of("§7+1 최대 체력 (0.5 하트)", "§7+0.5 공격력", "§7+0.03 이동속도"));
 
-        private final String displayName;
-        private final Material icon;
-        private final String description;
+        private final String         displayName;
+        private final Material       icon;
+        private final double         hpBonus;
+        private final double         attackBonus;
+        private final double         speedBonus;
         private final NamedTextColor color;
+        private final List<String>   loreLines;
 
-        Stat(String displayName, Material icon, String description, NamedTextColor color) {
+        Stat(String displayName, Material icon, double hpBonus, double attackBonus, double speedBonus,
+             NamedTextColor color, List<String> loreLines) {
             this.displayName = displayName;
             this.icon        = icon;
-            this.description = description;
+            this.hpBonus     = hpBonus;
+            this.attackBonus = attackBonus;
+            this.speedBonus  = speedBonus;
             this.color       = color;
+            this.loreLines   = loreLines;
         }
 
-        public String getDisplayName()  { return displayName; }
-        public Material getIcon()       { return icon; }
-        public String getDescription()  { return description; }
-        public NamedTextColor getColor(){ return color; }
+        public String         getDisplayName() { return displayName; }
+        public Material       getIcon()        { return icon; }
+        public double         getHpBonus()     { return hpBonus; }
+        public double         getAttackBonus() { return attackBonus; }
+        public double         getSpeedBonus()  { return speedBonus; }
+        public NamedTextColor getColor()       { return color; }
+        public List<String>   getLoreLines()   { return loreLines; }
     }
 
-    private static final int[]     STAT_SLOTS = {10, 12, 14, 16};
+    private static final int[]     STAT_SLOTS = {11, 13, 15};
     private static final ItemStack BACKGROUND = buildBackground();
 
     private final Inventory inventory;
@@ -75,7 +87,9 @@ public class StatAnvilGUI implements InventoryHolder {
         ItemStack item = new ItemStack(stat.getIcon());
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(stat.getDisplayName(), stat.getColor()));
-        meta.lore(List.of(Component.text(stat.getDescription(), NamedTextColor.GRAY)));
+        meta.lore(stat.getLoreLines().stream()
+            .map(Component::text)
+            .toList());
         item.setItemMeta(meta);
         return item;
     }

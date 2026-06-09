@@ -22,8 +22,8 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class StatAnvilListener implements Listener {
 
-    private static final String[]    MODIFIER_KEYS  = {"stat_anvil_attack", "stat_anvil_defense", "stat_anvil_speed"};
-    private static final Attribute[] MODIFIER_ATTRS = {Attribute.ATTACK_DAMAGE, Attribute.ARMOR, Attribute.MOVEMENT_SPEED};
+    private static final String KEY_ATTACK = "stat_anvil_attack";
+    private static final String KEY_SPEED  = "stat_anvil_speed";
 
     @EventHandler(priority = EventPriority.LOW)
     public void onRightClick(PlayerInteractEvent event) {
@@ -64,19 +64,13 @@ public class StatAnvilListener implements Listener {
     }
 
     private void applyStat(Player player, StatAnvilGUI.Stat stat) {
-        switch (stat) {
-            case ATTACK     -> addModifier(player, Attribute.ATTACK_DAMAGE,  "stat_anvil_attack",  2.0,  AttributeModifier.Operation.ADD_NUMBER);
-            case DEFENSE    -> addModifier(player, Attribute.ARMOR,           "stat_anvil_defense", 1.0,  AttributeModifier.Operation.ADD_NUMBER);
-            case MAX_HEALTH -> {
-                var mgr = Asurajang.getInstance().getMaxHealthManager();
-                mgr.setBase(player.getUniqueId(), mgr.getBase(player.getUniqueId()) + 4.0);
-            }
-            case SPEED      -> addModifier(player, Attribute.MOVEMENT_SPEED, "stat_anvil_speed",   0.01, AttributeModifier.Operation.ADD_NUMBER);
-        }
+        var mgr = Asurajang.getInstance().getMaxHealthManager();
+        mgr.setBase(player.getUniqueId(), mgr.getBase(player.getUniqueId()) + stat.getHpBonus());
+        addModifier(player, Attribute.ATTACK_DAMAGE,  KEY_ATTACK, stat.getAttackBonus());
+        addModifier(player, Attribute.MOVEMENT_SPEED, KEY_SPEED,  stat.getSpeedBonus());
     }
 
-    private void addModifier(Player player, Attribute attribute, String keyId,
-                             double amount, AttributeModifier.Operation op) {
+    private void addModifier(Player player, Attribute attribute, String keyId, double amount) {
         AttributeInstance inst = player.getAttribute(attribute);
         if (inst == null) return;
         NamespacedKey key = new NamespacedKey(Asurajang.getInstance(), keyId);
@@ -88,18 +82,23 @@ public class StatAnvilListener implements Listener {
             .filter(m -> m.getKey().equals(key))
             .toList()
             .forEach(inst::removeModifier);
-        inst.addModifier(new AttributeModifier(key, prev + amount, op));
+        inst.addModifier(new AttributeModifier(key, prev + amount, AttributeModifier.Operation.ADD_NUMBER));
     }
 
     public void cleanup(Player player) {
-        for (int i = 0; i < MODIFIER_KEYS.length; i++) {
-            AttributeInstance inst = player.getAttribute(MODIFIER_ATTRS[i]);
-            if (inst == null) continue;
-            NamespacedKey key = new NamespacedKey(Asurajang.getInstance(), MODIFIER_KEYS[i]);
-            inst.getModifiers().stream()
-                .filter(m -> m.getKey().equals(key))
-                .toList()
-                .forEach(inst::removeModifier);
-        }
+        removeModifier(player, Attribute.ATTACK_DAMAGE,  KEY_ATTACK);
+        removeModifier(player, Attribute.MOVEMENT_SPEED, KEY_SPEED);
+        AttributeInstance hp = player.getAttribute(Attribute.MAX_HEALTH);
+        if (hp != null) hp.setBaseValue(20.0);
+    }
+
+    private void removeModifier(Player player, Attribute attribute, String keyId) {
+        AttributeInstance inst = player.getAttribute(attribute);
+        if (inst == null) return;
+        NamespacedKey key = new NamespacedKey(Asurajang.getInstance(), keyId);
+        inst.getModifiers().stream()
+            .filter(m -> m.getKey().equals(key))
+            .toList()
+            .forEach(inst::removeModifier);
     }
 }
