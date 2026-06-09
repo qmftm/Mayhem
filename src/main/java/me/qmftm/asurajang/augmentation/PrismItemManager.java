@@ -3,6 +3,9 @@ package me.qmftm.asurajang.augmentation;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,6 +42,11 @@ public class PrismItemManager {
 
             ItemStack stack = new ItemStack(material);
             ItemMeta meta = stack.getItemMeta();
+
+            String name = entry.getString("name");
+            if (name != null) {
+                meta.displayName(Component.text(name, NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+            }
 
             ConfigurationSection enchSection = entry.getConfigurationSection("enchantments");
             if (enchSection != null) {
