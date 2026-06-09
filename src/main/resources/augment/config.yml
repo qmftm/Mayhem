@@ -59,7 +59,7 @@ DivineDogs:
 
 GlassCannon:
   max-health-multiplier: 0.7
-  damage-multiplier: 1.15
+  fixed-damage-ratio: 0.15
 
 HeavyForce:
   damage-multiplier: 1.2

@@ -17,7 +17,7 @@ GlassCannon:
   color: white
   description:
     - "최대 체력이 30% 감소합니다."
-    - "주는 대미지의 15%를 추가로 입힙니다."
+    - "주는 대미지의 15%를 고정 피해로 추가로 입힙니다."
 
 Dropkick:
   display-name: "드롭킥"

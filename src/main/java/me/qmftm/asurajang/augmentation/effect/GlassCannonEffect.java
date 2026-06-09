@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.augmentation.effect;
 
+import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.MaxHealthModifier;
 import org.bukkit.entity.Player;
@@ -17,6 +18,11 @@ public class GlassCannonEffect implements AugmentationEffect {
 
     @Override
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
-        event.setDamage(event.getDamage() * AugmentSettings.getDouble("GlassCannon", "damage-multiplier", 1.15));
+        if (!(event.getEntity() instanceof Player victim)) return;
+        double fixedDamage = event.getDamage() * AugmentSettings.getDouble("GlassCannon", "fixed-damage-ratio", 0.15);
+        Asurajang.getInstance().getServer().getScheduler().runTask(Asurajang.getInstance(), () -> {
+            if (!victim.isOnline() || victim.isDead()) return;
+            victim.setHealth(Math.max(0, victim.getHealth() - fixedDamage));
+        });
     }
 }
