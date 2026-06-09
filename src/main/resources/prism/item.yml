@@ -44,10 +44,3 @@ KnockbackSword:
   enchantments:
     knockback: 2
     unbreaking: 3
-
-ExecutionerSword:
-  material: GOLDEN_SWORD
-  name: "<yellow>처형인의 검</yellow>"
-  durability: 1
-  enchantments:
-    sharpness: 67

@@ -47,6 +47,7 @@ public class AugmentationManager {
 
             List<String> descLines = entry.getStringList("description");
             boolean active = entry.getBoolean("active", false);
+            int cooldown = entry.getInt("cooldown", 30);
 
             ItemStack icon = new ItemStack(iconMat);
             ItemMeta meta = icon.getItemMeta();
@@ -62,7 +63,7 @@ public class AugmentationManager {
 
             icon.setItemMeta(meta);
 
-            augmentations.put(id, new Augmentation(id, displayName, icon, prism, active));
+            augmentations.put(id, new Augmentation(id, displayName, icon, prism, active, cooldown));
         }
     }
 

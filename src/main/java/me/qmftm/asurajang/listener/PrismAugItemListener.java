@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.Augmentation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -20,7 +21,6 @@ import java.util.UUID;
 
 public class PrismAugItemListener implements Listener {
 
-    private static final long COOLDOWN_MS = 30_000L;
     private final Map<UUID, Map<String, Long>> cooldowns = new HashMap<>();
 
     @EventHandler
@@ -39,9 +39,12 @@ public class PrismAugItemListener implements Listener {
 
         event.setCancelled(true);
 
+        Augmentation aug = Asurajang.getInstance().getAugmentationManager().get(augId);
+        long cooldownMs = aug != null ? aug.getCooldown() * 1000L : 30_000L;
+
         long now = System.currentTimeMillis();
         long lastUse = cooldowns.getOrDefault(player.getUniqueId(), Map.of()).getOrDefault(augId, 0L);
-        long remaining = COOLDOWN_MS - (now - lastUse);
+        long remaining = cooldownMs - (now - lastUse);
 
         if (remaining > 0) {
             player.sendMessage(Component.text("쿨타임: " + (remaining / 1000 + 1) + "초 남았습니다.", NamedTextColor.RED));

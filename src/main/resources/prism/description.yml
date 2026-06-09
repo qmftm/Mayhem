@@ -2,6 +2,16 @@
 # 형식은 augment/description.yml과 동일합니다.
 # active: true 이면 아이템 지급 후 우클릭 발동 / false(기본) 이면 즉시 패시브 발동
 
+ExecutionerSword:
+  display-name: "처형인의 검"
+  icon: GOLDEN_SWORD
+  color: yellow
+  active: true
+  cooldown: 299
+  description:
+    - "사용 시 날카로움 67, 내구도 1인 금 검을 지급합니다."
+    - "재사용 대기시간: 299초"
+
 Dropkick:
   display-name: "드롭킥"
   icon: RED_NETHER_BRICKS
