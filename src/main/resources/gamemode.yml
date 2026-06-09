@@ -1,4 +1,8 @@
-# Asurajang 기지 모드(거점·가디언) 설정
+# Asurajang 게임 모드 설정
+
+wild:
+  border-size: 500          # 야생 모드 자기장 최종 크기 (블록)
+  duration-seconds: 1800    # 야생 모드 게임 시간 (초, 기본 30분)
 
 guardian:
   life-health: [200.0, 300.0, 400.0]   # 라이프 1~3회차 체력 (회복할수록 늘어남)

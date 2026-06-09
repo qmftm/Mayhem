@@ -44,7 +44,7 @@ public final class Asurajang extends JavaPlugin {
     private YamlResource prismDescriptionConfig;
     private YamlResource prismSettingConfig;
     private YamlResource prismItemConfig;
-    private YamlResource nexusConfig;
+    private YamlResource gamemodeConfig;
     private AugmentationManager augmentationManager;
     private PrismItemManager prismItemManager;
     private BattlefieldManager battlefieldManager;
@@ -68,7 +68,7 @@ public final class Asurajang extends JavaPlugin {
         prismDescriptionConfig   = new YamlResource(this, "prism/description.yml");
         prismSettingConfig       = new YamlResource(this, "prism/config.yml");
         prismItemConfig          = new YamlResource(this, "prism/item.yml");
-        nexusConfig              = new YamlResource(this, "nexus.yml");
+        gamemodeConfig           = new YamlResource(this, "gamemode.yml");
 
         augmentationManager = new AugmentationManager(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager    = new PrismItemManager(prismItemConfig.get());
@@ -143,14 +143,14 @@ public final class Asurajang extends JavaPlugin {
         new AugmentationListGUI(active, Component.text("내 증강", NamedTextColor.LIGHT_PURPLE)).open(player);
     }
 
-    // augment/, prism/, nexus.yml을 다시 읽어들인다
+    // augment/, prism/, gamemode.yml을 다시 읽어들인다
     public void reloadExtraConfigs() {
         augmentDescriptionConfig.reload();
         augmentSettingConfig.reload();
         prismDescriptionConfig.reload();
         prismSettingConfig.reload();
         prismItemConfig.reload();
-        nexusConfig.reload();
+        gamemodeConfig.reload();
         augmentationManager.reload(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager.reload(prismItemConfig.get());
     }
@@ -163,8 +163,8 @@ public final class Asurajang extends JavaPlugin {
         return augmentSettingConfig.get();
     }
 
-    public FileConfiguration getNexusConfig() {
-        return nexusConfig.get();
+    public FileConfiguration getGamemodeConfig() {
+        return gamemodeConfig.get();
     }
 
     public AugmentationManager getAugmentationManager() {

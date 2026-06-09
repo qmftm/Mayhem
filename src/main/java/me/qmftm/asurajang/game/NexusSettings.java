@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 /**
- * nexus.yml의 guardian.<key> 경로에서 거점 가디언 관련 수치를 읽어오는 유틸리티.
+ * gamemode.yml에서 게임 모드 관련 수치를 읽어오는 유틸리티.
  * 매번 파일에서 직접 읽어오므로 /mayhem reload로 즉시 반영된다.
  */
 public final class NexusSettings {
@@ -15,7 +15,17 @@ public final class NexusSettings {
     }
 
     private static ConfigurationSection guardianSection() {
-        return Asurajang.getInstance().getNexusConfig().getConfigurationSection("guardian");
+        return Asurajang.getInstance().getGamemodeConfig().getConfigurationSection("guardian");
+    }
+
+    public static double wildBorderSize() {
+        ConfigurationSection section = Asurajang.getInstance().getGamemodeConfig().getConfigurationSection("wild");
+        return section == null ? 500.0 : section.getDouble("border-size", 500.0);
+    }
+
+    public static int wildDurationSeconds() {
+        ConfigurationSection section = Asurajang.getInstance().getGamemodeConfig().getConfigurationSection("wild");
+        return section == null ? 1800 : section.getInt("duration-seconds", 1800);
     }
 
     public static double[] lifeHealth() {

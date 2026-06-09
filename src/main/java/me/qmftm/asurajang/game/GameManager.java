@@ -22,8 +22,7 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION      = 900;  // 15분
-    private static final int GAME_DURATION_WILD = 2700; // 야생 모드 45분
+    private static final int GAME_DURATION = 900; // 15분
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -205,7 +204,7 @@ public class GameManager {
             if (state != State.STARTING) return;
 
             state = State.RUNNING;
-            remainingSeconds = (baseMode == BaseMode.WILD) ? GAME_DURATION_WILD : GAME_DURATION;
+            remainingSeconds = (baseMode == BaseMode.WILD) ? NexusSettings.wildDurationSeconds() : GAME_DURATION;
             firstBloodClaimed = false;
 
             BattlefieldManager bm = plugin.getBattlefieldManager();

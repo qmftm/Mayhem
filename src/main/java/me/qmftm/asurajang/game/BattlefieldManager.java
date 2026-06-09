@@ -87,7 +87,6 @@ public class BattlefieldManager implements Listener {
         "바위 봉우리",      NamedTextColor.GRAY
     );
 
-    private static final double BORDER_MIN_SIZE = 16.0; // 야생 모드 자기장 최종 크기
 
     private static final int BASE_SIZE = 3; // 3x1x3 기지 크기
     private static final int BEACON_HEIGHT = 3; // 콘크리트 거점 위 신호기 높이
@@ -340,7 +339,7 @@ public class BattlefieldManager implements Listener {
     public void startBorderShrink(int durationSeconds) {
         if (currentLocation == null) return;
         WorldBorder border = currentLocation.getWorld().getWorldBorder();
-        border.setSize(BORDER_MIN_SIZE, durationSeconds);
+        border.setSize(NexusSettings.wildBorderSize(), durationSeconds);
     }
 
     @Nullable
