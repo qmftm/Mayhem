@@ -21,16 +21,25 @@ public class TabDancerEffect implements AugmentationEffect {
     private int stacks = 0;
     private BukkitTask idleTimer;
     private BukkitTask decayTask;
+    private BukkitTask displayTask;
 
     @Override
     public void onActivate(Player player) {
         stacks = 0;
         removeSpeedModifier(player);
+        displayTask = Asurajang.getInstance().getServer().getScheduler().runTaskTimer(
+            Asurajang.getInstance(), () -> {
+                if (!player.isOnline()) return;
+                if (stacks > 0) {
+                    player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
+                        .decoration(TextDecoration.ITALIC, false));
+                }
+            }, 0L, 2L);
     }
 
     @Override
     public void onDeactivate(Player player) {
-        cancelTimers();
+        cancelAll();
         stacks = 0;
         removeSpeedModifier(player);
     }
@@ -46,8 +55,6 @@ public class TabDancerEffect implements AugmentationEffect {
     public void onDamageAsAttacker(Player player, EntityDamageByEntityEvent event) {
         stacks++;
         updateSpeed(player);
-        player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
-            .decoration(TextDecoration.ITALIC, false));
         resetIdleTimer(player);
     }
 
@@ -72,6 +79,11 @@ public class TabDancerEffect implements AugmentationEffect {
     private void cancelTimers() {
         if (idleTimer != null) { idleTimer.cancel(); idleTimer = null; }
         if (decayTask != null) { decayTask.cancel(); decayTask = null; }
+    }
+
+    private void cancelAll() {
+        cancelTimers();
+        if (displayTask != null) { displayTask.cancel(); displayTask = null; }
     }
 
     private void updateSpeed(Player player) {
