@@ -11,6 +11,15 @@ ExecutionerSword:
     - "날카로움 67, 내구도 1인 금 검을 즉시 지급합니다."
     - "검이 깨지면 299초 후 자동으로 다시 지급됩니다."
 
+TabDancer:
+  display-name: "탭 댄서"
+  icon: LEATHER_BOOTS
+  color: aqua
+  description:
+    - "기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다."
+    - "마지막 중첩을 쌓은 후 5초 이내로 중첩을 쌓지 않으면"
+    - "중첩이 빠르게 감소합니다."
+
 StatPlusPlusPlus:
   display-name: "능력치 더하기 더하기 더하기"
   icon: ANVIL
