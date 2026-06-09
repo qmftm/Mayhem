@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.Augmentation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,10 +24,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-
 public class PrismAugItemListener implements Listener {
 
     private final Map<UUID, Map<String, Long>> cooldowns = new HashMap<>();
+    private final Map<UUID, Map<String, BukkitTask>> respawnTasks = new HashMap<>();
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
@@ -55,7 +57,6 @@ public class PrismAugItemListener implements Listener {
             return;
         }
 
-        // cooldown-on-use: false → 소모 아이템이 깨질 때 쿨타임 시작. 이미 보유 중이면 지급 불가.
         if (aug != null && !aug.isCooldownOnUse()) {
             boolean hasConsumable = Arrays.stream(player.getInventory().getContents())
                 .filter(Objects::nonNull)
@@ -86,11 +87,31 @@ public class PrismAugItemListener implements Listener {
         String augId = meta.getPersistentDataContainer().get(Asurajang.CONSUMABLE_AUG_KEY, PersistentDataType.STRING);
         if (augId == null) return;
 
-        Asurajang.getInstance().getAugmentationManager().deactivateSingle(event.getPlayer(), augId);
+        Augmentation aug = Asurajang.getInstance().getAugmentationManager().get(augId);
+        int cooldownSec = aug != null ? aug.getCooldown() : 30;
+
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        player.sendMessage(Component.text(
+            "[처형인의 검] " + cooldownSec + "초 후에 다시 지급됩니다.", NamedTextColor.GRAY));
+
+        BukkitTask task = Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> {
+            respawnTasks.getOrDefault(uuid, Map.of()).remove(augId);
+            if (!player.isOnline()) return;
+            Asurajang.getInstance().getAugmentationManager().activateFor(player, augId);
+            player.sendMessage(Component.text("[처형인의 검] 지급되었습니다.", NamedTextColor.YELLOW));
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_EYE_DEATH, 1.0f, 1.2f);
+        }, cooldownSec * 20L);
+
+        respawnTasks.computeIfAbsent(uuid, k -> new HashMap<>()).put(augId, task);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        cooldowns.remove(event.getPlayer().getUniqueId());
+        UUID uuid = event.getPlayer().getUniqueId();
+        cooldowns.remove(uuid);
+        Map<String, BukkitTask> tasks = respawnTasks.remove(uuid);
+        if (tasks != null) tasks.values().forEach(BukkitTask::cancel);
     }
 }
