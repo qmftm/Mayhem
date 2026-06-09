@@ -21,11 +21,16 @@ import me.qmftm.asurajang.listener.PlayerDeathListener;
 import me.qmftm.asurajang.listener.PrismAugItemListener;
 import me.qmftm.asurajang.listener.RewardMessageListener;
 import me.qmftm.asurajang.listener.ShopListener;
+import me.qmftm.asurajang.listener.StatAnvilListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public final class Asurajang extends JavaPlugin {
 
     public static NamespacedKey PRISM_AUG_KEY;
     public static NamespacedKey CONSUMABLE_AUG_KEY;
+    public static NamespacedKey STAT_ANVIL_KEY;
 
     private static Asurajang instance;
     private YamlResource augmentDescriptionConfig;
@@ -51,6 +57,7 @@ public final class Asurajang extends JavaPlugin {
     private GameManager gameManager;
     private GameScoreboardManager scoreboardManager;
     private MaxHealthManager maxHealthManager;
+    private StatAnvilListener statAnvilListener;
 
     public static Asurajang getInstance() {
         return instance;
@@ -61,6 +68,7 @@ public final class Asurajang extends JavaPlugin {
         instance = this;
         PRISM_AUG_KEY = new NamespacedKey(this, "prism_aug_id");
         CONSUMABLE_AUG_KEY = new NamespacedKey(this, "consumable_aug_id");
+        STAT_ANVIL_KEY = new NamespacedKey(this, "stat_anvil");
 
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
@@ -77,6 +85,8 @@ public final class Asurajang extends JavaPlugin {
         scoreboardManager   = new GameScoreboardManager();
         maxHealthManager    = new MaxHealthManager();
 
+        statAnvilListener = new StatAnvilListener();
+
         getServer().getPluginManager().registerEvents(new AugmentationSelectListener(), this);
         getServer().getPluginManager().registerEvents(new AugmentationEffectListener(), this);
         getServer().getPluginManager().registerEvents(new GameModeSelectListener(), this);
@@ -85,6 +95,7 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
         getServer().getPluginManager().registerEvents(new PrismAugItemListener(), this);
         getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
+        getServer().getPluginManager().registerEvents(statAnvilListener, this);
         getServer().getPluginManager().registerEvents(battlefieldManager, this);
 
         AsurajangCommand cmd = new AsurajangCommand();
@@ -185,5 +196,19 @@ public final class Asurajang extends JavaPlugin {
 
     public MaxHealthManager getMaxHealthManager() {
         return maxHealthManager;
+    }
+
+    public StatAnvilListener getStatAnvilListener() {
+        return statAnvilListener;
+    }
+
+    public static ItemStack createStatAnvilItem() {
+        ItemStack item = new ItemStack(Material.ANVIL);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text("능력치 모루", NamedTextColor.DARK_PURPLE));
+        meta.lore(List.of(Component.text("우클릭으로 능력치를 강화합니다.", NamedTextColor.GRAY)));
+        meta.getPersistentDataContainer().set(STAT_ANVIL_KEY, PersistentDataType.BYTE, (byte) 1);
+        item.setItemMeta(meta);
+        return item;
     }
 }

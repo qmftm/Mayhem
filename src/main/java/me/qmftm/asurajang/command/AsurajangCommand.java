@@ -101,6 +101,10 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
                     BlackFlashEffect.debugProc ? NamedTextColor.GREEN : NamedTextColor.RED
                 ));
             }
+            case "statvil" -> {
+                player.getInventory().addItem(me.qmftm.asurajang.Asurajang.createStatAnvilItem());
+                sender.sendMessage(Component.text("[DEBUG] 능력치 모루를 지급했습니다.", NamedTextColor.LIGHT_PURPLE));
+            }
             default -> sendDebugUsage(sender);
         }
     }
@@ -110,13 +114,13 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendDebugUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("사용법: /mayhem debug <aug_1|aug_2|proc>", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("사용법: /mayhem debug <aug_1|aug_2|proc|statvil>", NamedTextColor.YELLOW));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) return List.of("start", "stop", "reload", "list", "status", "debug");
-        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "proc");
+        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "proc", "statvil");
         return List.of();
     }
 }
