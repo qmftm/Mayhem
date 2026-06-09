@@ -14,6 +14,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 public class AugmentationSelectListener implements Listener {
 
@@ -61,8 +64,13 @@ public class AugmentationSelectListener implements Listener {
         if (choice != null) {
             player.closeInventory();
             if (choice instanceof PrismChoice.Aug aug) {
-                Asurajang.getInstance().getAugmentationManager().activateFor(player, aug.augmentation().getId());
-                player.sendMessage(Component.text("[" + aug.augmentation().getDisplayName() + "] 증강을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
+                ItemStack augItem = aug.augmentation().getIcon().clone();
+                ItemMeta meta = augItem.getItemMeta();
+                meta.getPersistentDataContainer().set(
+                    Asurajang.PRISM_AUG_KEY, PersistentDataType.STRING, aug.augmentation().getId());
+                augItem.setItemMeta(meta);
+                player.getInventory().addItem(augItem);
+                player.sendMessage(Component.text("[" + aug.augmentation().getDisplayName() + "] 증강 아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
             } else if (choice instanceof PrismChoice.Item item) {
                 player.getInventory().addItem(item.stack().clone());
                 player.sendMessage(Component.text("아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));

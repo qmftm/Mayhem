@@ -18,10 +18,12 @@ import me.qmftm.asurajang.listener.AugmentationSelectListener;
 import me.qmftm.asurajang.listener.GameModeSelectListener;
 import me.qmftm.asurajang.listener.HotbarButtonListener;
 import me.qmftm.asurajang.listener.PlayerDeathListener;
+import me.qmftm.asurajang.listener.PrismAugItemListener;
 import me.qmftm.asurajang.listener.RewardMessageListener;
 import me.qmftm.asurajang.listener.ShopListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,9 +31,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public final class Asurajang extends JavaPlugin {
+
+    public static NamespacedKey PRISM_AUG_KEY;
 
     private static Asurajang instance;
     private YamlResource augmentDescriptionConfig;
@@ -54,6 +57,7 @@ public final class Asurajang extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        PRISM_AUG_KEY = new NamespacedKey(this, "prism_aug_id");
 
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
@@ -76,6 +80,7 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShopListener(), this);
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
+        getServer().getPluginManager().registerEvents(new PrismAugItemListener(), this);
         getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
         getServer().getPluginManager().registerEvents(battlefieldManager, this);
 
@@ -102,11 +107,9 @@ public final class Asurajang extends JavaPlugin {
     }
 
     public void openPrismAugmentationSelect(Player player) {
-        Set<String> owned = augmentationManager.getActiveEffects(player.getUniqueId()).keySet();
         List<PrismChoice> pool = new ArrayList<>();
 
         augmentationManager.getPrismAll().stream()
-            .filter(aug -> !owned.contains(aug.getId()))
             .map(PrismChoice.Aug::new)
             .forEach(pool::add);
 
