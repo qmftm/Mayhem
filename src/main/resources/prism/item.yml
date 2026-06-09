@@ -36,3 +36,29 @@ DiamondSword:
     sharpness: 2
     unbreaking: 2
     fire_aspect: 1
+
+NetheriteHelmet:
+  material: NETHERITE_HELMET
+  enchantments:
+    protection: 4
+    unbreaking: 3
+    respiration: 3
+
+NetheriteChestplate:
+  material: NETHERITE_CHESTPLATE
+  enchantments:
+    protection: 4
+    unbreaking: 3
+
+NetheriteLeggings:
+  material: NETHERITE_LEGGINGS
+  enchantments:
+    protection: 4
+    unbreaking: 3
+
+NetheriteBoots:
+  material: NETHERITE_BOOTS
+  enchantments:
+    protection: 4
+    unbreaking: 3
+    feather_falling: 4
