@@ -77,13 +77,13 @@ public class GameModeSelectGUI implements InventoryHolder {
     public static ItemStack buildBaseModeItem(GameManager.BaseMode mode) {
         Material icon = switch (mode) {
             case BASE -> Material.BEACON;
-            case WILD -> Material.GRASS_BLOCK;
-            case OFF  -> Material.OBSIDIAN;
+            case WILD -> Material.SHORT_GRASS;
+            case OFF  -> Material.GRASS_BLOCK;
         };
         Component stateLabel = switch (mode) {
-            case BASE -> Component.text("기지 모드", NamedTextColor.GREEN);
-            case WILD -> Component.text("야생 모드", NamedTextColor.GREEN);
-            case OFF  -> Component.text("꺼짐",    NamedTextColor.RED);
+            case BASE -> Component.text("기지 모드",    NamedTextColor.GREEN);
+            case WILD -> Component.text("야생 모드",    NamedTextColor.GREEN);
+            case OFF  -> Component.text("기본 게임모드", NamedTextColor.GREEN);
         };
         return buildChoice(
             icon,
