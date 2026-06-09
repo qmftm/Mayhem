@@ -25,6 +25,7 @@ import me.qmftm.asurajang.augmentation.effect.DivineDogsEffect;
 import me.qmftm.asurajang.augmentation.effect.SelfBomberEffect;
 import me.qmftm.asurajang.augmentation.effect.DropkickEffect;
 import me.qmftm.asurajang.augmentation.effect.ExecutionerSwordEffect;
+import me.qmftm.asurajang.augmentation.effect.StatPlusPlusPlusEffect;
 import me.qmftm.asurajang.augmentation.effect.SniperDuelEffect;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,8 +61,9 @@ public class AugmentationRegistry {
         REGISTRY.put("UnBreakable",   UnBreakableEffect::new);
         REGISTRY.put("UnRuin",        UnRuinEffect::new);
         REGISTRY.put("SaturatedFat",  SaturatedFatEffect::new);
-        REGISTRY.put("Dropkick",        DropkickEffect::new);
-        REGISTRY.put("ExecutionerSword", ExecutionerSwordEffect::new);
+        REGISTRY.put("Dropkick",          DropkickEffect::new);
+        REGISTRY.put("ExecutionerSword",  ExecutionerSwordEffect::new);
+        REGISTRY.put("StatPlusPlusPlus",  StatPlusPlusPlusEffect::new);
     }
 
     @Nullable

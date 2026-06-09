@@ -11,6 +11,13 @@ ExecutionerSword:
     - "날카로움 67, 내구도 1인 금 검을 즉시 지급합니다."
     - "검이 깨지면 299초 후 자동으로 다시 지급됩니다."
 
+StatPlusPlusPlus:
+  display-name: "능력치 더하기 더하기 더하기"
+  icon: ANVIL
+  color: dark_purple
+  description:
+    - "능력치 모루 4개를 획득합니다!"
+
 GlassCannon:
   display-name: "유리 대포"
   icon: GLASS_BOTTLE
