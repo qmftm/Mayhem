@@ -53,7 +53,7 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
                     sender.sendMessage(Component.text("이미 게임이 진행 중이거나 준비 중입니다.", NamedTextColor.RED));
                     return true;
                 }
-                new GameModeSelectGUI(plugin.getGameManager().isBaseModeEnabled(), plugin.getGameManager().isGuardianAttackEnabled()).open(player);
+                new GameModeSelectGUI(plugin.getGameManager().getBaseMode(), plugin.getGameManager().isGuardianAttackEnabled()).open(player);
             }
             case "stop" -> {
                 if (!plugin.getGameManager().stop()) {

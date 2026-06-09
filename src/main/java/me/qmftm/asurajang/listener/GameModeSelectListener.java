@@ -24,14 +24,23 @@ public class GameModeSelectListener implements Listener {
 
         if (slot == GameModeSelectGUI.BASE_MODE_SLOT) {
             GameManager gm = Asurajang.getInstance().getGameManager();
-            boolean enabled = !gm.isBaseModeEnabled();
-            gm.setBaseModeEnabled(enabled);
-            event.getInventory().setItem(GameModeSelectGUI.BASE_MODE_SLOT, GameModeSelectGUI.buildBaseModeItem(enabled));
-            // 기지 모드를 끄면 거점 공격 버튼도 함께 감춘다
-            event.getInventory().setItem(GameModeSelectGUI.GUARDIAN_ATTACK_SLOT, enabled
-                ? GameModeSelectGUI.buildGuardianAttackItem(gm.isGuardianAttackEnabled())
-                : GameModeSelectGUI.backgroundItem());
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, enabled ? 1.4f : 0.8f);
+            GameManager.BaseMode next = switch (gm.getBaseMode()) {
+                case OFF  -> GameManager.BaseMode.BASE;
+                case BASE -> GameManager.BaseMode.WILD;
+                case WILD -> GameManager.BaseMode.OFF;
+            };
+            gm.setBaseMode(next);
+            event.getInventory().setItem(GameModeSelectGUI.BASE_MODE_SLOT, GameModeSelectGUI.buildBaseModeItem(next));
+            event.getInventory().setItem(GameModeSelectGUI.GUARDIAN_ATTACK_SLOT,
+                next == GameManager.BaseMode.BASE
+                    ? GameModeSelectGUI.buildGuardianAttackItem(gm.isGuardianAttackEnabled())
+                    : GameModeSelectGUI.backgroundItem());
+            float pitch = switch (next) {
+                case BASE -> 1.4f;
+                case WILD -> 1.1f;
+                case OFF  -> 0.8f;
+            };
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, pitch);
             return;
         }
 

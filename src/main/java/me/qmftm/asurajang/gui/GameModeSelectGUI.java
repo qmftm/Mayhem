@@ -25,10 +25,10 @@ public class GameModeSelectGUI implements InventoryHolder {
 
     private final Inventory inventory;
 
-    public GameModeSelectGUI(boolean baseModeEnabled, boolean guardianAttackEnabled) {
+    public GameModeSelectGUI(GameManager.BaseMode baseMode, boolean guardianAttackEnabled) {
         this.inventory = Bukkit.createInventory(this, 36, Component.text("게임 모드 선택"));
         fillBackground();
-        populate(baseModeEnabled, guardianAttackEnabled);
+        populate(baseMode, guardianAttackEnabled);
     }
 
     public static ItemStack backgroundItem() {
@@ -49,7 +49,7 @@ public class GameModeSelectGUI implements InventoryHolder {
         }
     }
 
-    private void populate(boolean baseModeEnabled, boolean guardianAttackEnabled) {
+    private void populate(GameManager.BaseMode baseMode, boolean guardianAttackEnabled) {
         inventory.setItem(TEAM_SLOT, buildChoice(
             Material.MUSIC_DISC_PRECIPICE,
             Component.text("팀전", NamedTextColor.GREEN),
@@ -67,26 +67,33 @@ public class GameModeSelectGUI implements InventoryHolder {
                 Component.text("전장 곳곳에 무작위로 흩어져 시작합니다.", NamedTextColor.GRAY)
             )
         ));
-        inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseModeEnabled));
-        // 거점 공격 버튼은 기지 모드가 켜져 있을 때만 노출
-        if (baseModeEnabled) {
+        inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseMode));
+        // 거점 공격 버튼은 기지 모드일 때만 노출
+        if (baseMode == GameManager.BaseMode.BASE) {
             inventory.setItem(GUARDIAN_ATTACK_SLOT, buildGuardianAttackItem(guardianAttackEnabled));
         }
     }
 
-    public static ItemStack buildBaseModeItem(boolean enabled) {
+    public static ItemStack buildBaseModeItem(GameManager.BaseMode mode) {
+        Material icon = switch (mode) {
+            case BASE -> Material.BEACON;
+            case WILD -> Material.GRASS_BLOCK;
+            case OFF  -> Material.OBSIDIAN;
+        };
+        Component stateLabel = switch (mode) {
+            case BASE -> Component.text("기지 모드", NamedTextColor.GREEN);
+            case WILD -> Component.text("야생 모드", NamedTextColor.GREEN);
+            case OFF  -> Component.text("꺼짐",    NamedTextColor.RED);
+        };
         return buildChoice(
-            enabled ? Material.BEACON : Material.OBSIDIAN,
+            icon,
             Component.text("기지 모드", NamedTextColor.AQUA),
             List.of(
-                Component.text("팀 진영에 거점이 세워지고", NamedTextColor.GRAY),
-                Component.text("거점을 지키는 가디언을 쓰러뜨리면 거점이 파괴됩니다.", NamedTextColor.GRAY),
+                Component.text("기지 모드: 팀 진영에 거점과 가디언이 세워집니다.", NamedTextColor.GRAY),
+                Component.text("야생 모드: 거점 없이 팀전이 진행됩니다.", NamedTextColor.GRAY),
                 Component.text("팀전을 선택했을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
                 Component.empty(),
-                Component.text("현재: ", NamedTextColor.GRAY)
-                    .append(enabled
-                        ? Component.text("켜짐", NamedTextColor.GREEN)
-                        : Component.text("꺼짐", NamedTextColor.RED))
+                Component.text("현재: ", NamedTextColor.GRAY).append(stateLabel)
             )
         );
     }

@@ -26,6 +26,7 @@ public class GameManager {
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
+    public enum BaseMode { OFF, BASE, WILD }
 
     private State state = State.WAITING;
     private GameMode gameMode = GameMode.SOLO;
@@ -37,15 +38,19 @@ public class GameManager {
     private boolean firstBloodClaimed = false;
 
     // 게임이 끝나도 유지되는 설정
-    private boolean baseModeEnabled = false;
+    private BaseMode baseMode = BaseMode.OFF;
     private boolean guardianAttackEnabled = true;
 
-    public boolean isBaseModeEnabled() {
-        return baseModeEnabled;
+    public BaseMode getBaseMode() {
+        return baseMode;
     }
 
-    public void setBaseModeEnabled(boolean enabled) {
-        this.baseModeEnabled = enabled;
+    public void setBaseMode(BaseMode mode) {
+        this.baseMode = mode;
+    }
+
+    public boolean isBaseModeEnabled() {
+        return baseMode == BaseMode.BASE;
     }
 
     public boolean isGuardianAttackEnabled() {
@@ -225,8 +230,8 @@ public class GameManager {
                 snapshots.put(p.getUniqueId(), new PlayerInventorySnapshot(p));
                 DefaultKit.apply(p);
                 Location spawn;
-                if (gameMode == GameMode.TEAM) {
-                    spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0), baseModeEnabled);
+                if (gameMode == GameMode.TEAM && baseMode == BaseMode.BASE) {
+                    spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0), true);
                 } else {
                     spawn = bm.getRandomSpawn();
                 }
