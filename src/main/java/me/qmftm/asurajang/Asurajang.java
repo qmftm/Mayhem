@@ -2,6 +2,8 @@ package me.qmftm.asurajang;
 
 import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.PrismChoice;
+import me.qmftm.asurajang.augmentation.PrismItemManager;
 import me.qmftm.asurajang.command.AsurajangCommand;
 import me.qmftm.asurajang.config.YamlResource;
 import me.qmftm.asurajang.game.BattlefieldManager;
@@ -10,6 +12,7 @@ import me.qmftm.asurajang.game.GameScoreboardManager;
 import me.qmftm.asurajang.game.MaxHealthManager;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
+import me.qmftm.asurajang.gui.PrismAugmentationSelectGUI;
 import me.qmftm.asurajang.listener.AugmentationEffectListener;
 import me.qmftm.asurajang.listener.AugmentationSelectListener;
 import me.qmftm.asurajang.listener.GameModeSelectListener;
@@ -23,6 +26,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -32,8 +36,12 @@ public final class Asurajang extends JavaPlugin {
     private static Asurajang instance;
     private YamlResource augmentDescriptionConfig;
     private YamlResource augmentSettingConfig;
+    private YamlResource prismDescriptionConfig;
+    private YamlResource prismSettingConfig;
+    private YamlResource prismItemConfig;
     private YamlResource nexusConfig;
     private AugmentationManager augmentationManager;
+    private PrismItemManager prismItemManager;
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
     private GameScoreboardManager scoreboardManager;
@@ -50,12 +58,17 @@ public final class Asurajang extends JavaPlugin {
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
         augmentSettingConfig     = new YamlResource(this, "augment/setting.yml");
+        prismDescriptionConfig   = new YamlResource(this, "prism/description.yml");
+        prismSettingConfig       = new YamlResource(this, "prism/setting.yml");
+        prismItemConfig          = new YamlResource(this, "prism/item.yml");
         nexusConfig              = new YamlResource(this, "nexus.yml");
-        augmentationManager  = new AugmentationManager(augmentDescriptionConfig.get());
-        battlefieldManager   = new BattlefieldManager();
-        gameManager          = new GameManager();
-        scoreboardManager    = new GameScoreboardManager();
-        maxHealthManager     = new MaxHealthManager();
+
+        augmentationManager = new AugmentationManager(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
+        prismItemManager    = new PrismItemManager(prismItemConfig.get());
+        battlefieldManager  = new BattlefieldManager();
+        gameManager         = new GameManager();
+        scoreboardManager   = new GameScoreboardManager();
+        maxHealthManager    = new MaxHealthManager();
 
         getServer().getPluginManager().registerEvents(new AugmentationSelectListener(), this);
         getServer().getPluginManager().registerEvents(new AugmentationEffectListener(), this);
@@ -90,10 +103,16 @@ public final class Asurajang extends JavaPlugin {
 
     public void openPrismAugmentationSelect(Player player) {
         Set<String> owned = augmentationManager.getActiveEffects(player.getUniqueId()).keySet();
-        List<Augmentation> available = augmentationManager.getPrismAll().stream()
+        List<PrismChoice> pool = new ArrayList<>();
+
+        augmentationManager.getPrismAll().stream()
             .filter(aug -> !owned.contains(aug.getId()))
-            .toList();
-        new AugmentationSelectGUI(available).open(player);
+            .map(PrismChoice.Aug::new)
+            .forEach(pool::add);
+
+        pool.addAll(prismItemManager.getAll());
+
+        new PrismAugmentationSelectGUI(pool).open(player);
     }
 
     public void openAugmentationList(Player player) {
@@ -116,11 +135,16 @@ public final class Asurajang extends JavaPlugin {
         new AugmentationListGUI(active, Component.text("내 증강", NamedTextColor.LIGHT_PURPLE)).open(player);
     }
 
-    // augment/description.yml, augment/setting.yml, nexus.yml을 다시 읽어들인다
+    // augment/, prism/, nexus.yml을 다시 읽어들인다
     public void reloadExtraConfigs() {
         augmentDescriptionConfig.reload();
         augmentSettingConfig.reload();
+        prismDescriptionConfig.reload();
+        prismSettingConfig.reload();
+        prismItemConfig.reload();
         nexusConfig.reload();
+        augmentationManager.reload(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
+        prismItemManager.reload(prismItemConfig.get());
     }
 
     public FileConfiguration getAugmentDescriptionConfig() {

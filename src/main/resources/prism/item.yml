@@ -1,0 +1,36 @@
+# 프리즘 메뉴에서 선택 가능한 아이템 보상
+# material: 아이템 Material 이름
+# enchantments: 인챈트 키(소문자 minecraft 이름): 레벨
+
+DiamondHelmet:
+  material: DIAMOND_HELMET
+  enchantments:
+    protection: 2
+    unbreaking: 2
+    respiration: 1
+
+DiamondChestplate:
+  material: DIAMOND_CHESTPLATE
+  enchantments:
+    protection: 2
+    unbreaking: 2
+
+DiamondLeggings:
+  material: DIAMOND_LEGGINGS
+  enchantments:
+    protection: 2
+    unbreaking: 2
+
+DiamondBoots:
+  material: DIAMOND_BOOTS
+  enchantments:
+    protection: 2
+    unbreaking: 2
+    feather_falling: 2
+
+DiamondSword:
+  material: DIAMOND_SWORD
+  enchantments:
+    sharpness: 2
+    unbreaking: 2
+    fire_aspect: 1

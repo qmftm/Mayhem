@@ -19,17 +19,18 @@ public class AugmentationManager {
     private final Map<String, Augmentation> augmentations = new LinkedHashMap<>();
     private final Map<UUID, Map<String, AugmentationEffect>> playerEffects = new HashMap<>();
 
-    public AugmentationManager(FileConfiguration config) {
-        load(config);
+    public AugmentationManager(FileConfiguration regular, FileConfiguration prism) {
+        load(regular, false);
+        load(prism, true);
     }
 
-    public void reload(FileConfiguration config) {
-        load(config);
-    }
-
-    private void load(FileConfiguration config) {
+    public void reload(FileConfiguration regular, FileConfiguration prism) {
         augmentations.clear();
+        load(regular, false);
+        load(prism, true);
+    }
 
+    private void load(FileConfiguration config, boolean prism) {
         for (String id : config.getKeys(false)) {
             ConfigurationSection entry = config.getConfigurationSection(id);
             if (entry == null) continue;
@@ -44,7 +45,6 @@ public class AugmentationManager {
             NamedTextColor color = NamedTextColor.NAMES.value(colorStr);
             if (color == null) color = NamedTextColor.WHITE;
 
-            boolean prism = entry.getBoolean("prism", false);
             List<String> descLines = entry.getStringList("description");
 
             ItemStack icon = new ItemStack(iconMat);
