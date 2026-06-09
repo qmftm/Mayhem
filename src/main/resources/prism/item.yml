@@ -38,9 +38,9 @@ NetheriteBoots:
     unbreaking: 3
     feather_falling: 4
 
-NetheriteSword:
-  material: NETHERITE_SWORD
-  name: "<dark_purple>밀치기 검</dark_purple>"
+KnockbackSword:
+  material: DIAMOND_SWORD
+  name: "<aqua>밀치기 검</aqua>"
   enchantments:
     knockback: 2
     unbreaking: 3
