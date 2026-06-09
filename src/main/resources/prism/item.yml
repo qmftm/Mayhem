@@ -31,11 +31,10 @@ DiamondBoots:
 
 DiamondSword:
   material: DIAMOND_SWORD
-  name: "화염 검"
+  name: "밀치기 검"
   enchantments:
-    sharpness: 2
+    knockback: 2
     unbreaking: 2
-    fire_aspect: 1
 
 NetheriteHelmet:
   material: NETHERITE_HELMET
