@@ -11,6 +11,14 @@ ExecutionerSword:
     - "날카로움 67, 내구도 1인 금 검을 즉시 지급합니다."
     - "검이 깨지면 299초 후 자동으로 다시 지급됩니다."
 
+GlassCannon:
+  display-name: "유리 대포"
+  icon: GLASS_BOTTLE
+  color: white
+  description:
+    - "최대 체력이 30% 감소합니다."
+    - "주는 대미지의 15%를 추가로 입힙니다."
+
 Dropkick:
   display-name: "드롭킥"
   icon: RED_NETHER_BRICKS
