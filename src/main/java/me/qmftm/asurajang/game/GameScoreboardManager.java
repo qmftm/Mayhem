@@ -110,7 +110,7 @@ public class GameScoreboardManager {
         int d       = deaths.getOrDefault(player.getUniqueId(), 0);
         int a       = assists.getOrDefault(player.getUniqueId(), 0);
         int g       = gold.getOrDefault(player.getUniqueId(), 0);
-        int lvl     = levels.getOrDefault(player.getUniqueId(), 1);
+        int lvl     = levels.getOrDefault(player.getUniqueId(), 0);
         int curExp  = exp.getOrDefault(player.getUniqueId(), 0);
         int reqExp  = expRequired(lvl);
 
@@ -240,7 +240,7 @@ public class GameScoreboardManager {
     }
 
     public int getLevel(Player player) {
-        return levels.getOrDefault(player.getUniqueId(), 1);
+        return levels.getOrDefault(player.getUniqueId(), 0);
     }
 
     // 현재 레벨 → 다음 레벨까지 필요 경험치: (다음 레벨)^2 * 5 + 150
