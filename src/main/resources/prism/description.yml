@@ -13,7 +13,7 @@ ExecutionerSword:
 
 TabDancer:
   display-name: "탭 댄서"
-  icon: LEATHER_BOOTS
+  icon: JUKEBOX
   color: aqua
   description:
     - "기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다."

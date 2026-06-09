@@ -66,10 +66,6 @@ public class TabDancerEffect implements AugmentationEffect {
                 if (stacks <= 0) { cancelTimers(); return; }
                 stacks--;
                 updateSpeed(player);
-                if (stacks > 0) {
-                    player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
-                        .decoration(TextDecoration.ITALIC, false));
-                }
             }, 0L, DECAY_INTERVAL_TICKS);
     }
 
