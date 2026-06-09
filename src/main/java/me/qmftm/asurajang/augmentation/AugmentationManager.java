@@ -46,6 +46,7 @@ public class AugmentationManager {
             if (color == null) color = NamedTextColor.WHITE;
 
             List<String> descLines = entry.getStringList("description");
+            boolean active = entry.getBoolean("active", false);
 
             ItemStack icon = new ItemStack(iconMat);
             ItemMeta meta = icon.getItemMeta();
@@ -61,7 +62,7 @@ public class AugmentationManager {
 
             icon.setItemMeta(meta);
 
-            augmentations.put(id, new Augmentation(id, displayName, icon, prism));
+            augmentations.put(id, new Augmentation(id, displayName, icon, prism, active));
         }
     }
 

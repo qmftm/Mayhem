@@ -64,13 +64,18 @@ public class AugmentationSelectListener implements Listener {
         if (choice != null) {
             player.closeInventory();
             if (choice instanceof PrismChoice.Aug aug) {
-                ItemStack augItem = aug.augmentation().getIcon().clone();
-                ItemMeta meta = augItem.getItemMeta();
-                meta.getPersistentDataContainer().set(
-                    Asurajang.PRISM_AUG_KEY, PersistentDataType.STRING, aug.augmentation().getId());
-                augItem.setItemMeta(meta);
-                player.getInventory().addItem(augItem);
-                player.sendMessage(Component.text("[" + aug.augmentation().getDisplayName() + "] 증강 아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
+                if (aug.augmentation().isActive()) {
+                    ItemStack augItem = aug.augmentation().getIcon().clone();
+                    ItemMeta meta = augItem.getItemMeta();
+                    meta.getPersistentDataContainer().set(
+                        Asurajang.PRISM_AUG_KEY, PersistentDataType.STRING, aug.augmentation().getId());
+                    augItem.setItemMeta(meta);
+                    player.getInventory().addItem(augItem);
+                    player.sendMessage(Component.text("[" + aug.augmentation().getDisplayName() + "] 증강 아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
+                } else {
+                    Asurajang.getInstance().getAugmentationManager().activateFor(player, aug.augmentation().getId());
+                    player.sendMessage(Component.text("[" + aug.augmentation().getDisplayName() + "] 증강을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
+                }
             } else if (choice instanceof PrismChoice.Item item) {
                 player.getInventory().addItem(item.stack().clone());
                 player.sendMessage(Component.text("아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));

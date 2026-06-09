@@ -31,6 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public final class Asurajang extends JavaPlugin {
 
@@ -107,9 +108,11 @@ public final class Asurajang extends JavaPlugin {
     }
 
     public void openPrismAugmentationSelect(Player player) {
+        Set<String> owned = augmentationManager.getActiveEffects(player.getUniqueId()).keySet();
         List<PrismChoice> pool = new ArrayList<>();
 
         augmentationManager.getPrismAll().stream()
+            .filter(aug -> aug.isActive() || !owned.contains(aug.getId()))
             .map(PrismChoice.Aug::new)
             .forEach(pool::add);
 
