@@ -31,7 +31,7 @@ DiamondBoots:
 
 DiamondSword:
   material: DIAMOND_SWORD
-  name: "화염 검"
+  name: "<gold>화염 검</gold>"
   enchantments:
     sharpness: 2
     unbreaking: 2
@@ -65,7 +65,7 @@ NetheriteBoots:
 
 NetheriteSword:
   material: NETHERITE_SWORD
-  name: "밀치기 검"
+  name: "<dark_purple>밀치기 검</dark_purple>"
   enchantments:
     knockback: 2
     unbreaking: 3

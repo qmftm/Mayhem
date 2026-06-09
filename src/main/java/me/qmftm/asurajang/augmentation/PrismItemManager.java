@@ -4,8 +4,8 @@ import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,7 +45,9 @@ public class PrismItemManager {
 
             String name = entry.getString("name");
             if (name != null) {
-                meta.displayName(Component.text(name, NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+                Component displayName = MiniMessage.miniMessage().deserialize(name)
+                        .decoration(TextDecoration.ITALIC, false);
+                meta.displayName(displayName);
             }
 
             ConfigurationSection enchSection = entry.getConfigurationSection("enchantments");
