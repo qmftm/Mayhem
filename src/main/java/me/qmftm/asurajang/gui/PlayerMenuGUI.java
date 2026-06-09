@@ -40,9 +40,12 @@ public class PlayerMenuGUI implements InventoryHolder {
         double atk   = attr(player, Attribute.ATTACK_DAMAGE);
         double spd   = attr(player, Attribute.MOVEMENT_SPEED);
         return Component.text()
-            .append(Component.text("❤ " + fmt1(maxHp), NamedTextColor.RED))
-            .append(Component.text("  ⚔ " + fmt2(atk), NamedTextColor.GOLD))
-            .append(Component.text("  ◈ " + fmt2(spd), NamedTextColor.AQUA))
+            .append(Component.text("체력 ", NamedTextColor.RED))
+            .append(Component.text(fmt1(maxHp), NamedTextColor.WHITE))
+            .append(Component.text("  공격력 ", NamedTextColor.GOLD))
+            .append(Component.text(fmt2(atk), NamedTextColor.WHITE))
+            .append(Component.text("  속도 ", NamedTextColor.AQUA))
+            .append(Component.text(fmt2(spd), NamedTextColor.WHITE))
             .build();
     }
 
