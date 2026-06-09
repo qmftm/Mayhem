@@ -55,19 +55,16 @@ public class LevelUpManager {
                 player.sendMessage(Component.text(
                     "능력치 모루 +" + finalAnvilCount + "개 (인벤토리 확인)",
                     NamedTextColor.DARK_PURPLE));
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.5f, 1.5f);
 
                 if (finalAugCount > 0) {
                     player.sendMessage(Component.text(
                         "증강 선택 기회 +" + finalAugCount + "회 (남은 기회: " + getAugCharges(uuid) + ")",
                         NamedTextColor.LIGHT_PURPLE));
-                    player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.7f, 1.2f);
                 }
                 if (finalPrismCount > 0) {
                     player.sendMessage(Component.text(
                         "프리즘 증강 선택 기회 +" + finalPrismCount + "회 (남은 기회: " + getPrismCharges(uuid) + ")",
                         NamedTextColor.AQUA));
-                    player.playSound(player.getLocation(), Sound.BLOCK_BEACON_POWER_SELECT, 0.7f, 1.8f);
                 }
             }, 2L);
     }
