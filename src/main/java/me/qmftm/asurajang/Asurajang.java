@@ -57,9 +57,9 @@ public final class Asurajang extends JavaPlugin {
 
         saveDefaultConfig();
         augmentDescriptionConfig = new YamlResource(this, "augment/description.yml");
-        augmentSettingConfig     = new YamlResource(this, "augment/setting.yml");
+        augmentSettingConfig     = new YamlResource(this, "augment/config.yml");
         prismDescriptionConfig   = new YamlResource(this, "prism/description.yml");
-        prismSettingConfig       = new YamlResource(this, "prism/setting.yml");
+        prismSettingConfig       = new YamlResource(this, "prism/config.yml");
         prismItemConfig          = new YamlResource(this, "prism/item.yml");
         nexusConfig              = new YamlResource(this, "nexus.yml");
 

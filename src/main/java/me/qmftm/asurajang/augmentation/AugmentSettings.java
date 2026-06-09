@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 /**
- * augment/setting.yml의 <증강 ID>.<key> 경로에서
+ * augment/config.yml의 <증강 ID>.<key> 경로에서
  * 확률·피해량 등의 수치를 읽어오는 유틸리티.
  * 매번 파일에서 직접 읽어오므로 /mayhem reload로 즉시 반영된다.
  */

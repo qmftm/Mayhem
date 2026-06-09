@@ -1,5 +1,5 @@
 # Asurajang 설정 파일
 #
 # 증강 표시 정보   → augment/description.yml
-# 증강 수치 설정   → augment/setting.yml
+# 증강 수치 설정   → augment/config.yml
 # 기지 모드 설정   → nexus.yml
