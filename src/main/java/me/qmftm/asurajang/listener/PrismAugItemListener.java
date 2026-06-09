@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+
 public class PrismAugItemListener implements Listener {
 
     private final Map<UUID, Map<String, Long>> cooldowns = new HashMap<>();
@@ -85,11 +86,7 @@ public class PrismAugItemListener implements Listener {
         String augId = meta.getPersistentDataContainer().get(Asurajang.CONSUMABLE_AUG_KEY, PersistentDataType.STRING);
         if (augId == null) return;
 
-        Augmentation aug = Asurajang.getInstance().getAugmentationManager().get(augId);
-        if (aug == null) return;
-
-        cooldowns.computeIfAbsent(event.getPlayer().getUniqueId(), k -> new HashMap<>())
-            .put(augId, System.currentTimeMillis());
+        Asurajang.getInstance().getAugmentationManager().deactivateSingle(event.getPlayer(), augId);
     }
 
     @EventHandler

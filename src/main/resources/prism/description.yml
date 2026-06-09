@@ -6,12 +6,9 @@ ExecutionerSword:
   display-name: "처형인의 검"
   icon: GOLDEN_SWORD
   color: yellow
-  active: true
-  cooldown: 299
-  cooldown-on-use: false
   description:
-    - "사용 시 날카로움 67, 내구도 1인 금 검을 지급합니다."
-    - "재사용 대기시간: 299초"
+    - "날카로움 67, 내구도 1인 금 검을 즉시 지급합니다."
+    - "검이 깨지면 다시 선택할 수 있습니다."
 
 Dropkick:
   display-name: "드롭킥"
