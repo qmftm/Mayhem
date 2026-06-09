@@ -6,6 +6,7 @@ import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.DivergentFistEffect;
 import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
+import me.qmftm.asurajang.augmentation.effect.DropkickEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
@@ -56,6 +57,10 @@ public class AugmentationEffectListener implements Listener {
             double mult = AugmentSettings.getDouble("DivergentFist", "knockback-multiplier", 2.0);
             Vector kb = event.getFinalKnockback();
             event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY(), kb.getZ() * mult));
+        } else if (DropkickEffect.pendingKnockback.remove(attacker.getUniqueId())) {
+            double mult = AugmentSettings.getDouble("Dropkick", "knockback-multiplier", 5.0);
+            Vector kb = event.getFinalKnockback();
+            event.setFinalKnockback(new Vector(kb.getX() * mult, kb.getY() + 0.4, kb.getZ() * mult));
         }
     }
 
