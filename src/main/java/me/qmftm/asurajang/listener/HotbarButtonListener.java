@@ -40,10 +40,20 @@ public class HotbarButtonListener implements Listener {
 
         } else if (item.getType() == Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE && "증강 선택".equals(name)) {
             event.setCancelled(true);
+            int charges = Asurajang.getInstance().getLevelUpManager().getAugCharges(player.getUniqueId());
+            if (charges <= 0) {
+                player.sendMessage(Component.text("증강 선택 기회가 없습니다.", NamedTextColor.RED));
+                return;
+            }
             Asurajang.getInstance().openAugmentationSelect(player);
 
         } else if (item.getType() == Material.PRISMARINE_CRYSTALS && "프리즘 증강 선택".equals(name)) {
             event.setCancelled(true);
+            int charges = Asurajang.getInstance().getLevelUpManager().getPrismCharges(player.getUniqueId());
+            if (charges <= 0) {
+                player.sendMessage(Component.text("프리즘 증강 선택 기회가 없습니다.", NamedTextColor.RED));
+                return;
+            }
             Asurajang.getInstance().openPrismAugmentationSelect(player);
         }
     }

@@ -170,6 +170,9 @@ public class PlayerDeathListener implements Listener {
             int victimKills  = plugin.getScoreboardManager().getKills(player.getUniqueId());
             int expAmount    = killerLevel * 10 + victimKills * 2 + 75;
             GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, expAmount);
+            if (expResult.leveledUp()) {
+                plugin.getLevelUpManager().onLevelUp(killer, killerLevel, expResult.newLevel());
+            }
             killer.playSound(killer.getLocation(), Sound.BLOCK_CHAIN_BREAK, 1.0f, 0.8f);
 
             Component message = Component.text()

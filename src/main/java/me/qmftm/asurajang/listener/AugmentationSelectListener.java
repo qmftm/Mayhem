@@ -62,6 +62,11 @@ public class AugmentationSelectListener implements Listener {
 
         PrismChoice choice = gui.getChoiceAt(slot);
         if (choice != null) {
+            if (!Asurajang.getInstance().getLevelUpManager().consumePrismCharge(player.getUniqueId())) {
+                player.closeInventory();
+                player.sendMessage(Component.text("프리즘 증강 선택 기회가 없습니다.", NamedTextColor.RED));
+                return;
+            }
             player.closeInventory();
             if (choice instanceof PrismChoice.Aug aug) {
                 if (aug.augmentation().isActive()) {
@@ -107,6 +112,11 @@ public class AugmentationSelectListener implements Listener {
         // 증강 선택
         Augmentation aug = gui.getAugAt(slot);
         if (aug != null) {
+            if (!Asurajang.getInstance().getLevelUpManager().consumeAugCharge(player.getUniqueId())) {
+                player.closeInventory();
+                player.sendMessage(Component.text("증강 선택 기회가 없습니다.", NamedTextColor.RED));
+                return;
+            }
             player.closeInventory();
             Asurajang.getInstance().getAugmentationManager().activateFor(player, aug.getId());
             player.sendMessage(Component.text("[" + aug.getDisplayName() + "] 증강을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));

@@ -68,6 +68,7 @@ public class GameScoreboardManager {
 
     public void remove(Player player) {
         Asurajang.getInstance().getStatAnvilListener().cleanup(player);
+        Asurajang.getInstance().getLevelUpManager().cleanup(player.getUniqueId());
         Asurajang.getInstance().getMaxHealthManager().remove(player.getUniqueId());
         // 이 플레이어의 체력 점수를 다른 보드에서 제거
         boards.remove(player.getUniqueId());

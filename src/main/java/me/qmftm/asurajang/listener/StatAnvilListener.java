@@ -40,10 +40,6 @@ public class StatAnvilListener implements Listener {
                 .has(Asurajang.STAT_ANVIL_KEY, PersistentDataType.BYTE)) return;
 
         event.setCancelled(true);
-
-        if (item.getAmount() > 1) item.setAmount(item.getAmount() - 1);
-        else player.getInventory().setItemInMainHand(null);
-
         new StatAnvilGUI().open(player);
     }
 
@@ -57,10 +53,28 @@ public class StatAnvilListener implements Listener {
         StatAnvilGUI.Stat stat = gui.getStatAt(event.getRawSlot());
         if (stat == null) return;
 
+        if (!consumeStatAnvil(player)) {
+            player.closeInventory();
+            return;
+        }
         player.closeInventory();
         applyStat(player, stat);
         player.sendMessage(Component.text("[" + stat.getDisplayName() + "] 능력치를 강화했습니다.", NamedTextColor.LIGHT_PURPLE));
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.7f, 1.2f);
+    }
+
+    private boolean consumeStatAnvil(Player player) {
+        var inv = player.getInventory();
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack it = inv.getItem(i);
+            if (it == null || !it.hasItemMeta()) continue;
+            if (!it.getItemMeta().getPersistentDataContainer()
+                    .has(Asurajang.STAT_ANVIL_KEY, PersistentDataType.BYTE)) continue;
+            if (it.getAmount() > 1) it.setAmount(it.getAmount() - 1);
+            else inv.setItem(i, null);
+            return true;
+        }
+        return false;
     }
 
     private void applyStat(Player player, StatAnvilGUI.Stat stat) {
