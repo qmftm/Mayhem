@@ -87,6 +87,8 @@ public class BattlefieldManager implements Listener {
         "바위 봉우리",      NamedTextColor.GRAY
     );
 
+    private static final double BORDER_MIN_SIZE = 16.0; // 야생 모드 자기장 최종 크기
+
     private static final int BASE_SIZE = 3; // 3x1x3 기지 크기
     private static final int BEACON_HEIGHT = 3; // 콘크리트 거점 위 신호기 높이
     private static final int GUARDIAN_SLIME_SIZE = 3; // 거점 히트박스용 슬라임 크기
@@ -117,6 +119,7 @@ public class BattlefieldManager implements Listener {
 
     private final LinkedList<Biome> usedBiomes = new LinkedList<>();
     private final Map<Integer, Location> teamBaseSpawns = new HashMap<>();
+    private final Map<Integer, Location> teamRandomSpawnCache = new HashMap<>();
     private final Map<UUID, GuardianState> guardianStates = new HashMap<>();
     private Integer sharedBaseY; // 양 팀 기지가 비슷한 높이에 놓이도록 캐시한 공통 기준 y
 
@@ -129,6 +132,7 @@ public class BattlefieldManager implements Listener {
         currentLocation = null;
         currentBiomeName = "";
         teamBaseSpawns.clear();
+        teamRandomSpawnCache.clear();
         clearBaseGuardians();
         sharedBaseY = null;
 
@@ -326,6 +330,17 @@ public class BattlefieldManager implements Listener {
         if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
         int y = world.getHighestBlockYAt(x, z);
         return new Location(world, x + 0.5, y + 1, z + 0.5);
+    }
+
+    @Nullable
+    public Location getTeamRandomSpawn(int teamIndex) {
+        return teamRandomSpawnCache.computeIfAbsent(teamIndex, k -> getRandomSpawn());
+    }
+
+    public void startBorderShrink(int durationSeconds) {
+        if (currentLocation == null) return;
+        WorldBorder border = currentLocation.getWorld().getWorldBorder();
+        border.setSize(BORDER_MIN_SIZE, durationSeconds);
     }
 
     @Nullable

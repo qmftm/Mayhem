@@ -22,7 +22,8 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION = 900; // 15분
+    private static final int GAME_DURATION      = 900;  // 15분
+    private static final int GAME_DURATION_WILD = 2700; // 야생 모드 45분
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -204,7 +205,7 @@ public class GameManager {
             if (state != State.STARTING) return;
 
             state = State.RUNNING;
-            remainingSeconds = GAME_DURATION;
+            remainingSeconds = (baseMode == BaseMode.WILD) ? GAME_DURATION_WILD : GAME_DURATION;
             firstBloodClaimed = false;
 
             BattlefieldManager bm = plugin.getBattlefieldManager();
@@ -219,6 +220,7 @@ public class GameManager {
             );
 
             bm.applyBorder();
+            if (baseMode == BaseMode.WILD) bm.startBorderShrink(remainingSeconds);
             world.setTime(1000);
             timeTask = Bukkit.getScheduler().runTaskTimer(plugin,
                 () -> world.setTime(1000), 20L, 20L);
@@ -232,6 +234,8 @@ public class GameManager {
                 Location spawn;
                 if (gameMode == GameMode.TEAM && baseMode == BaseMode.BASE) {
                     spawn = bm.getTeamCornerSpawn(teams.getOrDefault(p.getUniqueId(), 0), true);
+                } else if (gameMode == GameMode.TEAM) {
+                    spawn = bm.getTeamRandomSpawn(teams.getOrDefault(p.getUniqueId(), 0));
                 } else {
                     spawn = bm.getRandomSpawn();
                 }
