@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,12 +20,13 @@ import java.util.List;
 
 public class PlayerMenuGUI implements InventoryHolder {
 
-    private static final int SLOT_SHOP  = 10;
-    private static final int SLOT_AUG   = 12;
-    private static final int SLOT_PRISM = 14;
-    private static final int SLOT_ANVIL = 16;
+    private static final int SLOT_SHOP    = 10;
+    private static final int SLOT_AUG     = 12;
+    private static final int SLOT_PRISM   = 14;
+    private static final int SLOT_ANVIL   = 16;
+    private static final int SLOT_MY_AUGS = 22;
 
-    public enum Action { SHOP, AUG, PRISM, ANVIL }
+    public enum Action { SHOP, AUG, PRISM, ANVIL, MY_AUGS }
 
     private final Inventory inventory;
 
@@ -40,9 +40,9 @@ public class PlayerMenuGUI implements InventoryHolder {
         double atk   = attr(player, Attribute.ATTACK_DAMAGE);
         double spd   = attr(player, Attribute.MOVEMENT_SPEED);
         return Component.text()
-            .append(Component.text("체력 " + fmt1(maxHp), NamedTextColor.RED))
+            .append(Component.text("체력 " + fmt1(maxHp), NamedTextColor.DARK_RED))
             .append(Component.text("  공격력 " + fmt2(atk), NamedTextColor.GOLD))
-            .append(Component.text("  속도 " + fmt2(spd), NamedTextColor.AQUA))
+            .append(Component.text("  속도 " + fmt2(spd), NamedTextColor.DARK_AQUA))
             .build();
     }
 
@@ -53,22 +53,22 @@ public class PlayerMenuGUI implements InventoryHolder {
         var lum = Asurajang.getInstance().getLevelUpManager();
         int augCharges   = lum.getAugCharges(player.getUniqueId());
         int prismCharges = lum.getPrismCharges(player.getUniqueId());
-        int anvilCount   = countAnvils(player);
+        int anvilCount   = lum.getAnvilCharges(player.getUniqueId());
 
         inventory.setItem(SLOT_SHOP,  buildEntry(Material.EMERALD,
-            "상점", NamedTextColor.GREEN,
+            "상점", NamedTextColor.DARK_GREEN,
             List.of(Component.text("클릭으로 상점을 엽니다.", NamedTextColor.GRAY)), true));
 
         inventory.setItem(SLOT_AUG, buildEntry(Material.NETHERITE_UPGRADE_SMITHING_TEMPLATE,
-            "증강 선택", NamedTextColor.LIGHT_PURPLE,
+            "증강 선택", NamedTextColor.DARK_PURPLE,
             List.of(Component.text("남은 기회: ", NamedTextColor.GRAY)
-                .append(Component.text(augCharges + "회", augCharges > 0 ? NamedTextColor.LIGHT_PURPLE : NamedTextColor.DARK_GRAY))),
+                .append(Component.text(augCharges + "회", augCharges > 0 ? NamedTextColor.DARK_PURPLE : NamedTextColor.DARK_GRAY))),
             augCharges > 0));
 
         inventory.setItem(SLOT_PRISM, buildEntry(Material.PRISMARINE_CRYSTALS,
-            "프리즘 증강 선택", NamedTextColor.AQUA,
+            "프리즘 증강 선택", NamedTextColor.DARK_AQUA,
             List.of(Component.text("남은 기회: ", NamedTextColor.GRAY)
-                .append(Component.text(prismCharges + "회", prismCharges > 0 ? NamedTextColor.AQUA : NamedTextColor.DARK_GRAY))),
+                .append(Component.text(prismCharges + "회", prismCharges > 0 ? NamedTextColor.DARK_AQUA : NamedTextColor.DARK_GRAY))),
             prismCharges > 0));
 
         inventory.setItem(SLOT_ANVIL, buildEntry(Material.ANVIL,
@@ -76,6 +76,10 @@ public class PlayerMenuGUI implements InventoryHolder {
             List.of(Component.text("보유 수량: ", NamedTextColor.GRAY)
                 .append(Component.text(anvilCount + "개", anvilCount > 0 ? NamedTextColor.DARK_PURPLE : NamedTextColor.DARK_GRAY))),
             anvilCount > 0));
+
+        inventory.setItem(SLOT_MY_AUGS, buildEntry(Material.ENCHANTED_BOOK,
+            "내 증강 목록", NamedTextColor.LIGHT_PURPLE,
+            List.of(Component.text("클릭으로 보유한 증강을 확인합니다.", NamedTextColor.GRAY)), true));
     }
 
     private ItemStack buildBg() {
@@ -102,24 +106,13 @@ public class PlayerMenuGUI implements InventoryHolder {
     @Nullable
     public Action getActionAt(int slot) {
         return switch (slot) {
-            case SLOT_SHOP  -> Action.SHOP;
-            case SLOT_AUG   -> Action.AUG;
-            case SLOT_PRISM -> Action.PRISM;
-            case SLOT_ANVIL -> Action.ANVIL;
-            default         -> null;
+            case SLOT_SHOP    -> Action.SHOP;
+            case SLOT_AUG     -> Action.AUG;
+            case SLOT_PRISM   -> Action.PRISM;
+            case SLOT_ANVIL   -> Action.ANVIL;
+            case SLOT_MY_AUGS -> Action.MY_AUGS;
+            default           -> null;
         };
-    }
-
-    private int countAnvils(Player player) {
-        int count = 0;
-        for (ItemStack it : player.getInventory().getContents()) {
-            if (it == null || !it.hasItemMeta()) continue;
-            if (it.getItemMeta().getPersistentDataContainer()
-                    .has(Asurajang.STAT_ANVIL_KEY, PersistentDataType.BYTE)) {
-                count += it.getAmount();
-            }
-        }
-        return count;
     }
 
     private double attr(Player player, Attribute attribute) {

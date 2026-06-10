@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION = 900; // 15분
+    private static final int GAME_DURATION = 1800; // 30분
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -223,6 +223,11 @@ public class GameManager {
             world.setTime(1000);
             timeTask = Bukkit.getScheduler().runTaskTimer(plugin,
                 () -> world.setTime(1000), 20L, 20L);
+
+            // 날씨를 맑음으로 고정
+            world.setStorm(false);
+            world.setThundering(false);
+            world.setClearWeatherDuration(Integer.MAX_VALUE);
 
             GameScoreboardManager sbm = plugin.getScoreboardManager();
             Collection<? extends Player> online = Bukkit.getOnlinePlayers();

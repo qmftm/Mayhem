@@ -109,7 +109,12 @@ public class PrismAugItemListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
+        cleanup(event.getPlayer().getUniqueId());
+    }
+
+    // 게임 종료/플레이어 퇴장 시 예약된 재지급 작업을 취소해
+    // 게임이 끝난 뒤에 처형인의 검 등이 지급되는 것을 방지
+    public void cleanup(UUID uuid) {
         cooldowns.remove(uuid);
         Map<String, BukkitTask> tasks = respawnTasks.remove(uuid);
         if (tasks != null) tasks.values().forEach(BukkitTask::cancel);

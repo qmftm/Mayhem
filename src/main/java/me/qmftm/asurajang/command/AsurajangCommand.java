@@ -68,6 +68,8 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             case "list" -> {
                 if (!(sender instanceof Player player)) {
                     sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                } else if (args.length >= 2 && args[1].equalsIgnoreCase("prism")) {
+                    plugin.openPrismAugmentationList(player);
                 } else {
                     plugin.openAugmentationList(player);
                 }
@@ -93,6 +95,7 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
         switch (args[1].toLowerCase()) {
             case "aug", "aug_1" -> plugin.openAugmentationSelect(player);
             case "aug_2" -> new DebugAugGiveGUI(plugin.getAugmentationManager().getAll()).open(player);
+            case "aug_3" -> new DebugAugGiveGUI(plugin.getAugmentationManager().getPrismAll()).open(player);
             case "proc" -> {
                 BlackFlashEffect.debugProc = !BlackFlashEffect.debugProc;
                 sender.sendMessage(Component.text(
@@ -101,25 +104,26 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
                 ));
             }
             case "statvil" -> {
-                player.getInventory().addItem(Asurajang.createStatAnvilItem());
-                sender.sendMessage(Component.text("[DEBUG] 능력치 모루를 지급했습니다.", NamedTextColor.LIGHT_PURPLE));
+                plugin.getLevelUpManager().grantAnvilCharges(player.getUniqueId(), 1);
+                sender.sendMessage(Component.text("[DEBUG] 능력치 모루 기회를 지급했습니다.", NamedTextColor.LIGHT_PURPLE));
             }
             default -> sendDebugUsage(sender);
         }
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("사용법: /mayhem <start|stop|reload|list|status|debug>", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("사용법: /mayhem <start|stop|reload|list [prism]|status|debug>", NamedTextColor.YELLOW));
     }
 
     private void sendDebugUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("사용법: /mayhem debug <aug_1|aug_2|proc|statvil>", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("사용법: /mayhem debug <aug_1|aug_2|aug_3|proc|statvil>", NamedTextColor.YELLOW));
     }
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 1) return List.of("start", "stop", "reload", "list", "status", "debug");
-        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "proc", "statvil");
+        if (args.length == 2 && args[0].equalsIgnoreCase("list")) return List.of("prism");
+        if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "aug_3", "proc", "statvil");
         return List.of();
     }
 }

@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
+import me.qmftm.asurajang.game.BattlefieldManager;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.event.PlayerExpRewardEvent;
 import me.qmftm.asurajang.event.PlayerGoldRewardEvent;
@@ -53,16 +54,30 @@ public class PlayerDeathListener implements Listener {
     private final Map<UUID, Long>               lastKillTimes   = new HashMap<>();
     // victim UUID → (attacker UUID → last hit timestamp)
     private final Map<UUID, Map<UUID, Long>>    recentDamage    = new HashMap<>();
+    // victim UUID → 마지막으로 맞은 거점 발사체의 소속 팀 정보 + 시각
+    private final Map<UUID, GuardianHit>        lastGuardianHit = new HashMap<>();
+
+    private record GuardianHit(BattlefieldManager.GuardianInfo info, long time) {}
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (!(event.getEntity() instanceof Player victim)) return;
+
         Player attacker = resolveAttacker(event.getDamager());
-        if (attacker == null) return;
-        recentDamage
-            .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
-            .put(attacker.getUniqueId(), System.currentTimeMillis());
+        if (attacker != null) {
+            recentDamage
+                .computeIfAbsent(victim.getUniqueId(), k -> new HashMap<>())
+                .put(attacker.getUniqueId(), System.currentTimeMillis());
+            return;
+        }
+
+        // 거점 가디언의 투사체에 맞았다면, 사망 메시지에 "Slime" 대신 거점으로 표시하기 위해 기록
+        BattlefieldManager.GuardianInfo guardianInfo = Asurajang.getInstance().getBattlefieldManager()
+            .getGuardianInfo(event.getDamager().getUniqueId());
+        if (guardianInfo != null) {
+            lastGuardianHit.put(victim.getUniqueId(), new GuardianHit(guardianInfo, System.currentTimeMillis()));
+        }
     }
 
     // 직접 피해를 준 플레이어, 또는 플레이어가 발사한 투사체(화염구·돌풍구 등)의 발사자를 추적
@@ -168,7 +183,7 @@ public class PlayerDeathListener implements Listener {
             plugin.getScoreboardManager().addGold(killer, killerGold);
             int killerLevel  = plugin.getScoreboardManager().getLevel(killer);
             int victimKills  = plugin.getScoreboardManager().getKills(player.getUniqueId());
-            int expAmount    = killerLevel * 10 + victimKills * 2 + 75;
+            int expAmount    = killerLevel * 5 + victimKills * 5 + 75;
             GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, expAmount);
             if (expResult.leveledUp()) {
                 plugin.getLevelUpManager().onLevelUp(killer, killerLevel, expResult.newLevel());
@@ -204,6 +219,18 @@ public class PlayerDeathListener implements Listener {
             }
         } else {
             recentDamage.remove(player.getUniqueId());
+
+            // 플레이어 킬러가 없다면, 거점 발사체에 의한 사망인지 확인해 메시지를 대체
+            GuardianHit hit = lastGuardianHit.remove(player.getUniqueId());
+            if (hit != null && System.currentTimeMillis() - hit.time() <= KILLER_FALLBACK_WINDOW_MS) {
+                Component message = Component.text()
+                    .append(Component.text(hit.info().teamLabel() + " 거점", hit.info().color()))
+                    .append(Component.text("이 ", NamedTextColor.GRAY))
+                    .append(teamColoredName(player))
+                    .append(Component.text("님을 처치했습니다", NamedTextColor.GRAY))
+                    .build();
+                event.deathMessage(message);
+            }
         }
 
         // 흑섬 발동으로 사망 시 파티클

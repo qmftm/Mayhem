@@ -47,24 +47,15 @@ public class PlayerMenuListener implements Listener {
             }
 
             case ANVIL -> {
-                boolean hasAnvil = hasStatAnvil(player);
-                if (!hasAnvil) {
+                int charges = Asurajang.getInstance().getLevelUpManager().getAnvilCharges(player.getUniqueId());
+                if (charges <= 0) {
                     player.sendMessage(Component.text("능력치 모루가 없습니다.", NamedTextColor.RED));
                     return;
                 }
                 new StatAnvilGUI().open(player);
             }
-        }
-    }
 
-    private boolean hasStatAnvil(Player player) {
-        for (var it : player.getInventory().getContents()) {
-            if (it == null || !it.hasItemMeta()) continue;
-            if (it.getItemMeta().getPersistentDataContainer()
-                    .has(Asurajang.STAT_ANVIL_KEY, org.bukkit.persistence.PersistentDataType.BYTE)) {
-                return true;
-            }
+            case MY_AUGS -> Asurajang.getInstance().openPlayerAugmentations(player);
         }
-        return false;
     }
 }

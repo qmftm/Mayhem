@@ -40,7 +40,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputFile>${server.plugins.dir}/Asurajang.jar</outputFile>
+                            <outputFile>${server.plugins.dir}/${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

@@ -52,7 +52,7 @@ public class GameScoreboardManager {
         kills.putIfAbsent(player.getUniqueId(), 0);
         deaths.putIfAbsent(player.getUniqueId(), 0);
         assists.putIfAbsent(player.getUniqueId(), 0);
-        gold.putIfAbsent(player.getUniqueId(), 0);
+        gold.putIfAbsent(player.getUniqueId(), 200);
         levels.putIfAbsent(player.getUniqueId(), 0);
         exp.putIfAbsent(player.getUniqueId(), 0);
 
@@ -69,6 +69,7 @@ public class GameScoreboardManager {
     public void remove(Player player) {
         Asurajang.getInstance().getStatAnvilListener().cleanup(player);
         Asurajang.getInstance().getLevelUpManager().cleanup(player.getUniqueId());
+        Asurajang.getInstance().getPrismAugItemListener().cleanup(player.getUniqueId());
         Asurajang.getInstance().getMaxHealthManager().remove(player.getUniqueId());
         // 이 플레이어의 체력 점수를 다른 보드에서 제거
         boards.remove(player.getUniqueId());
@@ -245,9 +246,9 @@ public class GameScoreboardManager {
         return levels.getOrDefault(player.getUniqueId(), 0);
     }
 
-    // 현재 레벨 → 다음 레벨까지 필요 경험치: (다음 레벨)^2 * 5 + 150
+    // 현재 레벨 → 다음 레벨까지 필요 경험치: (다음 레벨)^2 * 5 + 50
     private static int expRequired(int level) {
-        return (level + 1) * (level + 1) * 5 + 150;
+        return (level + 1) * (level + 1) * 5 + 50;
     }
 
     // ── 팀 ──────────────────────────────────────────────────────────────────

@@ -81,37 +81,34 @@ public class GameModeSelectGUI implements InventoryHolder {
             case WILD -> Material.SHORT_GRASS;
             case OFF  -> Material.GRASS_BLOCK;
         };
-        Component stateLabel = switch (mode) {
+        Component nameLabel = switch (mode) {
             case BASE -> Component.text("기지 모드",    NamedTextColor.GREEN);
             case WILD -> Component.text("야생 모드",    NamedTextColor.GREEN);
             case OFF  -> Component.text("기본 게임모드", NamedTextColor.GREEN);
         };
         return buildChoice(
             icon,
-            Component.text("기지 모드", NamedTextColor.AQUA),
+            nameLabel,
             List.of(
                 Component.text("기지 모드: 팀 진영에 거점과 가디언이 세워집니다.", NamedTextColor.GRAY),
                 Component.text("야생 모드: 거점 없이 팀전이 진행됩니다.", NamedTextColor.GRAY),
-                Component.text("팀전을 선택했을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
-                Component.empty(),
-                Component.text("현재: ", NamedTextColor.GRAY).append(stateLabel)
+                Component.text("팀전을 선택했을 때만 적용됩니다.", NamedTextColor.DARK_GRAY)
             )
         );
     }
 
     public static ItemStack buildGuardianAttackItem(boolean enabled) {
+        Component nameLabel = Component.text("거점 공격: ", NamedTextColor.LIGHT_PURPLE)
+            .append(enabled
+                ? Component.text("켜짐", NamedTextColor.GREEN)
+                : Component.text("꺼짐", NamedTextColor.RED));
         return buildChoice(
             enabled ? Material.SPECTRAL_ARROW : Material.ARROW,
-            Component.text("거점 공격", NamedTextColor.LIGHT_PURPLE),
+            nameLabel,
             List.of(
                 Component.text("거점 가디언이 범위 안에 들어온 상대팀을", NamedTextColor.GRAY),
                 Component.text("투사체로 직접 공격할지 정합니다.", NamedTextColor.GRAY),
-                Component.text("기지 모드를 켰을 때만 적용됩니다.", NamedTextColor.DARK_GRAY),
-                Component.empty(),
-                Component.text("현재: ", NamedTextColor.GRAY)
-                    .append(enabled
-                        ? Component.text("켜짐", NamedTextColor.GREEN)
-                        : Component.text("꺼짐", NamedTextColor.RED))
+                Component.text("기지 모드를 켰을 때만 적용됩니다.", NamedTextColor.DARK_GRAY)
             )
         );
     }

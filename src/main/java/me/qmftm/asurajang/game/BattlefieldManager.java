@@ -103,6 +103,7 @@ public class BattlefieldManager implements Listener {
         int lives;
         boolean recovering;
         @Nullable BukkitTask attackTask;
+        @Nullable BukkitTask particleTask;
         long attackCooldownTicks;
 
         GuardianState(BossBar bar, String teamLabel, NamedTextColor color, BossBar.Color barColor, int teamIndex, int lives) {
@@ -120,7 +121,8 @@ public class BattlefieldManager implements Listener {
     private final Map<Integer, Location> teamBaseSpawns = new HashMap<>();
     private final Map<Integer, Location> teamRandomSpawnCache = new HashMap<>();
     private final Map<UUID, GuardianState> guardianStates = new HashMap<>();
-    private Integer sharedBaseY; // 양 팀 기지가 비슷한 높이에 놓이도록 캐시한 공통 기준 y
+    private Location bestCandidate;  // 탐색 중 양 팀 코너 지면 높이 차가 가장 작았던 후보 위치
+    private int bestHeightDiff;      // 위 후보의 높이 차
 
     private volatile Location currentLocation;
     private volatile String currentBiomeName = "";
@@ -133,7 +135,8 @@ public class BattlefieldManager implements Listener {
         teamBaseSpawns.clear();
         teamRandomSpawnCache.clear();
         clearBaseGuardians();
-        sharedBaseY = null;
+        bestCandidate = null;
+        bestHeightDiff = Integer.MAX_VALUE;
 
         Biome target = pickNext();
         currentBiomeName = BIOME_NAMES.getOrDefault(target, target.name());
@@ -172,14 +175,23 @@ public class BattlefieldManager implements Listener {
                 boolean biomeOk = isBorderEdgeBiomeConsistent(world, candidate, target);
                 GameManager gm = Asurajang.getInstance().getGameManager();
                 boolean baseModeActive = gm.isBaseModeEnabled() && gm.getGameMode() == GameManager.GameMode.TEAM;
-                boolean baseHeightOk = !baseModeActive || isBaseHeightDifferenceAcceptable(world, candidate);
+
+                int heightDiff = baseModeActive ? baseHeightDifference(world, candidate) : 0;
+                boolean baseHeightOk = !baseModeActive || heightDiff <= MAX_BASE_HEIGHT_DIFF;
+
+                if (biomeOk && baseModeActive && heightDiff < bestHeightDiff) {
+                    bestHeightDiff = heightDiff;
+                    bestCandidate = candidate;
+                }
 
                 if (attempt < MAX_SEARCH_ATTEMPTS && (!biomeOk || !baseHeightOk)) {
                     attemptSearch(world, target, attempt + 1, onComplete);
                     return;
                 }
 
-                currentLocation = candidate;
+                // 끝까지 기준을 만족하는 위치를 못 찾았다면, 그동안 탐색한 후보 중
+                // 양 팀 코너의 지면 높이 차가 가장 작았던 위치로 맵을 맞춤
+                currentLocation = (!baseHeightOk && bestCandidate != null) ? bestCandidate : candidate;
                 onComplete.run();
             });
         });
@@ -210,9 +222,9 @@ public class BattlefieldManager implements Listener {
         return true;
     }
 
-    // 기지 모드일 때, 양 팀 기지가 들어설 두 코너의 지면 높이 차이가 너무 크면(평평하지 않은 지형)
-    // 재탐색 대상으로 판단 (buildTeamBase의 코너 계산과 동일한 좌표 사용)
-    private static boolean isBaseHeightDifferenceAcceptable(World world, Location candidate) {
+    // 기지 모드일 때, 양 팀 기지가 들어설 두 코너의 지면 높이 차이를 계산
+    // (buildTeamBase의 코너 계산과 동일한 좌표 사용. 차이가 크면 재탐색하거나 더 나은 후보를 채택)
+    private static int baseHeightDifference(World world, Location candidate) {
         int offset = (int) (BORDER_RADIUS - 10);
         int cx0 = candidate.getBlockX() - offset;
         int cz0 = candidate.getBlockZ() - offset;
@@ -224,7 +236,7 @@ public class BattlefieldManager implements Listener {
 
         int groundY0 = findGroundY(world, cx0, cz0);
         int groundY1 = findGroundY(world, cx1, cz1);
-        return Math.abs(groundY0 - groundY1) <= MAX_BASE_HEIGHT_DIFF;
+        return Math.abs(groundY0 - groundY1);
     }
 
     // 수면/용암 위면 나선형으로 마른 땅을 탐색
@@ -364,30 +376,17 @@ public class BattlefieldManager implements Listener {
     }
 
     // 팀 코너에 3x1x3 콘크리트 기지를 깔고, 그 위 3블록 높이에 신호기를 띄운 뒤
-    // 콘크리트 위를 스폰 지점으로 반환. 두 코너 중 더 높은 지면을 공통 기준 y로 사용해
-    // 양 팀 기지가 비슷한 높이에 놓이면서도 낮은 쪽이 땅에 파묻히지 않도록 함
+    // 콘크리트 위를 스폰 지점으로 반환. 플랫폼은 항상 해당 코너의 지면 높이에 놓이며,
+    // 양 팀 기지의 높이를 맞추는 작업은 맵 탐색 단계(baseHeightDifference)에서 처리함
     private Location buildTeamBase(int teamIndex) {
         World world = currentLocation.getWorld();
         int offset = (int) (BORDER_RADIUS - 10);
 
-        int cx0 = currentLocation.getBlockX() - offset;
-        int cz0 = currentLocation.getBlockZ() - offset;
-        int cx1 = currentLocation.getBlockX() + offset;
-        int cz1 = currentLocation.getBlockZ() + offset;
-        if (!world.isChunkLoaded(cx0 >> 4, cz0 >> 4)) world.loadChunk(cx0 >> 4, cz0 >> 4);
-        if (!world.isChunkLoaded(cx1 >> 4, cz1 >> 4)) world.loadChunk(cx1 >> 4, cz1 >> 4);
-
-        if (sharedBaseY == null) {
-            int groundY0 = findGroundY(world, cx0, cz0);
-            int groundY1 = findGroundY(world, cx1, cz1);
-            // 더 높은 쪽 지면을 기준으로 삼아 낮은 쪽 기지가 땅에 파묻히지 않도록 함
-            sharedBaseY = Math.max(groundY0, groundY1);
-        }
-
         int sign = (teamIndex == 0) ? -1 : 1;
         int cx = currentLocation.getBlockX() + sign * offset;
         int cz = currentLocation.getBlockZ() + sign * offset;
-        int y = sharedBaseY;
+        if (!world.isChunkLoaded(cx >> 4, cz >> 4)) world.loadChunk(cx >> 4, cz >> 4);
+        int y = findGroundY(world, cx, cz);
 
         Material concrete = (teamIndex == 0) ? Material.RED_CONCRETE : Material.BLUE_CONCRETE;
         int half = BASE_SIZE / 2;
@@ -434,6 +433,18 @@ public class BattlefieldManager implements Listener {
 
         Location spawn = new Location(world, cx + 0.5, y + 1, cz + 0.5);
         int beaconY = spawn.getBlockY() + BEACON_HEIGHT;
+
+        // 콘크리트 위 3x6x3 범위를 공기로 비워 시야와 이동 공간을 확보 (신호기 자리는 제외)
+        for (int dx = -half; dx <= half; dx++) {
+            for (int dz = -half; dz <= half; dz++) {
+                int x = cx + dx, z = cz + dz;
+                for (int by = y + 1; by <= y + 6; by++) {
+                    if (dx == 0 && dz == 0 && by == beaconY) continue;
+                    world.getBlockAt(x, by, z).setType(Material.AIR);
+                }
+            }
+        }
+
         world.getBlockAt(cx, beaconY, cz).setType(Material.BEACON);
 
         Location guardianLoc = new Location(world, cx + 0.5, beaconY - 0.25, cz + 0.5);
@@ -473,7 +484,28 @@ public class BattlefieldManager implements Listener {
         if (Asurajang.getInstance().getGameManager().isGuardianAttackEnabled()) {
             state.attackTask = startGuardianAttackLoop(guardian, state);
         }
+        state.particleTask = startBeaconParticleLoop(guardian, state);
         for (Player p : Bukkit.getOnlinePlayers()) p.showBossBar(bar);
+    }
+
+    // 신호기 위치에서 팀별 파티클을 주기적으로 표시
+    // (레드팀: 시련의 방 탐지 + 습격의 징조 / 블루팀: 불길한 시련의 방 탐지 + 시련의 징조)
+    private BukkitTask startBeaconParticleLoop(LivingEntity guardian, GuardianState state) {
+        Particle detection = (state.teamIndex == 0) ? Particle.TRIAL_SPAWNER_DETECTION : Particle.TRIAL_SPAWNER_DETECTION_OMINOUS;
+        Particle omen = (state.teamIndex == 0) ? Particle.RAID_OMEN : Particle.TRIAL_OMEN;
+
+        BukkitTask[] holder = new BukkitTask[1];
+        holder[0] = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
+            if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
+                holder[0].cancel();
+                return;
+            }
+            Location particleLoc = guardian.getLocation().add(0, 0.5, 0);
+            World world = guardian.getWorld();
+            world.spawnParticle(detection, particleLoc, 2, 0.4, 0.5, 0.4, 0);
+            world.spawnParticle(omen, particleLoc, 2, 0.4, 0.5, 0.4, 0);
+        }, 0L, 10L);
+        return holder[0];
     }
 
     // 거점 라이프 단계에 맞는 주기로 어그로 범위 내 상대팀을 탐지해 투사체를 발사하는 루프
@@ -642,6 +674,15 @@ public class BattlefieldManager implements Listener {
         Bukkit.getScheduler().runTask(Asurajang.getInstance(), () -> updateGuardianBar(guardian, state));
     }
 
+    // 거점 가디언 엔티티의 소속 팀 정보 (사망 메시지 표시 등 외부에서 사용)
+    public record GuardianInfo(int teamIndex, String teamLabel, NamedTextColor color) {}
+
+    @Nullable
+    public GuardianInfo getGuardianInfo(UUID entityUuid) {
+        GuardianState state = guardianStates.get(entityUuid);
+        return state == null ? null : new GuardianInfo(state.teamIndex, state.teamLabel, state.color);
+    }
+
     // 직접 공격이든 투사체든 실제로 피해를 입힌 플레이어를 찾아낸다
     private static @Nullable Player resolveGuardianAttacker(EntityDamageEvent event) {
         if (!(event instanceof EntityDamageByEntityEvent byEntity)) return null;
@@ -656,6 +697,7 @@ public class BattlefieldManager implements Listener {
         GuardianState state = guardianStates.remove(event.getEntity().getUniqueId());
         if (state == null) return;
         if (state.attackTask != null) state.attackTask.cancel();
+        if (state.particleTask != null) state.particleTask.cancel();
         for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
     }
 
@@ -677,6 +719,7 @@ public class BattlefieldManager implements Listener {
             Bukkit.broadcast(Component.text("[아수라장] ", NamedTextColor.GOLD)
                 .append(Component.text(state.teamLabel + " 거점이 파괴되었습니다!", state.color)));
             if (state.attackTask != null) state.attackTask.cancel();
+            if (state.particleTask != null) state.particleTask.cancel();
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             guardianStates.remove(guardian.getUniqueId());
             guardian.remove();
@@ -740,6 +783,7 @@ public class BattlefieldManager implements Listener {
         for (Map.Entry<UUID, GuardianState> entry : guardianStates.entrySet()) {
             GuardianState state = entry.getValue();
             if (state.attackTask != null) state.attackTask.cancel();
+            if (state.particleTask != null) state.particleTask.cancel();
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             Entity entity = Bukkit.getEntity(entry.getKey());
             if (entity != null) entity.remove();

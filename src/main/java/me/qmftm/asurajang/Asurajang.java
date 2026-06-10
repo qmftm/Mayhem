@@ -26,13 +26,9 @@ import me.qmftm.asurajang.listener.PlayerMenuListener;
 import me.qmftm.asurajang.listener.StatAnvilListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -44,7 +40,6 @@ public final class Asurajang extends JavaPlugin {
 
     public static NamespacedKey PRISM_AUG_KEY;
     public static NamespacedKey CONSUMABLE_AUG_KEY;
-    public static NamespacedKey STAT_ANVIL_KEY;
     public static NamespacedKey PLAYER_MENU_KEY;
 
     private static Asurajang instance;
@@ -62,6 +57,7 @@ public final class Asurajang extends JavaPlugin {
     private MaxHealthManager maxHealthManager;
     private LevelUpManager levelUpManager;
     private StatAnvilListener statAnvilListener;
+    private PrismAugItemListener prismAugItemListener;
 
     public static Asurajang getInstance() {
         return instance;
@@ -72,7 +68,6 @@ public final class Asurajang extends JavaPlugin {
         instance = this;
         PRISM_AUG_KEY = new NamespacedKey(this, "prism_aug_id");
         CONSUMABLE_AUG_KEY = new NamespacedKey(this, "consumable_aug_id");
-        STAT_ANVIL_KEY = new NamespacedKey(this, "stat_anvil");
         PLAYER_MENU_KEY = new NamespacedKey(this, "player_menu");
 
         saveDefaultConfig();
@@ -91,6 +86,7 @@ public final class Asurajang extends JavaPlugin {
         maxHealthManager    = new MaxHealthManager();
         levelUpManager      = new LevelUpManager();
         statAnvilListener   = new StatAnvilListener();
+        prismAugItemListener = new PrismAugItemListener();
 
         getServer().getPluginManager().registerEvents(new AugmentationSelectListener(), this);
         getServer().getPluginManager().registerEvents(new AugmentationEffectListener(), this);
@@ -99,7 +95,7 @@ public final class Asurajang extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HotbarButtonListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerMenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeathListener(), this);
-        getServer().getPluginManager().registerEvents(new PrismAugItemListener(), this);
+        getServer().getPluginManager().registerEvents(prismAugItemListener, this);
         getServer().getPluginManager().registerEvents(new RewardMessageListener(), this);
         getServer().getPluginManager().registerEvents(statAnvilListener, this);
         getServer().getPluginManager().registerEvents(battlefieldManager, this);
@@ -142,6 +138,10 @@ public final class Asurajang extends JavaPlugin {
 
     public void openAugmentationList(Player player) {
         new AugmentationListGUI(augmentationManager.getAll()).open(player);
+    }
+
+    public void openPrismAugmentationList(Player player) {
+        new AugmentationListGUI(augmentationManager.getPrismAll(), Component.text("프리즘 증강 목록", NamedTextColor.AQUA)).open(player);
     }
 
     // 플레이어가 보유한 증강 확인 GUI
@@ -212,13 +212,7 @@ public final class Asurajang extends JavaPlugin {
         return statAnvilListener;
     }
 
-    public static ItemStack createStatAnvilItem() {
-        ItemStack item = new ItemStack(Material.ANVIL);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text("능력치 모루", NamedTextColor.DARK_PURPLE));
-        meta.lore(List.of(Component.text("우클릭으로 능력치를 강화합니다.", NamedTextColor.GRAY)));
-        meta.getPersistentDataContainer().set(STAT_ANVIL_KEY, PersistentDataType.BYTE, (byte) 1);
-        item.setItemMeta(meta);
-        return item;
+    public PrismAugItemListener getPrismAugItemListener() {
+        return prismAugItemListener;
     }
 }

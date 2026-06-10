@@ -11,37 +11,13 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 public class StatAnvilListener implements Listener {
 
     private static final String KEY_ATTACK = "stat_anvil_attack";
     private static final String KEY_SPEED  = "stat_anvil_speed";
-
-    @EventHandler(priority = EventPriority.LOW)
-    public void onRightClick(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) return;
-        Action action = event.getAction();
-        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) return;
-
-        Player player = event.getPlayer();
-        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
-
-        ItemStack item = event.getItem();
-        if (item == null || !item.hasItemMeta()) return;
-        if (!item.getItemMeta().getPersistentDataContainer()
-                .has(Asurajang.STAT_ANVIL_KEY, PersistentDataType.BYTE)) return;
-
-        event.setCancelled(true);
-        new StatAnvilGUI().open(player);
-    }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -53,7 +29,7 @@ public class StatAnvilListener implements Listener {
         StatAnvilGUI.Stat stat = gui.getStatAt(event.getRawSlot());
         if (stat == null) return;
 
-        if (!consumeStatAnvil(player)) {
+        if (!Asurajang.getInstance().getLevelUpManager().consumeAnvilCharge(player.getUniqueId())) {
             player.closeInventory();
             return;
         }
@@ -61,20 +37,6 @@ public class StatAnvilListener implements Listener {
         applyStat(player, stat);
         player.sendMessage(Component.text("[" + stat.getDisplayName() + "] 능력치를 강화했습니다.", NamedTextColor.LIGHT_PURPLE));
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.7f, 1.2f);
-    }
-
-    private boolean consumeStatAnvil(Player player) {
-        var inv = player.getInventory();
-        for (int i = 0; i < inv.getSize(); i++) {
-            ItemStack it = inv.getItem(i);
-            if (it == null || !it.hasItemMeta()) continue;
-            if (!it.getItemMeta().getPersistentDataContainer()
-                    .has(Asurajang.STAT_ANVIL_KEY, PersistentDataType.BYTE)) continue;
-            if (it.getAmount() > 1) it.setAmount(it.getAmount() - 1);
-            else inv.setItem(i, null);
-            return true;
-        }
-        return false;
     }
 
     private void applyStat(Player player, StatAnvilGUI.Stat stat) {
