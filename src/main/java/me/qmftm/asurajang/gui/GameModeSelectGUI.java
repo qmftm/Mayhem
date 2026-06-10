@@ -1,5 +1,6 @@
 package me.qmftm.asurajang.gui;
 
+import me.qmftm.asurajang.game.GameManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

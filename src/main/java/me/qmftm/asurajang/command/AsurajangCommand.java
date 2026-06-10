@@ -63,7 +63,6 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             case "reload" -> {
                 plugin.reloadConfig();
                 plugin.reloadExtraConfigs();
-                plugin.getAugmentationManager().reload(plugin.getAugmentDescriptionConfig());
                 sender.sendMessage(Component.text("[Asurajang] 설정을 리로드했습니다.", NamedTextColor.GREEN));
             }
             case "list" -> {

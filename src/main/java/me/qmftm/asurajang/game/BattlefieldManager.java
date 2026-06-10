@@ -103,7 +103,7 @@ public class BattlefieldManager implements Listener {
         int lives;
         boolean recovering;
         @Nullable BukkitTask attackTask;
-        int attackCooldownTicks;
+        long attackCooldownTicks;
 
         GuardianState(BossBar bar, String teamLabel, NamedTextColor color, BossBar.Color barColor, int teamIndex, int lives) {
             this.bar = bar;
@@ -480,9 +480,10 @@ public class BattlefieldManager implements Listener {
     private BukkitTask startGuardianAttackLoop(LivingEntity guardian, GuardianState state) {
         long tickPeriod = NexusSettings.attackTickPeriod();
         state.attackCooldownTicks = currentAttackInterval(state);
-        return Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), task -> {
+        BukkitTask[] holder = new BukkitTask[1];
+        holder[0] = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
             if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
-                task.cancel();
+                holder[0].cancel();
                 return;
             }
             if (state.recovering) return;
@@ -499,6 +500,7 @@ public class BattlefieldManager implements Listener {
             fireGuardianProjectile(guardian, target, state);
             state.attackCooldownTicks = currentAttackInterval(state);
         }, 20L, tickPeriod);
+        return holder[0];
     }
 
     // 현재 라이프 단계의 공격 주기를 반환 (체력이 늘어난 단계일수록 더 빠르게 공격)
