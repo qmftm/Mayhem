@@ -160,8 +160,9 @@ public final class Asurajang extends JavaPlugin {
         new AugmentationListGUI(active, Component.text("내 증강", NamedTextColor.LIGHT_PURPLE)).open(player);
     }
 
-    // augment/, prism/, gamemode.yml을 다시 읽어들인다
+    // config.yml, augment/, prism/, gamemode.yml을 다시 읽어들인다
     public void reloadExtraConfigs() {
+        reloadConfig();
         augmentDescriptionConfig.reload();
         augmentSettingConfig.reload();
         prismDescriptionConfig.reload();

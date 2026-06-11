@@ -224,7 +224,7 @@ public class PlayerDeathListener implements Listener {
 
     private static void applyDeathGoldPenalty(Player player) {
         Asurajang plugin = Asurajang.getInstance();
-        ConfigurationSection config = plugin.getGamemodeConfig().getConfigurationSection("death-gold-penalty");
+        ConfigurationSection config = plugin.getConfig().getConfigurationSection("death-gold-penalty");
         if (config == null || !config.getBoolean("enabled", false)) return;
 
         double ratio = config.getDouble("ratio", 0.1);
