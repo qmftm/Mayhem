@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -48,6 +49,7 @@ public class DropkickEffect implements AugmentationEffect {
         attacker.sendActionBar(Component.text("처형", NamedTextColor.RED)
             .decoration(TextDecoration.BOLD, true)
             .decoration(TextDecoration.ITALIC, false));
+        ActionBarTracker.markUsed(attacker);
 
         // 공격자 체력 50% 회복 + 하트 파티클 (1틱 후)
         double healAmount = attacker.getAttribute(Attribute.MAX_HEALTH).getValue() * 0.5;

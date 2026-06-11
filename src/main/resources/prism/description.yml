@@ -13,7 +13,7 @@ ExecutionerSword:
 
 Dropkick:
   display-name: "드롭킥"
-  icon: RED_NETHER_BRICKS
+  icon: RABBIT_FOOT
   color: red
   active: false
   description:
@@ -28,3 +28,12 @@ GlassCannon:
   description:
     - "최대 체력이 30% 감소합니다."
     - "공격 시 15%의 추가 고정 피해를 입힙니다."
+
+TabDancer:
+  display-name: "탭 댄서"
+  icon: JUKEBOX
+  color: aqua
+  description:
+    - "기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다."
+    - "마지막 중첩을 쌓은 후 5초 이내로 중첩을 쌓지 않으면"
+    - "중첩이 빠르게 감소합니다."

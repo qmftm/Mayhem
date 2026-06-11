@@ -215,6 +215,15 @@ public class GameScoreboardManager {
         return gold.getOrDefault(player.getUniqueId(), 0);
     }
 
+    // 현재 골드의 ratio 비율만큼 차감하고 실제 차감된 양을 반환
+    public int removeGoldPercent(Player player, double ratio) {
+        int current = getGold(player);
+        int penalty = (int) Math.floor(current * ratio);
+        if (penalty <= 0) return 0;
+        gold.merge(player.getUniqueId(), -penalty, Integer::sum);
+        return penalty;
+    }
+
     public record ExpResult(int newLevel, boolean leveledUp) {}
 
     public ExpResult addExp(Player player, int amount) {

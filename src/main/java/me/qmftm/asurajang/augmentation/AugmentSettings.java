@@ -6,7 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.List;
 
 /**
- * augment/config.yml의 <증강 ID>.<key> 경로에서
+ * augment/config.yml 또는 prism/config.yml의 <증강 ID>.<key> 경로에서
  * 확률·피해량 등의 수치를 읽어오는 유틸리티.
  * 매번 파일에서 직접 읽어오므로 /mayhem reload로 즉시 반영된다.
  */
@@ -16,7 +16,10 @@ public final class AugmentSettings {
     }
 
     private static ConfigurationSection section(String augmentationId) {
-        return Asurajang.getInstance().getAugmentSettingConfig().getConfigurationSection(augmentationId);
+        Asurajang plugin = Asurajang.getInstance();
+        ConfigurationSection section = plugin.getAugmentSettingConfig().getConfigurationSection(augmentationId);
+        if (section != null) return section;
+        return plugin.getPrismSettingConfig().getConfigurationSection(augmentationId);
     }
 
     public static double getDouble(String augmentationId, String key, double def) {

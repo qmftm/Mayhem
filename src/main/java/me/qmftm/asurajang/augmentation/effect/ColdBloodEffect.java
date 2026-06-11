@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -47,6 +48,7 @@ public class ColdBloodEffect implements AugmentationEffect {
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, weaknessDuration, weaknessAmplifier, false, true));
 
         player.sendActionBar(Component.text("냉혈한 발동!", NamedTextColor.AQUA));
+        ActionBarTracker.markUsed(player);
         player.playSound(player.getLocation(), Sound.BLOCK_POWDER_SNOW_STEP, 1.0f, 0.5f);
 
         lastUsed = now;
@@ -56,6 +58,7 @@ public class ColdBloodEffect implements AugmentationEffect {
             if (player.isOnline()) {
                 player.sendActionBar(Component.text("[냉혈한]", NamedTextColor.AQUA)
                         .append(Component.text("을 다시 사용 가능합니다", NamedTextColor.GREEN)));
+                ActionBarTracker.markUsed(player);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;

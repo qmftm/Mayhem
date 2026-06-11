@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.MaxHealthModifier;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Sound;
@@ -34,7 +35,9 @@ public class MolaMolaEffect implements AugmentationEffect {
         mgr.activateFor(target, "MolaMola");
 
         player.sendActionBar(Component.text("개복치 이전됨!", NamedTextColor.GREEN));
+        ActionBarTracker.markUsed(player);
         target.sendActionBar(Component.text("개복치 감염됨!", NamedTextColor.RED));
+        ActionBarTracker.markUsed(target);
 
         player.playSound(player.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1.0f, 1.0f);
         target.playSound(target.getLocation(), Sound.ENTITY_PUFFER_FISH_BLOW_UP, 1.0f, 1.0f);

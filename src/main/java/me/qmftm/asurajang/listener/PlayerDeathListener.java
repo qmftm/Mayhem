@@ -19,6 +19,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -143,6 +144,7 @@ public class PlayerDeathListener implements Listener {
         Player player = event.getPlayer();
         deathLocations.put(player.getUniqueId(), player.getLocation().clone());
         Asurajang.getInstance().getScoreboardManager().addDeath(player);
+        applyDeathGoldPenalty(player);
 
         // 킬 추적 (getKiller()가 투사체·지연 피해 등으로 null이면 최근 공격자로 대체)
         Player killer = player.getKiller();
@@ -245,6 +247,18 @@ public class PlayerDeathListener implements Listener {
         }
 
         Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> player.spigot().respawn(), 1L);
+    }
+
+    private static void applyDeathGoldPenalty(Player player) {
+        Asurajang plugin = Asurajang.getInstance();
+        ConfigurationSection config = plugin.getConfig().getConfigurationSection("death-gold-penalty");
+        if (config == null || !config.getBoolean("enabled", false)) return;
+
+        double ratio = config.getDouble("ratio", 0.1);
+        int penalty = plugin.getScoreboardManager().removeGoldPercent(player, ratio);
+        if (penalty > 0) {
+            player.sendMessage(Component.text("-" + penalty + " 골드 (사망 패널티)", NamedTextColor.RED));
+        }
     }
 
     private static void spawnHeugsomDeathBurst(Location loc, World world) {
