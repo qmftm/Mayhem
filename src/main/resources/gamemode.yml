@@ -1,5 +1,9 @@
 # Asurajang 게임 모드 설정
 
+death-gold-penalty:
+  enabled: true     # 사망 시 골드 감소 여부
+  ratio: 0.10       # 감소 비율 (현재 보유 골드 기준)
+
 wild:
   border-size: 500          # 야생 모드 자기장 최종 크기 (블록)
   duration-seconds: 1800    # 야생 모드 게임 시간 (초, 기본 30분)
