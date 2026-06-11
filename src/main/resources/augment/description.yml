@@ -54,6 +54,14 @@ Deadful:
     - "최대 체력이 5칸으로 고정되며"
     - "1초마다 즉시 치유 I를 받습니다."
 
+Gambler:
+  display-name: "도박사"
+  icon: GOLD_NUGGET
+  color: gold
+  description:
+    - "매 틱마다 1~239 사이의 무작위 숫자를 액션바에 표시합니다."
+    - "77이 나오면 체력을 전부 회복합니다."
+
 Copy:
   display-name: "모방"
   icon: MAGENTA_DYE

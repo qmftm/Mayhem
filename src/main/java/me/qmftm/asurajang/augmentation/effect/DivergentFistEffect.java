@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -77,6 +78,7 @@ public class DivergentFistEffect implements AugmentationEffect {
             if (player.isOnline()) {
                 player.sendActionBar(Component.text("[경정권]", NamedTextColor.AQUA)
                         .append(Component.text("을 다시 사용 가능합니다", NamedTextColor.GREEN)));
+                ActionBarTracker.markUsed(player);
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;

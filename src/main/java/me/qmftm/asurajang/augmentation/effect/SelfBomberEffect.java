@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -108,6 +109,7 @@ public class SelfBomberEffect implements AugmentationEffect {
             }
             player.sendActionBar(Component.text(
                 "폭발까지 " + fuse[0] + "초!", NamedTextColor.RED));
+            ActionBarTracker.markUsed(player);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f,
                 0.5f + (fuseSeconds - fuse[0]) * 0.1f);
             fuse[0]--;

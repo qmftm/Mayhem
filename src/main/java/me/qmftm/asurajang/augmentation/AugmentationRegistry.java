@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.effect.BoogieWoogieEffect;
 import me.qmftm.asurajang.augmentation.effect.UnBreakableEffect;
 import me.qmftm.asurajang.augmentation.effect.UnRuinEffect;
 import me.qmftm.asurajang.augmentation.effect.SaturatedFatEffect;
+import me.qmftm.asurajang.augmentation.effect.GamblerEffect;
 import me.qmftm.asurajang.augmentation.effect.DivineLoveEffect;
 import me.qmftm.asurajang.augmentation.effect.WindBurstEffect;
 import me.qmftm.asurajang.augmentation.effect.StrongStrongEffect;
@@ -62,6 +63,7 @@ public class AugmentationRegistry {
         REGISTRY.put("UnBreakable",   UnBreakableEffect::new);
         REGISTRY.put("UnRuin",        UnRuinEffect::new);
         REGISTRY.put("SaturatedFat",  SaturatedFatEffect::new);
+        REGISTRY.put("Gambler",       GamblerEffect::new);
         REGISTRY.put("Dropkick",          DropkickEffect::new);
         REGISTRY.put("ExecutionerSword",  ExecutionerSwordEffect::new);
         REGISTRY.put("StatPlusPlusPlus",  StatPlusPlusPlusEffect::new);

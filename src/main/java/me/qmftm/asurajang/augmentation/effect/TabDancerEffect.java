@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -30,6 +31,7 @@ public class TabDancerEffect implements AugmentationEffect {
                 if (stacks > 0) {
                     player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
                         .decoration(TextDecoration.ITALIC, false));
+                    ActionBarTracker.markUsed(player);
                 }
             }, 0L, 2L);
     }

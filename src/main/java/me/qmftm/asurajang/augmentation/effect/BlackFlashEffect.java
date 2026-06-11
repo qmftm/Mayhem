@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.ShadowColor;
@@ -83,6 +84,7 @@ public class BlackFlashEffect implements AugmentationEffect {
                 .decoration(TextDecoration.ITALIC, false)
                 .shadowColor(ShadowColor.shadowColor(0xFFFF0000))
                 .build()));
+            ActionBarTracker.markUsed(player);
 
             // 0.1초(2틱) 간격으로 10회 = 1초 지속
             int[] count = {0};
