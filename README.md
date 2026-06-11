@@ -100,29 +100,29 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 |  | 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 설명 |
 |:---:|:---|:---|
-| <img src="docs/icons/feather.png" width="40"> | 가벼운 착지 | 낙하 피해를 받지 않습니다. |
-| <img src="docs/icons/nether_star.png" width="40"> | 강강약약 | 가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다. |
-| <img src="docs/icons/wither_rose.png" width="40"> | 강약약강 | 상대의 체력이 낮을수록 더 큰 추가 피해를 줍니다. |
-| <img src="docs/icons/pufferfish.png" width="40"> | 개복치 | 최대 체력이 절반으로 줄지만, 적을 때릴 때마다 확률로 능력을 이전시킵니다. |
-| <img src="docs/icons/nautilus_shell.png" width="40"> | 경정권 | 공격 후 잠시 뒤 추가 피해와 강한 넉백을 한 번 더 줍니다. |
-| <img src="docs/icons/snowball.png" width="40"> | 냉혈한 | 우클릭으로 적에게 구속과 나약함을 부여합니다. |
-| <img src="docs/icons/fermented_spider_eye.png" width="40"> | 데드풀 | 최대 체력이 줄어드는 대신 매초 자동으로 체력을 회복합니다. |
-| <img src="docs/icons/gold_nugget.png" width="40"> | 도박사 | 매 틱마다 무작위 숫자가 표시되며, 특정 숫자가 나오면 체력을 모두 회복합니다. |
-| <img src="docs/icons/magenta_dye.png" width="40"> | 모방 | 적을 처치하면 상대의 증강 하나를 복사해 사용할 수 있습니다. |
-| <img src="docs/icons/armor_stand.png" width="40"> | 변태 | 적을 때릴 때마다 확률로 갑옷을 벗겨냅니다. |
-| <img src="docs/icons/shears.png" width="40"> | 부기우기 | 근처의 적과 위치를 맞바꿉니다. |
-| <img src="docs/icons/bedrock.png" width="40"> | 불괴 | 아이템 내구도가 잘 닳지 않습니다. |
-| <img src="docs/icons/totem_of_undying.png" width="40"> | 불멸 | 사망 시 확률로 그 자리에서 부활합니다. |
-| <img src="docs/icons/wind_charge.png" width="40"> | 붕뜨네 | 검을 우클릭해 돌풍구를 날립니다. |
-| <img src="docs/icons/spawn_egg.png" width="40"> | 옥견 | 길들인 늑대 두 마리가 함께 싸워줍니다. |
-| <img src="docs/icons/iron_axe.png" width="40"> | 육중한 힘 | 공격력이 증가합니다. |
-| <img src="docs/icons/tnt_side.png" width="40"> | 자폭 | 일정 시간마다 몸에 폭탄이 붙고, 터지면 주변 적에게 큰 피해를 줍니다. |
-| <img src="docs/icons/bow.png" width="40"> | 저격 대결 | 멀리 떨어진 적을 공격할수록 피해가 늘어납니다. |
-| <img src="docs/icons/redstone.png" width="40"> | 죄책감의 쾌락 | 적을 처치하면 체력을 회복합니다. |
-| <img src="docs/icons/blaze_powder.png" width="40"> | 주님의 사랑 | 검을 우클릭해 화염구를 연달아 발사합니다. |
-| <img src="docs/icons/sugar.png" width="40"> | 클린업 | 체력이 낮은 적이 가까이 있으면 이동 속도가 빨라집니다. |
-| <img src="docs/icons/cooked_porkchop.png" width="40"> | 포화지방산 | 배고픔이 줄지 않고, 음식을 먹으면 즉시 체력을 회복합니다. |
-| <img src="docs/icons/obsidian.png" width="40"> | 흑섬 | 공격할 때 확률로 강력한 치명타를 터뜨립니다. |
+| <img src="docs/icons/feather.png" width="64"> | 가벼운 착지 | 낙하 피해를 받지 않습니다. |
+| <img src="docs/icons/nether_star.png" width="64"> | 강강약약 | 가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다. |
+| <img src="docs/icons/wither_rose.png" width="64"> | 강약약강 | 상대의 체력이 낮을수록 더 큰 추가 피해를 줍니다. |
+| <img src="docs/icons/pufferfish.png" width="64"> | 개복치 | 최대 체력이 절반으로 줄지만, 적을 때릴 때마다 확률로 능력을 이전시킵니다. |
+| <img src="docs/icons/nautilus_shell.png" width="64"> | 경정권 | 공격 후 잠시 뒤 추가 피해와 강한 넉백을 한 번 더 줍니다. |
+| <img src="docs/icons/snowball.png" width="64"> | 냉혈한 | 우클릭으로 적에게 구속과 나약함을 부여합니다. |
+| <img src="docs/icons/fermented_spider_eye.png" width="64"> | 데드풀 | 최대 체력이 줄어드는 대신 매초 자동으로 체력을 회복합니다. |
+| <img src="docs/icons/gold_nugget.png" width="64"> | 도박사 | 매 틱마다 무작위 숫자가 표시되며, 특정 숫자가 나오면 체력을 모두 회복합니다. |
+| <img src="docs/icons/magenta_dye.png" width="64"> | 모방 | 적을 처치하면 상대의 증강 하나를 복사해 사용할 수 있습니다. |
+| <img src="docs/icons/armor_stand.png" width="64"> | 변태 | 적을 때릴 때마다 확률로 갑옷을 벗겨냅니다. |
+| <img src="docs/icons/shears.png" width="64"> | 부기우기 | 근처의 적과 위치를 맞바꿉니다. |
+| <img src="docs/icons/bedrock.png" width="64"> | 불괴 | 아이템 내구도가 잘 닳지 않습니다. |
+| <img src="docs/icons/totem_of_undying.png" width="64"> | 불멸 | 사망 시 확률로 그 자리에서 부활합니다. |
+| <img src="docs/icons/wind_charge.png" width="64"> | 붕뜨네 | 검을 우클릭해 돌풍구를 날립니다. |
+| <img src="docs/icons/spawn_egg.png" width="64"> | 옥견 | 길들인 늑대 두 마리가 함께 싸워줍니다. |
+| <img src="docs/icons/iron_axe.png" width="64"> | 육중한 힘 | 공격력이 증가합니다. |
+| <img src="docs/icons/tnt_side.png" width="64"> | 자폭 | 일정 시간마다 몸에 폭탄이 붙고, 터지면 주변 적에게 큰 피해를 줍니다. |
+| <img src="docs/icons/bow.png" width="64"> | 저격 대결 | 멀리 떨어진 적을 공격할수록 피해가 늘어납니다. |
+| <img src="docs/icons/redstone.png" width="64"> | 죄책감의 쾌락 | 적을 처치하면 체력을 회복합니다. |
+| <img src="docs/icons/blaze_powder.png" width="64"> | 주님의 사랑 | 검을 우클릭해 화염구를 연달아 발사합니다. |
+| <img src="docs/icons/sugar.png" width="64"> | 클린업 | 체력이 낮은 적이 가까이 있으면 이동 속도가 빨라집니다. |
+| <img src="docs/icons/cooked_porkchop.png" width="64"> | 포화지방산 | 배고픔이 줄지 않고, 음식을 먹으면 즉시 체력을 회복합니다. |
+| <img src="docs/icons/obsidian.png" width="64"> | 흑섬 | 공격할 때 확률로 강력한 치명타를 터뜨립니다. |
 
 </details>
 
@@ -131,10 +131,10 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 |  | 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 설명 |
 |:---:|:---|:---|
-| <img src="docs/icons/anvil_top.png" width="40"> | 능력치 더하기 더하기 더하기 | 능력치 모루 4개를 즉시 획득합니다. |
-| <img src="docs/icons/rabbit_foot.png" width="40"> | 드롭킥 | 체력이 낮은 적을 근접 공격으로 즉사시키고 강한 넉백·폭발과 함께 체력을 회복합니다. |
-| <img src="docs/icons/glass.png" width="40"> | 유리 대포 | 최대 체력이 줄어드는 대신 공격 시 추가 고정 피해를 입힙니다. |
-| <img src="docs/icons/golden_sword.png" width="40"> | 처형인의 검 | 날카로움이 매우 높은 금 검을 지급받으며, 검이 부서지면 일정 시간 후 다시 지급됩니다. |
-| <img src="docs/icons/jukebox_top.png" width="40"> | 탭 댄서 | 공격할 때마다 이동 속도가 누적되며, 일정 시간 공격하지 않으면 빠르게 사라집니다. |
+| <img src="docs/icons/anvil_top.png" width="64"> | 능력치 더하기 더하기 더하기 | 능력치 모루 4개를 즉시 획득합니다. |
+| <img src="docs/icons/rabbit_foot.png" width="64"> | 드롭킥 | 체력이 낮은 적을 근접 공격으로 즉사시키고 강한 넉백·폭발과 함께 체력을 회복합니다. |
+| <img src="docs/icons/glass.png" width="64"> | 유리 대포 | 최대 체력이 줄어드는 대신 공격 시 추가 고정 피해를 입힙니다. |
+| <img src="docs/icons/golden_sword.png" width="64"> | 처형인의 검 | 날카로움이 매우 높은 금 검을 지급받으며, 검이 부서지면 일정 시간 후 다시 지급됩니다. |
+| <img src="docs/icons/jukebox_top.png" width="64"> | 탭 댄서 | 공격할 때마다 이동 속도가 누적되며, 일정 시간 공격하지 않으면 빠르게 사라집니다. |
 
 </details>
