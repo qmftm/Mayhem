@@ -114,7 +114,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 | <img src="docs/icons/bedrock_iso.png" width="128"> | 불괴 | 아이템 내구도가 잘 닳지 않습니다. |
 | <img src="docs/icons/totem_of_undying.png" width="128"> | 불멸 | 사망 시 확률로 그 자리에서 부활합니다. |
 | <img src="docs/icons/wind_charge.png" width="128"> | 붕뜨네 | 검을 우클릭해 돌풍구를 날립니다. |
-| <img src="docs/icons/spawn_egg.png" width="128"> | 옥견 | 길들인 늑대 두 마리가 함께 싸워줍니다. |
+| <img src="docs/icons/spawn_egg.png" width="128"> | 옥견 | 늑대 두 마리가 함께 싸워줍니다. |
 | <img src="docs/icons/iron_axe.png" width="128"> | 육중한 힘 | 공격력이 증가합니다. |
 | <img src="docs/icons/tnt_iso.png" width="128"> | 자폭 | 일정 시간마다 몸에 폭탄이 붙고, 터지면 주변 적에게 큰 피해를 줍니다. |
 | <img src="docs/icons/bow.png" width="128"> | 저격 대결 | 멀리 떨어진 적을 공격할수록 피해가 늘어납니다. |
