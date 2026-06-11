@@ -131,7 +131,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 |  | 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 설명 |
 |:---:|:---|:---|
-| <img src="docs/icons/anvil_iso.png" width="128"> | 능력치 더하기 더하기 더하기 | 능력치 모루 4개를 즉시 획득합니다. |
+| <img src="docs/icons/smithing_table_iso.png" width="128"> | 능력치 더하기 더하기 더하기 | 능력치 모루 4개를 즉시 획득합니다. |
 | <img src="docs/icons/rabbit_foot.png" width="128"> | 드롭킥 | 체력이 낮은 적을 근접 공격으로 즉사시키고 강한 넉백·폭발과 함께 체력을 회복합니다. |
 | <img src="docs/icons/glass_iso.png" width="128"> | 유리 대포 | 최대 체력이 줄어드는 대신 공격 시 추가 고정 피해를 입힙니다. |
 | <img src="docs/icons/golden_sword.png" width="128"> | 처형인의 검 | 날카로움이 매우 높은 금 검을 지급받으며, 검이 부서지면 일정 시간 후 다시 지급됩니다. |

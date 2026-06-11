@@ -31,7 +31,7 @@ GlassCannon:
 
 StatPlusPlusPlus:
   display-name: "능력치 더하기 더하기 더하기"
-  icon: ANVIL
+  icon: SMITHING_TABLE
   color: dark_purple
   description:
     - "능력치 모루 4개를 획득합니다!"
