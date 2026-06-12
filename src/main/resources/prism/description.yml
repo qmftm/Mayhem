@@ -64,12 +64,12 @@ InfiniteGold:
 
 Aegis:
   display-name: "이지스"
-  icon: NETHERITE_HELMET
+  icon: CLOCK
   color: gold
   active: true
-  cooldown: 60
+  cooldown: 70
   description:
     - "아이템을 우클릭하면"
     - "<gold>4초간</gold> 모든 피해를 무시하는"
     - "<gold>무적</gold> 상태가 됩니다."
-    - "<gold>쿨타임: 60초</gold>"
+    - "<gold>쿨타임: 70초</gold>"
