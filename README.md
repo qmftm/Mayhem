@@ -100,9 +100,9 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 <table>
 <colgroup>
-<col width="24%">
-<col width="16%">
-<col width="60%">
+<col width="20%">
+<col width="30%">
+<col width="50%">
 </colgroup>
 <thead>
 <tr><th></th><th>이름</th><th>설명</th></tr>
@@ -144,9 +144,9 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 <table>
 <colgroup>
-<col width="24%">
-<col width="16%">
-<col width="60%">
+<col width="20%">
+<col width="30%">
+<col width="50%">
 </colgroup>
 <thead>
 <tr><th></th><th>이름</th><th>설명</th></tr>
