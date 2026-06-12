@@ -11,5 +11,5 @@ InfiniteGold:
   respawn-multiplier: 5.0
   damage-multiplier: 0.9
 
-Star:
+Aegis:
   duration-ticks: 80

@@ -10,19 +10,19 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-public class StarEffect implements AugmentationEffect {
+public class AegisEffect implements AugmentationEffect {
 
     private BukkitTask revertTask;
 
     @Override
     public void onActivate(Player player) {
-        long durationTicks = AugmentSettings.getLong("Star", "duration-ticks", 80L);
+        long durationTicks = AugmentSettings.getLong("Aegis", "duration-ticks", 80L);
 
         player.setInvulnerable(true);
         player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING,
             player.getLocation().add(0, 1, 0), 40, 0.5, 0.5, 0.5, 0.3);
         player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.5f);
-        player.sendMessage(Component.text("[스타] ", NamedTextColor.GOLD)
+        player.sendMessage(Component.text("[이지스] ", NamedTextColor.GOLD)
             .append(Component.text("4초간 무적 상태가 됩니다!", NamedTextColor.YELLOW)));
 
         revertTask = Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> {

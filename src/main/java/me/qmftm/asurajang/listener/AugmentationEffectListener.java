@@ -162,11 +162,11 @@ public class AugmentationEffectListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onStarDamage(EntityDamageEvent event) {
+    public void onAegisDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (Asurajang.getInstance().getAugmentationManager()
-                .getActiveEffects(player.getUniqueId()).containsKey("Star")) {
+                .getActiveEffects(player.getUniqueId()).containsKey("Aegis")) {
             event.setCancelled(true);
         }
     }
