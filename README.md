@@ -100,7 +100,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 <table>
 <thead>
-<tr><th width="33%"></th><th width="33%">이름</th><th width="33%">설명</th></tr>
+<tr><th width="14%"></th><th width="43%">이름</th><th width="43%">설명</th></tr>
 </thead>
 <tbody>
 <tr><td align="center"><img src="docs/icons/feather.png" width="64"></td><td>가벼운 착지</td><td>낙하 피해를 받지 않습니다.</td></tr>
@@ -139,7 +139,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 <table>
 <thead>
-<tr><th width="33%"></th><th width="33%">이름</th><th width="33%">설명</th></tr>
+<tr><th width="14%"></th><th width="43%">이름</th><th width="43%">설명</th></tr>
 </thead>
 <tbody>
 <tr><td align="center"><img src="docs/icons/smithing_table_iso.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
