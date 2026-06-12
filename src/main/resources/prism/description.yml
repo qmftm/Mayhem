@@ -67,9 +67,9 @@ Aegis:
   icon: CLOCK
   color: gold
   active: true
-  cooldown: 70
+  cooldown: 80
   description:
     - "아이템을 우클릭하면"
     - "<gold>4초간</gold> 모든 피해를 무시하는"
     - "<gold>무적</gold> 상태가 됩니다."
-    - "<gold>쿨타임: 70초</gold>"
+    - "<gold>쿨타임: 80초</gold>"
