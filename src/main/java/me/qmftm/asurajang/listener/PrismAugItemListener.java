@@ -2,6 +2,7 @@ package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.Augmentation;
+import me.qmftm.asurajang.augmentation.SealManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -44,6 +45,12 @@ public class PrismAugItemListener implements Listener {
         if (augId == null) return;
 
         event.setCancelled(true);
+
+        if (SealManager.isSealed(player.getUniqueId())) {
+            player.sendMessage(Component.text("[봉인] ", NamedTextColor.GRAY)
+                    .append(Component.text("몰수 상태에서는 증강을 사용할 수 없습니다.", NamedTextColor.RED)));
+            return;
+        }
 
         Augmentation aug = Asurajang.getInstance().getAugmentationManager().get(augId);
         long cooldownMs = aug != null ? aug.getCooldown() * 1000L : 30_000L;

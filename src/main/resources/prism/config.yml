@@ -13,3 +13,8 @@ InfiniteGold:
 
 Aegis:
   duration-ticks: 80
+
+Seal:
+  radius: 10.0
+  duration-ticks: 300
+  damage-multiplier: 0.9

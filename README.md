@@ -136,7 +136,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>프리즘 증강 목록 (7종)</summary>
+<summary>프리즘 증강 목록 (8종)</summary>
 
 <table>
 <thead>
@@ -150,6 +150,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/jukebox_iso.png" width="64"></td><td>탭 댄서</td><td>기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다. 마지막 중첩을 쌓은 후 5초 이내로 중첩을 쌓지 않으면 중첩이 빠르게 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_block_iso.png" width="64"></td><td>무한한 골드</td><td>골드를 32767로 변경합니다. 단, 부활 시간이 5배 증가하며 주는 피해량이 10% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/clock.png" width="64"></td><td>이지스</td><td>아이템을 우클릭하면 4초간 모든 피해를 무시하는 무적 상태가 됩니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_bars.png" width="64"></td><td>봉인</td><td>아이템을 우클릭하면 주변 10칸의 플레이어에게 15초간 몰수 효과를 부여합니다. 몰수: 모든 증강 사용이 금지되며 공격력이 10% 감소합니다.</td></tr>
 </tbody>
 </table>
 

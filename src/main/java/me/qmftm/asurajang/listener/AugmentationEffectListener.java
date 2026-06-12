@@ -3,6 +3,7 @@ package me.qmftm.asurajang.listener;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.SealManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.DivergentFistEffect;
 import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
@@ -40,6 +41,7 @@ public class AugmentationEffectListener implements Listener {
         Player victim = event.getPlayer();
         Player killer = victim.getKiller();
         if (killer == null) return;
+        if (SealManager.isSealed(killer.getUniqueId())) return;
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(killer.getUniqueId()).values())) {
@@ -71,6 +73,7 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (!(event.getDamager() instanceof Projectile proj)) return;
         if (!(proj.getShooter() instanceof Player shooter)) return;
+        if (SealManager.isSealed(shooter.getUniqueId())) return;
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(shooter.getUniqueId()).values())) {
@@ -83,6 +86,12 @@ public class AugmentationEffectListener implements Listener {
         if (!(event.getDamager() instanceof Player attacker)) return;
         if (!(event.getEntity() instanceof Player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+
+        if (SealManager.isSealed(attacker.getUniqueId())) {
+            double multiplier = AugmentSettings.getDouble("Seal", "damage-multiplier", 0.9);
+            event.setDamage(event.getDamage() * multiplier);
+            return;
+        }
 
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         java.util.Map<String, AugmentationEffect> effects = mgr.getActiveEffects(attacker.getUniqueId());
@@ -110,6 +119,7 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         Player player = event.getPlayer();
+        if (SealManager.isSealed(player.getUniqueId())) return;
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onRightClick(player, event);
@@ -122,6 +132,7 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         Player player = event.getPlayer();
+        if (SealManager.isSealed(player.getUniqueId())) return;
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onInteractEntity(player, event);
@@ -133,6 +144,7 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         Player player = event.getPlayer();
+        if (SealManager.isSealed(player.getUniqueId())) return;
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onSwapHands(player, event);
@@ -144,6 +156,7 @@ public class AugmentationEffectListener implements Listener {
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
 
         Player player = event.getPlayer();
+        if (SealManager.isSealed(player.getUniqueId())) return;
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onDropItem(player, event);
@@ -155,6 +168,7 @@ public class AugmentationEffectListener implements Listener {
         if (event.getCause() != EntityDamageEvent.DamageCause.FALL) return;
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (SealManager.isSealed(player.getUniqueId())) return;
         if (Asurajang.getInstance().getAugmentationManager()
                 .getActiveEffects(player.getUniqueId()).containsKey("FeatherFalling")) {
             event.setCancelled(true);
@@ -165,6 +179,7 @@ public class AugmentationEffectListener implements Listener {
     public void onAegisDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (SealManager.isSealed(player.getUniqueId())) return;
         if (Asurajang.getInstance().getAugmentationManager()
                 .getActiveEffects(player.getUniqueId()).containsKey("Aegis")) {
             event.setCancelled(true);
@@ -173,6 +188,7 @@ public class AugmentationEffectListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        SealManager.clear(event.getPlayer().getUniqueId());
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         Asurajang.getInstance().getAugmentationManager().deactivateFor(event.getPlayer());
     }
