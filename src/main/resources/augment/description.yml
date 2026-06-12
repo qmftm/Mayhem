@@ -165,9 +165,11 @@ TotalConcentration:
   icon: IRON_SWORD
   color: aqua
   description:
-    - "<aqua>무작위 인챈트</aqua>가 부여된 철 검을 즉시 지급합니다."
-    - "적을 처치하거나 사망할 때마다"
-    - "검의 인챈트가 <aqua>무작위로</aqua> 다시 부여됩니다."
+    - "<aqua>부숴지지 않는</aqua> 철 검을 즉시 지급합니다."
+    - "날카로움, 밀치기, 화염 부여, 휩쓸기 베기 중"
+    - "각각 <aqua>25%</aqua> 확률로 무작위 레벨이 부여되며,"
+    - "최소 하나는 반드시 부여됩니다."
+    - "적을 처치하거나 사망할 때마다 다시 부여됩니다."
 
 GuiltPleasure:
   display-name: "죄책감의 쾌락"

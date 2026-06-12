@@ -124,7 +124,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/iron_axe.png" width="64"></td><td>육중한 힘</td><td>공격력이 20% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/tnt_iso.png" width="64"></td><td>자폭</td><td>35초마다 머리 위에 TNT가 부착됩니다. 부착 시 5초 간 신속을 받은 뒤 폭발하며 반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다. 자신은 그 피해의 50%만 받습니다. 폭탄 보유 중 사망하면 즉시 폭발합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>저격 대결</td><td>12칸 이상 거리의 적을 공격 시 피해가 50% 증가합니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>전 집중 호흡</td><td>무작위 인챈트가 부여된 철 검을 즉시 지급합니다. 적을 처치하거나 사망할 때마다 검의 인챈트가 무작위로 다시 부여됩니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>전 집중 호흡</td><td>부숴지지 않는 철 검을 즉시 지급합니다. 날카로움, 밀치기, 화염 부여, 휩쓸기 베기 중 각각 25% 확률로 무작위 레벨이 부여되며 최소 하나는 반드시 부여됩니다. 적을 처치하거나 사망할 때마다 다시 부여됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/redstone.png" width="64"></td><td>죄책감의 쾌락</td><td>적 플레이어를 처치 시 최대 체력의 20%를 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/blaze_powder.png" width="64"></td><td>주님의 사랑</td><td>검 우클릭 시 바라보는 방향으로 화염구를 3회 연달아 날립니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/sugar.png" width="64"></td><td>클린업</td><td>체력 30% 이하인 적이 10칸 내에 있으면 이동 속도가 50% 증가합니다.</td></tr>

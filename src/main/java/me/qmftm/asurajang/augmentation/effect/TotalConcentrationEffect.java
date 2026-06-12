@@ -15,6 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,8 +24,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class TotalConcentrationEffect implements AugmentationEffect {
 
     private static final List<String> ENCHANTMENTS = List.of(
-        "sharpness", "knockback", "fire_aspect", "looting", "sweeping_edge", "unbreaking", "mending"
+        "sharpness", "knockback", "fire_aspect", "sweeping_edge"
     );
+
+    private static final double ENCHANT_CHANCE = 0.25;
 
     @Override
     public void onActivate(Player player) {
@@ -74,14 +78,25 @@ public class TotalConcentrationEffect implements AugmentationEffect {
             meta.removeEnchant(ench);
         }
 
-        String key = ENCHANTMENTS.get(ThreadLocalRandom.current().nextInt(ENCHANTMENTS.size()));
-        TypedKey<Enchantment> typedKey = TypedKey.create(RegistryKey.ENCHANTMENT, NamespacedKey.minecraft(key));
-        Enchantment ench = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(typedKey);
-        if (ench != null) {
-            int level = ThreadLocalRandom.current().nextInt(ench.getMaxLevel()) + 1;
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        List<String> keys = new ArrayList<>(ENCHANTMENTS);
+        Collections.shuffle(keys, random);
+
+        boolean applied = false;
+        for (int i = 0; i < keys.size(); i++) {
+            boolean forced = !applied && i == keys.size() - 1;
+            if (!forced && random.nextDouble() >= ENCHANT_CHANCE) continue;
+
+            TypedKey<Enchantment> typedKey = TypedKey.create(RegistryKey.ENCHANTMENT, NamespacedKey.minecraft(keys.get(i)));
+            Enchantment ench = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(typedKey);
+            if (ench == null) continue;
+
+            int level = random.nextInt(ench.getMaxLevel()) + 1;
             meta.addEnchant(ench, level, true);
+            applied = true;
         }
 
+        meta.setUnbreakable(true);
         sword.setItemMeta(meta);
     }
 }
