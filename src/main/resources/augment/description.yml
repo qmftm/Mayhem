@@ -160,6 +160,15 @@ SniperDuel:
     - "<yellow>12칸</yellow> 이상 거리의 적을 공격 시"
     - "피해가 <yellow>50%</yellow> 증가합니다."
 
+TotalConcentration:
+  display-name: "전 집중 호흡"
+  icon: IRON_SWORD
+  color: aqua
+  description:
+    - "<aqua>무작위 인챈트</aqua>가 부여된 철 검을 즉시 지급합니다."
+    - "적을 처치하거나 사망할 때마다"
+    - "검의 인챈트가 <aqua>무작위로</aqua> 다시 부여됩니다."
+
 GuiltPleasure:
   display-name: "죄책감의 쾌락"
   icon: REDSTONE
