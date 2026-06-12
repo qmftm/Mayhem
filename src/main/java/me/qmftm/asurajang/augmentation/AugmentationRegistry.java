@@ -34,6 +34,7 @@ import me.qmftm.asurajang.augmentation.effect.BodyBombEffect;
 import me.qmftm.asurajang.augmentation.effect.CharmEffect;
 import me.qmftm.asurajang.augmentation.effect.InfiniteGoldEffect;
 import me.qmftm.asurajang.augmentation.effect.TotalConcentrationEffect;
+import me.qmftm.asurajang.augmentation.effect.StarEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -78,6 +79,7 @@ public class AugmentationRegistry {
         REGISTRY.put("Charm",             CharmEffect::new);
         REGISTRY.put("InfiniteGold",      InfiniteGoldEffect::new);
         REGISTRY.put("TotalConcentration", TotalConcentrationEffect::new);
+        REGISTRY.put("Star",              StarEffect::new);
     }
 
     @Nullable

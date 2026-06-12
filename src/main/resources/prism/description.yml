@@ -61,3 +61,15 @@ InfiniteGold:
     - "골드를 <gold>32767</gold>로 변경합니다."
     - "단, 부활 시간이 <gold>5배</gold> 증가하며"
     - "주는 피해량이 <gold>10%</gold> 감소합니다."
+
+Star:
+  display-name: "스타"
+  icon: NETHER_STAR
+  color: gold
+  active: true
+  cooldown: 60
+  description:
+    - "아이템을 우클릭하면"
+    - "<gold>4초간</gold> 모든 피해를 무시하는"
+    - "<gold>무적</gold> 상태가 됩니다."
+    - "<gold>쿨타임: 60초</gold>"
