@@ -98,7 +98,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <details>
 <summary>전체 증강 목록 (26종)</summary>
 
-<table>
+<table width="100%">
 <colgroup>
 <col width="24%">
 <col width="36%">
@@ -142,7 +142,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <details>
 <summary>프리즘 증강 목록 (5종)</summary>
 
-<table>
+<table width="100%">
 <colgroup>
 <col width="24%">
 <col width="36%">
