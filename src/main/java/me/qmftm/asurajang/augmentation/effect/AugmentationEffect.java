@@ -22,4 +22,5 @@ public interface AugmentationEffect {
     default void onOwnerDeath(Player player) {}
     default void onOwnerRespawn(Player player) {}
     default MaxHealthModifier getMaxHealthModifier() { return null; }
+    default double getRespawnDelayMultiplier() { return 1.0; }
 }

@@ -52,3 +52,12 @@ TabDancer:
     - "마지막 중첩 후 <aqua>5초</aqua> 이내"
     - "중첩을 쌓지 않으면"
     - "중첩이 빠르게 감소합니다."
+
+InfiniteGold:
+  display-name: "무한한 골드"
+  icon: GOLD_BLOCK
+  color: gold
+  description:
+    - "골드를 <gold>32767</gold>로 변경합니다."
+    - "단, 부활 시간이 <gold>5배</gold> 증가하며"
+    - "주는 피해량이 <gold>10%</gold> 감소합니다."

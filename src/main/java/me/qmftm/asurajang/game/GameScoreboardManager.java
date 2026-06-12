@@ -211,6 +211,10 @@ public class GameScoreboardManager {
         gold.merge(player.getUniqueId(), amount, Integer::sum);
     }
 
+    public void setGold(Player player, int amount) {
+        gold.put(player.getUniqueId(), amount);
+    }
+
     public int getGold(Player player) {
         return gold.getOrDefault(player.getUniqueId(), 0);
     }

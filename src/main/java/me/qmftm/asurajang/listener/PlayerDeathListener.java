@@ -358,7 +358,12 @@ public class PlayerDeathListener implements Listener {
 
     private void startSpectatorTimer(Player player) {
         Asurajang plugin = Asurajang.getInstance();
-        int[] timer = {10};
+
+        double respawnMultiplier = 1.0;
+        for (AugmentationEffect effect : plugin.getAugmentationManager().getActiveEffects(player.getUniqueId()).values()) {
+            respawnMultiplier *= effect.getRespawnDelayMultiplier();
+        }
+        int[] timer = {(int) Math.round(10 * respawnMultiplier)};
 
         Bukkit.getScheduler().runTaskTimer(plugin, task -> {
             if (!player.isOnline() || !plugin.getGameManager().isRunning()) {

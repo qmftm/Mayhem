@@ -5,3 +5,8 @@ TabDancer:
   speed-per-stack: 0.02
   idle-ticks: 100
   decay-interval-ticks: 2
+
+InfiniteGold:
+  gold-amount: 32767
+  respawn-multiplier: 5.0
+  damage-multiplier: 0.9
