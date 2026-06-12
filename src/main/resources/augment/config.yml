@@ -97,3 +97,17 @@ BlackFlash:
   streak-reset: 3
   damage-multiplier: 2.5
   knockback-multiplier: 4.0
+
+Grab:
+  cooldown-ticks: 700
+
+BodyBomb:
+  cooldown-ticks: 1000
+  health-cost: 6.0
+  fuse-ticks: 40
+  throw-velocity: 1.3
+  radius: 4.0
+  damage-fraction: 0.35
+  self-damage-multiplier: 0.5
+  knockback-horizontal: 1.2
+  knockback-vertical: 0.4

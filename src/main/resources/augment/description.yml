@@ -184,3 +184,21 @@ BlackFlash:
   description:
     - "공격마다 3% 확률로 2.5배의 피해를 줍니다."
     - "발동 후 3번의 공격 동안 확률이 증가합니다."
+
+Grab:
+  display-name: "그랩"
+  icon: STRING
+  color: gray
+  description:
+    - "원거리 공격이 적에게 명중하면"
+    - "그 적을 자신의 위치로 끌어옵니다."
+    - "쿨타임: 35초"
+
+BodyBomb:
+  display-name: "신체 폭탄"
+  icon: CREEPER_SPAWN_EGG
+  color: dark_green
+  description:
+    - "버리기 키를 누르면 체력 3칸을 소모하고"
+    - "TNT를 던집니다."
+    - "쿨타임: 50초"

@@ -96,7 +96,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (23종)</summary>
+<summary>전체 증강 목록 (25종)</summary>
 
 |  | 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 설명 |
 |:---:|:---|:---|
@@ -105,6 +105,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 | <img src="docs/icons/wither_rose.png" width="128"> | 강약약강 | 상대의 체력이 낮을수록 더 큰 추가 피해를 줍니다. |
 | <img src="docs/icons/pufferfish.png" width="128"> | 개복치 | 최대 체력이 절반으로 줄지만, 적을 때릴 때마다 확률로 능력을 이전시킵니다. |
 | <img src="docs/icons/nautilus_shell.png" width="128"> | 경정권 | 공격 후 잠시 뒤 추가 피해와 강한 넉백을 한 번 더 줍니다. |
+| <img src="docs/icons/string.png" width="128"> | 그랩 | 원거리 공격이 적에게 명중하면 그 적을 자신의 위치로 끌어옵니다. |
 | <img src="docs/icons/snowball.png" width="128"> | 냉혈한 | 우클릭으로 적에게 구속과 나약함을 부여합니다. |
 | <img src="docs/icons/fermented_spider_eye.png" width="128"> | 데드풀 | 최대 체력이 줄어드는 대신 매초 자동으로 체력을 회복합니다. |
 | <img src="docs/icons/gold_nugget.png" width="128"> | 도박사 | 매 틱마다 무작위 숫자가 표시되며, 특정 숫자가 나오면 체력을 모두 회복합니다. |
@@ -114,6 +115,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 | <img src="docs/icons/bedrock_iso.png" width="128"> | 불괴 | 아이템 내구도가 잘 닳지 않습니다. |
 | <img src="docs/icons/totem_of_undying.png" width="128"> | 불멸 | 사망 시 확률로 그 자리에서 부활합니다. |
 | <img src="docs/icons/wind_charge.png" width="128"> | 붕뜨네 | 검을 우클릭해 돌풍구를 날립니다. |
+| <img src="docs/icons/creeper_spawn_egg.png" width="128"> | 신체 폭탄 | 버리기 키로 체력을 소모해 TNT를 던집니다. |
 | <img src="docs/icons/spawn_egg.png" width="128"> | 옥견 | 늑대 두 마리가 함께 싸워줍니다. |
 | <img src="docs/icons/iron_axe.png" width="128"> | 육중한 힘 | 공격력이 증가합니다. |
 | <img src="docs/icons/tnt_iso.png" width="128"> | 자폭 | 일정 시간마다 몸에 폭탄이 붙고, 터지면 주변 적에게 큰 피해를 줍니다. |

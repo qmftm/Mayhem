@@ -29,6 +29,8 @@ import me.qmftm.asurajang.augmentation.effect.ExecutionerSwordEffect;
 import me.qmftm.asurajang.augmentation.effect.StatPlusPlusPlusEffect;
 import me.qmftm.asurajang.augmentation.effect.TabDancerEffect;
 import me.qmftm.asurajang.augmentation.effect.SniperDuelEffect;
+import me.qmftm.asurajang.augmentation.effect.GrabEffect;
+import me.qmftm.asurajang.augmentation.effect.BodyBombEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -68,6 +70,8 @@ public class AugmentationRegistry {
         REGISTRY.put("ExecutionerSword",  ExecutionerSwordEffect::new);
         REGISTRY.put("StatPlusPlusPlus",  StatPlusPlusPlusEffect::new);
         REGISTRY.put("TabDancer",         TabDancerEffect::new);
+        REGISTRY.put("Grab",              GrabEffect::new);
+        REGISTRY.put("BodyBomb",          BodyBombEffect::new);
     }
 
     @Nullable

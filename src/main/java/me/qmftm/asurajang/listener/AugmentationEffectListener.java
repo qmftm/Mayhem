@@ -18,6 +18,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -135,6 +136,17 @@ public class AugmentationEffectListener implements Listener {
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onSwapHands(player, event);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onDropItem(PlayerDropItemEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+
+        Player player = event.getPlayer();
+        AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
+            effect.onDropItem(player, event);
         }
     }
 
