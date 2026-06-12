@@ -8,8 +8,10 @@ ExecutionerSword:
   color: yellow
   cooldown: 299
   description:
-    - "내구도가 1이지만 높은 날카로움 수치를 가진 금 검을 즉시 지급합니다."
-    - "검이 깨지면 299초 후 자동으로 다시 지급됩니다."
+    - "<yellow>내구도 1</yellow>, 높은 날카로움의"
+    - "금 검을 즉시 지급합니다."
+    - "검이 깨지면 <yellow>299초</yellow> 후"
+    - "자동으로 다시 지급됩니다."
 
 Dropkick:
   display-name: "드롭킥"
@@ -17,30 +19,36 @@ Dropkick:
   color: red
   active: false
   description:
-    - "근접 공격 시 체력 15% 이하인 적을 즉사시킵니다."
-    - "즉사한 적에게 강한 넉백과 폭발이 발생하며,"
-    - "자신의 체력을 최대 체력의 50% 회복합니다."
+    - "근접 공격 시 체력 <red>15%</red> 이하인"
+    - "적을 <red>즉사</red>시킵니다."
+    - "즉사한 적에게 <red>강한 넉백</red>과"
+    - "<red>폭발</red>이 발생하며"
+    - "자신의 체력을 최대 체력의"
+    - "<red>50%</red> 회복합니다."
 
 GlassCannon:
   display-name: "유리 대포"
   icon: GLASS
   color: white
   description:
-    - "최대 체력이 30% 감소합니다."
-    - "공격 시 15%의 추가 고정 피해를 입힙니다."
+    - "최대 체력이 <white>30%</white> 감소합니다."
+    - "공격 시 <white>15%</white>의"
+    - "추가 고정 피해를 입힙니다."
 
 StatPlusPlusPlus:
   display-name: "능력치 더하기 더하기 더하기"
   icon: SMITHING_TABLE
   color: dark_purple
   description:
-    - "능력치 모루 4개를 획득합니다!"
+    - "능력치 모루 <dark_purple>4개</dark_purple>를 획득합니다!"
 
 TabDancer:
   display-name: "탭 댄서"
   icon: JUKEBOX
   color: aqua
   description:
-    - "기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다."
-    - "마지막 중첩을 쌓은 후 5초 이내로 중첩을 쌓지 않으면"
+    - "기본 공격 시 <aqua>0.02</aqua>의 이동 속도를"
+    - "무한히 중첩하여 얻습니다."
+    - "마지막 중첩 후 <aqua>5초</aqua> 이내"
+    - "중첩을 쌓지 않으면"
     - "중첩이 빠르게 감소합니다."

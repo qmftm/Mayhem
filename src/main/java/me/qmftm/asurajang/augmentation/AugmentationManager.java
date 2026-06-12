@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,7 +58,9 @@ public class AugmentationManager {
             if (!descLines.isEmpty()) {
                 List<Component> lore = new ArrayList<>();
                 for (String line : descLines) {
-                    lore.add(Component.text(line, NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+                    lore.add(Component.empty().color(NamedTextColor.GRAY)
+                            .decoration(TextDecoration.ITALIC, false)
+                            .append(MiniMessage.miniMessage().deserialize(line)));
                 }
                 meta.lore(lore);
             }

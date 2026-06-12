@@ -1,140 +1,155 @@
 # Asurajang 증강 표시 정보 (이름·아이콘·색상·설명)
+# description의 색상 태그는 MiniMessage 형식이며, 해당 증강의 color와 맞춰 사용합니다.
 
 FeatherFalling:
   display-name: "가벼운 착지"
   icon: FEATHER
   color: white
   description:
-    - "낙하 피해를 받지 않습니다."
+    - "<white>낙하 피해</white>를 받지 않습니다."
 
 StrongStrong:
   display-name: "강강약약"
   icon: NETHER_STAR
   color: gold
   description:
-    - "가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다."
+    - "가장 킬 수가 높은 적에게"
+    - "<gold>1.5배</gold>의 피해를 줍니다."
 
 StrongWeak:
   display-name: "강약약강"
   icon: WITHER_ROSE
   color: red
   description:
-    - "상대에게 (50 - 상대의 체력 비율)% 만큼의 추가 피해를 줍니다"
+    - "상대의 체력이 낮을수록"
+    - "<red>추가 피해</red>가 증가합니다."
 
 MolaMola:
   display-name: "개복치"
   icon: PUFFERFISH
   color: aqua
   description:
-    - "최대체력이 절반 감소합니다."
-    - "적을 때릴 때마다 10% 확률로 능력을 이전 시킵니다."
+    - "최대 체력이 <aqua>절반</aqua> 감소합니다."
+    - "적을 때릴 때마다 <aqua>10% 확률</aqua>로"
+    - "능력을 이전시킵니다."
 
 DivergentFist:
   display-name: "경정권"
   icon: NAUTILUS_SHELL
   color: aqua
   description:
-    - "공격 시 80%의 피해를 준 뒤"
-    - "0.5초 후 40%의 피해와 2배의 넉백을 추가로 줍니다."
-    - "쿨타임: 15초"
+    - "공격 시 <aqua>80%</aqua>의 피해를 준 뒤"
+    - "0.5초 후 <aqua>40%</aqua>의 피해와"
+    - "<aqua>2배</aqua>의 넉백을 추가로 줍니다."
+    - "<aqua>쿨타임: 15초</aqua>"
 
 ColdBlood:
   display-name: "냉혈한"
   icon: SNOWBALL
   color: aqua
   description:
-    - "적을 우클릭하면 해당 대상에게 구속과 나약함을 3초간 부여합니다."
-    - "쿨타임: 45초"
+    - "적을 우클릭하면 대상에게"
+    - "<aqua>구속</aqua>과 <aqua>나약함</aqua>을 3초간 부여합니다."
+    - "<aqua>쿨타임: 45초</aqua>"
 
 Deadful:
   display-name: "데드풀"
   icon: FERMENTED_SPIDER_EYE
   color: red
   description:
-    - "최대 체력이 5칸으로 고정되며"
-    - "1초마다 즉시 치유 I를 받습니다."
+    - "최대 체력이 <red>5칸</red>으로 고정되며"
+    - "1초마다 <red>즉시 치유 I</red>를 받습니다."
 
 Gambler:
   display-name: "도박사"
   icon: GOLD_NUGGET
   color: gold
   description:
-    - "매 틱마다 1~239 사이의 무작위 숫자를 액션바에 표시합니다."
-    - "77이 나오면 체력을 전부 회복합니다."
+    - "매 틱마다 <gold>1~239</gold> 사이의"
+    - "무작위 숫자를 액션바에 표시합니다."
+    - "<gold>77</gold>이 나오면 체력을 전부 회복합니다."
 
 Copy:
   display-name: "모방"
   icon: MAGENTA_DYE
   color: light_purple
   description:
-    - "적을 죽일 시 적의 증강 중 하나를 복사합니다."
-    - "3회 복사 후 이 증강이 사라집니다."
+    - "적을 죽일 시 적의 증강 중"
+    - "하나를 <light_purple>복사</light_purple>합니다."
+    - "<light_purple>3회</light_purple> 복사 후 이 증강이 사라집니다."
 
 Hentai:
   display-name: "변태"
   icon: ARMOR_STAND
   color: yellow
   description:
-    - "적을 때릴 때마다 3% 확률로 갑옷 부위를 벗깁니다."
+    - "적을 때릴 때마다 <yellow>3% 확률</yellow>로"
+    - "갑옷 부위를 벗깁니다."
 
 BoogieWoogie:
   display-name: "부기우기"
   icon: SHEARS
   color: light_purple
   description:
-    - "양손 맞바꾸기 키로 20블록 내의"
-    - "가장 가까운 적과 위치를 교환합니다."
-    - "쿨타임: 5초"
+    - "양손 맞바꾸기 키로 <light_purple>20블록</light_purple> 내의"
+    - "가장 가까운 적과 <light_purple>위치를 교환</light_purple>합니다."
+    - "<light_purple>쿨타임: 5초</light_purple>"
 
 UnBreakable:
   display-name: "불괴"
   icon: BEDROCK
   color: dark_gray
   description:
-    - "아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다."
+    - "아이템 내구도 소모 시"
+    - "<dark_gray>75% 확률</dark_gray>로 소모되지 않습니다."
 
 UnRuin:
   display-name: "불멸"
   icon: TOTEM_OF_UNDYING
   color: gold
   description:
-    - "사망 시 35%의 확률로 부활합니다."
-    - "부활 시 전체 체력의 절반인 상태로 부활하며"
-    - "죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다."
+    - "사망 시 <gold>35% 확률</gold>로 부활합니다."
+    - "부활 시 체력의 <gold>절반</gold> 상태로 부활하며"
+    - "죽은 위치 <gold>10칸</gold> 이내"
+    - "랜덤한 좌표에서 부활합니다."
 
 WindBurst:
   display-name: "붕뜨네"
   icon: WIND_CHARGE
   color: aqua
   description:
-    - "검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다."
-    - "쿨타임: 20초"
+    - "검 우클릭 시 바라보는 방향으로"
+    - "<aqua>돌풍구</aqua>를 날립니다."
+    - "<aqua>쿨타임: 20초</aqua>"
 
 DivineDogs:
   display-name: "옥견"
   icon: WOLF_SPAWN_EGG
   color: white
   description:
-    - "두 마리의 길들인 늑대가 당신을 도와 싸웁니다."
-    - "늑대는 사망 시 60초 후에 부활합니다."
-    - "당신이 사망하면 늑대도 같이 사라지며 같이 부활합니다."
+    - "<white>두 마리</white>의 길들인 늑대가"
+    - "당신을 도와 싸웁니다."
+    - "늑대는 사망 시 <white>60초</white> 후 부활합니다."
+    - "당신이 사망하면 늑대도"
+    - "같이 사라지며 함께 부활합니다."
 
 HeavyForce:
   display-name: "육중한 힘"
   icon: IRON_AXE
   color: gray
   description:
-    - "공격력이 20% 증가합니다."
+    - "공격력이 <gray>20%</gray> 증가합니다."
 
 SelfBomber:
   display-name: "자폭"
   icon: TNT
   color: red
   description:
-    - "35초마다 머리 위에 TNT가 부착됩니다."
-    - "부착 시 5초 간 신속을 받은 뒤 폭발하며"
-    - "반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다."
-    - "자신은 그 피해의 50%만 받습니다."
+    - "<red>35초</red>마다 머리 위에 TNT가 부착됩니다."
+    - "부착 시 <red>5초</red>간 신속을 받은 뒤 폭발하며"
+    - "반경 <red>8칸</red> 내 적에게"
+    - "최대 체력의 <red>20%</red> 고정 피해를 줍니다."
+    - "자신은 그 피해의 <red>50%</red>만 받습니다."
     - "폭탄 보유 중 사망하면 즉시 폭발합니다."
 
 SniperDuel:
@@ -142,15 +157,16 @@ SniperDuel:
   icon: BOW
   color: yellow
   description:
-    - "12칸 이상 거리의 적을 공격 시"
-    - "피해가 50% 증가합니다."
+    - "<yellow>12칸</yellow> 이상 거리의 적을 공격 시"
+    - "피해가 <yellow>50%</yellow> 증가합니다."
 
 GuiltPleasure:
   display-name: "죄책감의 쾌락"
   icon: REDSTONE
   color: red
   description:
-    - "적 플레이어를 처치 시 최대 체력의 20%를 회복합니다."
+    - "적 처치 시 최대 체력의"
+    - "<red>20%</red>를 회복합니다."
 
 DivineLove:
   display-name: "주님의 사랑"
@@ -158,32 +174,36 @@ DivineLove:
   color: gold
   description:
     - "검 우클릭 시 바라보는 방향으로"
-    - "화염구를 3회 연달아 날립니다."
-    - "쿨타임: 25초"
+    - "<gold>화염구</gold>를 <gold>3회</gold> 연달아 날립니다."
+    - "<gold>쿨타임: 25초</gold>"
 
 CleanUp:
   display-name: "클린업"
   icon: SUGAR
   color: white
   description:
-    - "체력 30% 이하인 적이 10칸 내에 있으면"
-    - "이동 속도가 50% 증가합니다."
+    - "체력 <white>30%</white> 이하인 적이"
+    - "<white>10칸</white> 내에 있으면"
+    - "이동 속도가 <white>50%</white> 증가합니다."
 
 SaturatedFat:
   display-name: "포화지방산"
   icon: COOKED_PORKCHOP
   color: yellow
   description:
-    - "배고픔이 소모되지 않습니다."
-    - "음식을 먹을 때마다 즉시 치유 효과를 받습니다."
+    - "<yellow>배고픔</yellow>이 소모되지 않습니다."
+    - "음식 섭취 시"
+    - "<yellow>즉시 치유</yellow> 효과를 받습니다."
 
 BlackFlash:
   display-name: "흑섬"
   icon: OBSIDIAN
   color: dark_gray
   description:
-    - "공격마다 3% 확률로 2.5배의 피해를 줍니다."
-    - "발동 후 3번의 공격 동안 확률이 증가합니다."
+    - "공격마다 <dark_gray>3% 확률</dark_gray>로"
+    - "<dark_gray>2.5배</dark_gray>의 피해를 줍니다."
+    - "발동 후 <dark_gray>3번</dark_gray>의 공격 동안"
+    - "확률이 증가합니다."
 
 Grab:
   display-name: "그랩"
@@ -191,23 +211,25 @@ Grab:
   color: gray
   description:
     - "원거리 공격이 적에게 명중하면"
-    - "그 적을 자신의 위치로 끌어옵니다."
-    - "쿨타임: 35초"
+    - "그 적을 <gray>자신의 위치</gray>로 끌어옵니다."
+    - "<gray>쿨타임: 35초</gray>"
 
 BodyBomb:
   display-name: "신체 폭탄"
   icon: CREEPER_SPAWN_EGG
   color: dark_green
   description:
-    - "버리기 키를 누르면 체력 3칸을 소모하고"
-    - "TNT를 던집니다."
-    - "쿨타임: 50초"
+    - "버리기 키를 누르면"
+    - "체력 <dark_green>3칸</dark_green>을 소모하고"
+    - "<dark_green>TNT</dark_green>를 던집니다."
+    - "<dark_green>쿨타임: 50초</dark_green>"
 
 Charm:
   display-name: "매혹"
   icon: ENDER_EYE
   color: light_purple
   description:
-    - "공격한 상대에게 3초간 이동 속도를 50% 감소시키고"
+    - "공격한 상대의 이동 속도를"
+    - "<light_purple>3초</light_purple>간 <light_purple>50%</light_purple> 감소시키고"
     - "자신을 계속 바라보게 만듭니다."
-    - "쿨타임: 25초"
+    - "<light_purple>쿨타임: 25초</light_purple>"
