@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import me.qmftm.asurajang.util.ActionBarCountdown;
 import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -85,9 +86,12 @@ public class CharmEffect implements AugmentationEffect {
             attr.addModifier(new AttributeModifier(SLOW_KEY, -slowAmount, AttributeModifier.Operation.ADD_SCALAR));
         }
 
+        long[] remainingTicks = {durationTicks};
         BukkitTask gazeTask = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-            if (!target.isOnline() || !attacker.isOnline()) return;
-            target.lookAt(attacker.getEyeLocation());
+            if (!target.isOnline()) return;
+            if (attacker.isOnline()) target.lookAt(attacker.getEyeLocation());
+            ActionBarCountdown.show(target, "매혹", NamedTextColor.LIGHT_PURPLE, remainingTicks[0]);
+            remainingTicks[0]--;
         }, 0L, 1L);
         activeGaze.put(targetId, gazeTask);
 
