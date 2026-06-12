@@ -111,3 +111,8 @@ BodyBomb:
   self-damage-multiplier: 0.5
   knockback-horizontal: 1.2
   knockback-vertical: 0.4
+
+Charm:
+  cooldown-ticks: 500
+  duration-ticks: 60
+  slow-amount: 0.5

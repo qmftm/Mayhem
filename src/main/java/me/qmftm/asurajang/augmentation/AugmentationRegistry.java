@@ -31,6 +31,7 @@ import me.qmftm.asurajang.augmentation.effect.TabDancerEffect;
 import me.qmftm.asurajang.augmentation.effect.SniperDuelEffect;
 import me.qmftm.asurajang.augmentation.effect.GrabEffect;
 import me.qmftm.asurajang.augmentation.effect.BodyBombEffect;
+import me.qmftm.asurajang.augmentation.effect.CharmEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -72,6 +73,7 @@ public class AugmentationRegistry {
         REGISTRY.put("TabDancer",         TabDancerEffect::new);
         REGISTRY.put("Grab",              GrabEffect::new);
         REGISTRY.put("BodyBomb",          BodyBombEffect::new);
+        REGISTRY.put("Charm",             CharmEffect::new);
     }
 
     @Nullable

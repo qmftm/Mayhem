@@ -202,3 +202,12 @@ BodyBomb:
     - "버리기 키를 누르면 체력 3칸을 소모하고"
     - "TNT를 던집니다."
     - "쿨타임: 50초"
+
+Charm:
+  display-name: "매혹"
+  icon: ENDER_EYE
+  color: light_purple
+  description:
+    - "공격한 상대에게 3초간 이동 속도를 50% 감소시키고"
+    - "자신을 계속 바라보게 만듭니다."
+    - "쿨타임: 25초"

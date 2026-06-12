@@ -96,7 +96,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (25종)</summary>
+<summary>전체 증강 목록 (26종)</summary>
 
 |  | 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 설명 |
 |:---:|:---|:---|
@@ -109,6 +109,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 | <img src="docs/icons/snowball.png" width="128"> | 냉혈한 | 우클릭으로 적에게 구속과 나약함을 부여합니다. |
 | <img src="docs/icons/fermented_spider_eye.png" width="128"> | 데드풀 | 최대 체력이 줄어드는 대신 매초 자동으로 체력을 회복합니다. |
 | <img src="docs/icons/gold_nugget.png" width="128"> | 도박사 | 매 틱마다 무작위 숫자가 표시되며, 특정 숫자가 나오면 체력을 모두 회복합니다. |
+| <img src="docs/icons/ender_eye.png" width="128"> | 매혹 | 공격한 상대의 이동 속도를 낮추고 자신을 계속 바라보게 만듭니다. |
 | <img src="docs/icons/magenta_dye.png" width="128"> | 모방 | 적을 처치하면 상대의 증강 하나를 복사해 사용할 수 있습니다. |
 | <img src="docs/icons/armor_stand.png" width="128"> | 변태 | 적을 때릴 때마다 확률로 갑옷을 벗겨냅니다. |
 | <img src="docs/icons/shears.png" width="128"> | 부기우기 | 근처의 적과 위치를 맞바꿉니다. |
