@@ -207,7 +207,7 @@ BlackFlash:
 
 Grab:
   display-name: "그랩"
-  icon: STRING
+  icon: LEAD
   color: gray
   description:
     - "원거리 공격이 적에게 명중하면"
