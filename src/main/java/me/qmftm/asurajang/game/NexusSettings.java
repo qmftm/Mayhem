@@ -51,7 +51,7 @@ public final class NexusSettings {
     }
 
     public static double projectileSpeed() {
-        return getDouble("projectile-speed", 1.1);
+        return getDouble("projectile-speed", 0.6);
     }
 
     public static double projectileHitRadius() {

@@ -9,7 +9,7 @@ guardian:
   recovery-seconds: 20                  # 체력 소진 후 공격 불가 + 회복까지 걸리는 시간
   aggro-range: 16.0                     # 적팀 탐지 범위 (블록)
   projectile-damage: 5.0                # 투사체 1회 명중 피해량
-  projectile-speed: 1.1                 # 투사체 이동 속도 (블록/틱)
+  projectile-speed: 0.6                 # 투사체 이동 속도 (블록/틱)
   projectile-hit-radius: 1.0            # 명중 판정 반경
   projectile-max-life-ticks: 100        # 투사체 최대 생존 시간 (틱)
   attack-tick-period: 5                 # 공격 루프가 표적·쿨다운을 점검하는 주기 (틱)

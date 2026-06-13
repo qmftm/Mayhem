@@ -34,7 +34,7 @@ public class ShopGUI implements InventoryHolder {
     };
 
     // 킬당 골드(기본 50 + 보너스 최대 약 50)와 시작 골드 200을 기준으로 책정
-    private static final int[] WEAPON_PRICES = {50, 100, 250, 500, 250};
+    private static final int[] WEAPON_PRICES = {100, 200, 450, 700, 550};
 
     private static final ItemStack[] ARMOR_ITEMS = {
         new ItemStack(Material.IRON_HELMET),
@@ -44,7 +44,7 @@ public class ShopGUI implements InventoryHolder {
         new ItemStack(Material.DIAMOND_CHESTPLATE)
     };
 
-    private static final int[] ARMOR_PRICES = {80, 150, 130, 80, 400};
+    private static final int[] ARMOR_PRICES = {150, 200, 175, 150, 400};
 
     private static final ItemStack BOW    = new ItemStack(Material.BOW);
     private static final ItemStack ARROWS = new ItemStack(Material.ARROW, 8);

@@ -768,9 +768,11 @@ public class BattlefieldManager implements Listener {
             return;
         }
 
-        // 실제로 피해가 들어갈 때마다 시련의 방 탐지 파티클로 "피격" 연출
+        // 실제로 피해가 들어갈 때마다 팀 색상에 맞춘 화염 파티클과 타격 사운드로 "피격" 연출
         Location hitLoc = guardian.getLocation().add(0, 0.5, 0);
-        guardian.getWorld().spawnParticle(Particle.TRIAL_SPAWNER_DETECTION, hitLoc, 6, 0.5, 0.6, 0.5, 0);
+        Particle hitParticle = state.teamIndex == 0 ? Particle.FLAME : Particle.SOUL_FIRE_FLAME;
+        guardian.getWorld().spawnParticle(hitParticle, hitLoc, 6, 0.5, 0.6, 0.5, 0);
+        guardian.getWorld().playSound(hitLoc, Sound.ITEM_MACE_SMASH_AIR, 1.0f, 1.0f);
 
         // 이번 피해로 체력이 모두 소진되면 실제로 죽이지 않고 라이프 차감 절차로 전환
         if (event.getFinalDamage() >= guardian.getHealth()) {
