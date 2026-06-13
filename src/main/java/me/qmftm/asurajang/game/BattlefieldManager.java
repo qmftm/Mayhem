@@ -15,6 +15,9 @@ import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -54,6 +57,7 @@ public class BattlefieldManager implements Listener {
     private static final int MAX_SEARCH_ATTEMPTS       = 6; // 모서리 바이옴 불일치 시 재탐색 최대 횟수
     private static final int MAX_BASE_HEIGHT_DIFF      = 12; // 기지 모드에서 양 팀 코너 간 허용 지면 높이 차 (이보다 크면 재탐색)
     private static final int MAX_RAMP_STEPS            = 16; // 기지가 지면보다 높이 솟았을 때 만들어줄 진입 계단의 최대 길이
+    private static final int WATER_SCAN_DEPTH          = 16; // 색유리로 치환할 물을 지면에서부터 탐색할 최대 깊이
 
     private static final List<Biome> BIOME_POOL = List.of(
         Biome.PLAINS,             Biome.SUNFLOWER_PLAINS,
@@ -319,6 +323,38 @@ public class BattlefieldManager implements Listener {
         WorldBorder border = world.getWorldBorder();
         border.setCenter(centerX, centerZ);
         border.setSize(BORDER_SIZE);
+
+        replaceWaterWithGlass(world, currentLocation);
+    }
+
+    // 보더 내의 물을 파란 색유리로 치환 (위가 비어있는 물 근원지 → 색유리, 흐르는 물 → 색유리판)
+    private void replaceWaterWithGlass(World world, Location center) {
+        int half = (int) BORDER_RADIUS;
+        int minX = center.getBlockX() - half;
+        int maxX = center.getBlockX() + half;
+        int minZ = center.getBlockZ() - half;
+        int maxZ = center.getBlockZ() + half;
+        int minY = world.getMinHeight();
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
+                int top = world.getHighestBlockYAt(x, z);
+                int bottom = Math.max(minY, top - WATER_SCAN_DEPTH);
+                for (int y = top; y >= bottom; y--) {
+                    Block block = world.getBlockAt(x, y, z);
+                    if (block.getType() != Material.WATER) continue;
+
+                    BlockData data = block.getBlockData();
+                    if (data instanceof Levelled levelled && levelled.getLevel() == 0
+                        && block.getRelative(0, 1, 0).getType() == Material.AIR) {
+                        block.setType(Material.BLUE_STAINED_GLASS, false);
+                    } else {
+                        block.setType(Material.BLUE_STAINED_GLASS_PANE, false);
+                    }
+                }
+            }
+        }
     }
 
     public void resetBorder() {
