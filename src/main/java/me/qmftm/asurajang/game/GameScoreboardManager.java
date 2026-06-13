@@ -259,9 +259,9 @@ public class GameScoreboardManager {
         return levels.getOrDefault(player.getUniqueId(), 0);
     }
 
-    // 현재 레벨 → 다음 레벨까지 필요 경험치: (다음 레벨)^2 * 5 + 50
+    // 현재 레벨 → 다음 레벨까지 필요 경험치: 145 + 15(L-1) + 2(L-2)^2  (L = 현재 레벨)
     private static int expRequired(int level) {
-        return (level + 1) * (level + 1) * 5 + 50;
+        return 145 + 15 * (level - 1) + 2 * (level - 2) * (level - 2);
     }
 
     // ── 팀 ──────────────────────────────────────────────────────────────────
