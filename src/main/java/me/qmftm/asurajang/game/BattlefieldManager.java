@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -33,6 +34,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -512,7 +514,7 @@ public class BattlefieldManager implements Listener {
         });
 
         BossBar bar = BossBar.bossBar(
-            guardianBarTitle(teamLabel, initialHealth, initialHealth, nameColor),
+            guardianBarTitle(teamLabel, initialHealth, initialHealth, lifeHealth.length, nameColor),
             1.0f, barColor, BossBar.Overlay.NOTCHED_10);
 
         GuardianState state = new GuardianState(bar, teamLabel, nameColor, barColor, teamIndex, lifeHealth.length);
@@ -733,9 +735,10 @@ public class BattlefieldManager implements Listener {
         target.damage(NexusSettings.projectileDamage(), guardian);
     }
 
-    private static Component guardianBarTitle(String teamLabel, double health, double maxHealth, NamedTextColor color) {
+    private static Component guardianBarTitle(String teamLabel, double health, double maxHealth, int livesLeft, NamedTextColor color) {
         return Component.text(teamLabel + " 거점", color)
-            .append(Component.text("  " + Math.max(0, (int) Math.ceil(health)) + " / " + (int) maxHealth + " ❤", NamedTextColor.GRAY));
+            .append(Component.text("  " + Math.max(0, (int) Math.ceil(health)) + " / " + (int) maxHealth + " ❤", NamedTextColor.GRAY))
+            .append(Component.text("  (" + livesLeft + " ❤)", NamedTextColor.RED));
     }
 
     private static Component guardianRecoveringTitle(String teamLabel, int livesLeft, int secondsLeft, NamedTextColor color) {
@@ -818,7 +821,7 @@ public class BattlefieldManager implements Listener {
         double max = (attr != null) ? attr.getValue() : NexusSettings.lifeHealth()[state.totalLives - state.lives];
         double cur = Math.max(0, guardian.getHealth());
         state.bar.progress((float) Math.max(0.0, Math.min(1.0, cur / max)));
-        state.bar.name(guardianBarTitle(state.teamLabel, cur, max, state.color));
+        state.bar.name(guardianBarTitle(state.teamLabel, cur, max, state.lives, state.color));
     }
 
     // 체력이 모두 소진됐을 때: 라이프를 차감하고, 남았으면 20초 공격 불가 후 전체 회복,
@@ -835,6 +838,11 @@ public class BattlefieldManager implements Listener {
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             guardianStates.remove(guardian.getUniqueId());
             guardian.remove();
+
+            // 기지 모드: 거점이 완전히 파괴되면 반대팀의 승리로 게임을 종료
+            if (Asurajang.getInstance().getGameManager().isBaseModeEnabled()) {
+                announceBaseWinner(state);
+            }
             return;
         }
 
@@ -879,7 +887,7 @@ public class BattlefieldManager implements Listener {
                 state.recovering = false;
                 state.bar.color(state.barColor);
                 state.bar.progress(1f);
-                state.bar.name(guardianBarTitle(state.teamLabel, nextMaxHealth, nextMaxHealth, state.color));
+                state.bar.name(guardianBarTitle(state.teamLabel, nextMaxHealth, nextMaxHealth, state.lives, state.color));
                 return;
             }
 
@@ -888,6 +896,26 @@ public class BattlefieldManager implements Listener {
             state.bar.name(guardianRecoveringTitle(state.teamLabel, state.lives, remaining[0], state.color));
             remaining[0]--;
         }, 0L, 20L);
+    }
+
+    // 거점이 파괴된 팀의 반대팀을 승자로 발표하고 게임을 종료
+    private void announceBaseWinner(GuardianState destroyedState) {
+        int winnerTeam = 1 - destroyedState.teamIndex;
+        String winnerLabel = (winnerTeam == 0) ? "레드팀" : "블루팀";
+        NamedTextColor winnerColor = (winnerTeam == 0) ? NamedTextColor.RED : NamedTextColor.BLUE;
+
+        Title winTitle = Title.title(
+            Component.text(winnerLabel + " 승리!", winnerColor),
+            Component.text(destroyedState.teamLabel + " 거점이 파괴되었습니다", NamedTextColor.GRAY),
+            Title.Times.times(Duration.ZERO, Duration.ofSeconds(4), Duration.ofSeconds(1))
+        );
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.showTitle(winTitle);
+            p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+        }
+
+        Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(),
+            () -> Asurajang.getInstance().getGameManager().stop(), 5 * 20L);
     }
 
     // 게임 시작/종료 시 잔여 거점 히트박스와 보스바를 정리
