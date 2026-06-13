@@ -29,14 +29,18 @@ public class StatAnvilListener implements Listener {
         StatAnvilGUI.Stat stat = gui.getStatAt(event.getRawSlot());
         if (stat == null) return;
 
-        if (!Asurajang.getInstance().getLevelUpManager().consumeAnvilCharge(player.getUniqueId())) {
+        var levelUpManager = Asurajang.getInstance().getLevelUpManager();
+        if (!levelUpManager.consumeAnvilCharge(player.getUniqueId())) {
             player.closeInventory();
             return;
         }
-        player.closeInventory();
         applyStat(player, stat);
         player.sendMessage(Component.text("[" + stat.getDisplayName() + "] 능력치를 강화했습니다.", NamedTextColor.LIGHT_PURPLE));
         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.7f, 1.2f);
+
+        if (levelUpManager.getAnvilCharges(player.getUniqueId()) <= 0) {
+            player.closeInventory();
+        }
     }
 
     private void applyStat(Player player, StatAnvilGUI.Stat stat) {
