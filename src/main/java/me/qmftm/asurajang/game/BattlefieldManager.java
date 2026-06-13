@@ -32,9 +32,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -86,6 +88,7 @@ public class BattlefieldManager implements Listener {
     private static final int BASE_SIZE = 3; // 3x1x3 기지 크기
     private static final int BEACON_HEIGHT = 3; // 콘크리트 거점 위 신호기 높이
     private static final int GUARDIAN_SLIME_SIZE = 3; // 거점 히트박스용 슬라임 크기
+    private static final int PROJECTILE_SLIME_SIZE = 1; // 투사체 히트박스용 슬라임 크기
     // 라이프 개수·체력, 회복 시간, 어그로·투사체·공격 주기 등은 nexus.yml의 guardian 설정에서 읽어온다 (NexusSettings 참고)
 
     private static final class GuardianState {
@@ -116,7 +119,8 @@ public class BattlefieldManager implements Listener {
     private final Map<Integer, Location> teamBaseSpawns = new HashMap<>();
     private final Map<Integer, Location> teamRandomSpawnCache = new HashMap<>();
     private final Map<UUID, GuardianState> guardianStates = new HashMap<>();
-    private Location bestCandidate;  // 탐색 중 양 팀 코너 지면 높이 차가 가장 작았던 후보 위치
+    private final Set<UUID> activeProjectiles = new HashSet<>();
+    private Location bestCandidate;  // 탐색 중 모서리 바이옴이 목표와 일치했던 후보 중 코너 높이 차가 가장 작았던 위치
     private int bestHeightDiff;      // 위 후보의 높이 차
 
     private volatile Location currentLocation;
@@ -174,7 +178,7 @@ public class BattlefieldManager implements Listener {
                 int heightDiff = baseModeActive ? baseHeightDifference(world, candidate) : 0;
                 boolean baseHeightOk = !baseModeActive || heightDiff <= MAX_BASE_HEIGHT_DIFF;
 
-                if (biomeOk && baseModeActive && heightDiff < bestHeightDiff) {
+                if (biomeOk && heightDiff < bestHeightDiff) {
                     bestHeightDiff = heightDiff;
                     bestCandidate = candidate;
                 }
@@ -184,9 +188,9 @@ public class BattlefieldManager implements Listener {
                     return;
                 }
 
-                // 끝까지 기준을 만족하는 위치를 못 찾았다면, 그동안 탐색한 후보 중
-                // 양 팀 코너의 지면 높이 차가 가장 작았던 위치로 맵을 맞춤
-                currentLocation = (!baseHeightOk && bestCandidate != null) ? bestCandidate : candidate;
+                // 모서리 바이옴이 목표와 일치했던 후보를 최우선으로 채택 (그중 코너 높이 차가 가장 작은 것)
+                // 한 번도 일치하지 않았다면 마지막 후보로 최종 결정
+                currentLocation = (bestCandidate != null) ? bestCandidate : candidate;
                 onComplete.run();
             });
         });
@@ -579,14 +583,31 @@ public class BattlefieldManager implements Listener {
         double hitRadius = NexusSettings.projectileHitRadius();
         double speed = NexusSettings.projectileSpeed();
 
+        // 플레이어가 직접 공격해 파괴할 수 있도록 투사체 경로를 따라가는 투명 히트박스를 함께 소환
+        Slime bullet = world.spawn(current, Slime.class, s -> {
+            s.setSize(PROJECTILE_SLIME_SIZE);
+            s.setAI(false);
+            s.setInvisible(true);
+            s.setSilent(true);
+            s.setGravity(false);
+            s.setPersistent(true);
+            s.setRemoveWhenFarAway(false);
+            s.setInvulnerable(false);
+            var attr = s.getAttribute(Attribute.MAX_HEALTH);
+            if (attr != null) attr.setBaseValue(1.0);
+            s.setHealth(1.0);
+        });
+
+        activeProjectiles.add(bullet.getUniqueId());
+
         Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), projTask -> {
-            if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())
+            if (!bullet.isValid() || !guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())
                 || elapsed[0]++ > maxLifeTicks) {
-                projTask.cancel();
+                removeProjectile(bullet, projTask);
                 return;
             }
             if (!target.isOnline() || target.isDead() || target.getGameMode() == GameMode.SPECTATOR) {
-                projTask.cancel();
+                removeProjectile(bullet, projTask);
                 return;
             }
 
@@ -597,7 +618,7 @@ public class BattlefieldManager implements Listener {
                 world.spawnParticle(Particle.DUST, current, 14, 0.2, 0.2, 0.2, 0.0, dust);
                 world.spawnParticle(Particle.CRIT, current, 6, 0.15, 0.15, 0.15, 0.05);
                 world.playSound(current, Sound.ENTITY_SHULKER_BULLET_HIT, 1.0f, 1.0f);
-                projTask.cancel();
+                removeProjectile(bullet, projTask);
                 return;
             }
 
@@ -605,12 +626,35 @@ public class BattlefieldManager implements Listener {
 
             if (current.getBlock().getType().isSolid()) {
                 world.spawnParticle(Particle.CRIT, current, 6, 0.1, 0.1, 0.1, 0.05);
-                projTask.cancel();
+                removeProjectile(bullet, projTask);
                 return;
             }
 
+            bullet.teleport(current);
             world.spawnParticle(Particle.DUST, current, 3, 0.05, 0.05, 0.05, 0.0, dust);
         }, 0L, 1L);
+    }
+
+    // 투사체 히트박스 엔티티를 제거하고 이동 task를 취소
+    private void removeProjectile(LivingEntity bullet, BukkitTask task) {
+        task.cancel();
+        activeProjectiles.remove(bullet.getUniqueId());
+        if (bullet.isValid()) bullet.remove();
+    }
+
+    // 플레이어가 투사체 히트박스를 공격하면 파괴 이펙트를 내고 투사체를 제거
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onProjectileHitboxDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof LivingEntity bullet)) return;
+        if (!activeProjectiles.remove(bullet.getUniqueId())) return;
+        event.setCancelled(true);
+
+        World world = bullet.getWorld();
+        Location loc = bullet.getLocation();
+        world.spawnParticle(Particle.CRIT, loc, 10, 0.15, 0.15, 0.15, 0.08);
+        world.playSound(loc, Sound.ITEM_SHIELD_BLOCK, 1.0f, 1.3f);
+
+        bullet.remove();
     }
 
     // 명중 시 피해 적용 (혹시 모를 팀 오인 명중을 한 번 더 차단하는 안전장치)
@@ -784,6 +828,12 @@ public class BattlefieldManager implements Listener {
             if (entity != null) entity.remove();
         }
         guardianStates.clear();
+
+        for (UUID uuid : activeProjectiles) {
+            Entity entity = Bukkit.getEntity(uuid);
+            if (entity != null) entity.remove();
+        }
+        activeProjectiles.clear();
     }
 
     // ── 조회 ────────────────────────────────────────────────────────────────
