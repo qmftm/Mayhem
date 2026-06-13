@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.gui;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ShopGUI implements InventoryHolder {
@@ -31,6 +33,9 @@ public class ShopGUI implements InventoryHolder {
         new ItemStack(Material.DIAMOND_AXE)
     };
 
+    // 킬당 골드(기본 50 + 보너스 최대 약 50)와 시작 골드 200을 기준으로 책정
+    private static final int[] WEAPON_PRICES = {50, 100, 250, 500, 250};
+
     private static final ItemStack[] ARMOR_ITEMS = {
         new ItemStack(Material.IRON_HELMET),
         new ItemStack(Material.IRON_CHESTPLATE),
@@ -39,14 +44,21 @@ public class ShopGUI implements InventoryHolder {
         new ItemStack(Material.DIAMOND_CHESTPLATE)
     };
 
+    private static final int[] ARMOR_PRICES = {80, 150, 130, 80, 400};
+
     private static final ItemStack BOW    = new ItemStack(Material.BOW);
     private static final ItemStack ARROWS = new ItemStack(Material.ARROW, 8);
     private static final ItemStack BREAD  = new ItemStack(Material.BREAD, 8);
+
+    private static final int BOW_PRICE    = 100;
+    private static final int ARROWS_PRICE = 40;
+    private static final int BREAD_PRICE  = 30;
 
     private static final ItemStack BACKGROUND = buildBackground();
 
     private final Inventory inventory;
     private final Map<Integer, ItemStack> purchaseMap = new HashMap<>();
+    private final Map<Integer, Integer>   priceMap    = new HashMap<>();
 
     public ShopGUI() {
         this.inventory = Bukkit.createInventory(this, 27, Component.text("상점"));
@@ -70,25 +82,38 @@ public class ShopGUI implements InventoryHolder {
 
     private void populate() {
         for (int i = 0; i < WEAPON_SLOTS.length; i++) {
-            place(WEAPON_SLOTS[i], WEAPON_ITEMS[i]);
+            place(WEAPON_SLOTS[i], WEAPON_ITEMS[i], WEAPON_PRICES[i]);
         }
         for (int i = 0; i < ARMOR_SLOTS.length; i++) {
-            place(ARMOR_SLOTS[i], ARMOR_ITEMS[i]);
+            place(ARMOR_SLOTS[i], ARMOR_ITEMS[i], ARMOR_PRICES[i]);
         }
-        place(BOW_SLOTS[0], BOW);
-        place(BOW_SLOTS[1], ARROWS);
-        place(BOW_SLOTS[2], BREAD);
+        place(BOW_SLOTS[0], BOW, BOW_PRICE);
+        place(BOW_SLOTS[1], ARROWS, ARROWS_PRICE);
+        place(BOW_SLOTS[2], BREAD, BREAD_PRICE);
     }
 
-    private void place(int slot, ItemStack item) {
-        inventory.setItem(slot, item.clone());
+    private void place(int slot, ItemStack item, int price) {
+        inventory.setItem(slot, withPriceLore(item, price));
         purchaseMap.put(slot, item.clone());
+        priceMap.put(slot, price);
+    }
+
+    private static ItemStack withPriceLore(ItemStack item, int price) {
+        ItemStack display = item.clone();
+        ItemMeta meta = display.getItemMeta();
+        meta.lore(List.of(Component.text(price + " G", NamedTextColor.GOLD)));
+        display.setItemMeta(meta);
+        return display;
     }
 
     @Nullable
     public ItemStack getPurchase(int slot) {
         ItemStack item = purchaseMap.get(slot);
         return item != null ? item.clone() : null;
+    }
+
+    public int getPrice(int slot) {
+        return priceMap.getOrDefault(slot, 0);
     }
 
     public void open(Player player) {
