@@ -56,9 +56,9 @@ public class BattlefieldManager implements Listener {
     private static final List<Biome> BIOME_POOL = List.of(
         Biome.PLAINS,          Biome.CHERRY_GROVE,
         Biome.DESERT,          Biome.SNOWY_PLAINS,
-        Biome.FROZEN_PEAKS,    Biome.BADLANDS,
-        Biome.MEADOW,          Biome.WINDSWEPT_HILLS,
-        Biome.SUNFLOWER_PLAINS, Biome.STONY_PEAKS
+        Biome.SNOWY_TAIGA,     Biome.SAVANNA,
+        Biome.MEADOW,          Biome.SWAMP,
+        Biome.SUNFLOWER_PLAINS, Biome.TAIGA
     );
 
     private static final Map<Biome, String> BIOME_NAMES = Map.of(
@@ -66,12 +66,12 @@ public class BattlefieldManager implements Listener {
         Biome.CHERRY_GROVE,     "벚꽃 숲",
         Biome.DESERT,           "사막",
         Biome.SNOWY_PLAINS,     "눈 덮인 평원",
-        Biome.FROZEN_PEAKS,     "역고드름",
-        Biome.BADLANDS,         "메사",
+        Biome.SNOWY_TAIGA,      "눈 덮인 타이가",
+        Biome.SAVANNA,          "사바나",
         Biome.MEADOW,           "목초지",
-        Biome.WINDSWEPT_HILLS,  "바람이 세찬 언덕",
+        Biome.SWAMP,            "늪",
         Biome.SUNFLOWER_PLAINS, "해바라기 평원",
-        Biome.STONY_PEAKS,      "바위 봉우리"
+        Biome.TAIGA,            "타이가"
     );
 
     private static final Map<String, NamedTextColor> BIOME_COLORS = Map.of(
@@ -79,12 +79,12 @@ public class BattlefieldManager implements Listener {
         "벚꽃 숲",          NamedTextColor.LIGHT_PURPLE,
         "사막",             NamedTextColor.GOLD,
         "눈 덮인 평원",     NamedTextColor.AQUA,
-        "역고드름",         NamedTextColor.WHITE,
-        "메사",             NamedTextColor.RED,
+        "눈 덮인 타이가",   NamedTextColor.WHITE,
+        "사바나",           NamedTextColor.RED,
         "목초지",           NamedTextColor.DARK_GREEN,
-        "바람이 세찬 언덕", NamedTextColor.DARK_GRAY,
+        "늪",               NamedTextColor.DARK_GRAY,
         "해바라기 평원",    NamedTextColor.YELLOW,
-        "바위 봉우리",      NamedTextColor.GRAY
+        "타이가",           NamedTextColor.GRAY
     );
 
 
