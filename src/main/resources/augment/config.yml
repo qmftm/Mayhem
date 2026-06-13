@@ -116,3 +116,30 @@ Charm:
   cooldown-ticks: 500
   duration-ticks: 60
   slow-amount: 0.5
+
+MassIsPower:
+  damage-ratio: 0.05
+
+QuickDraw:
+  attack-speed-bonus: 0.3
+
+Flee:
+  health-threshold: 0.35
+  speed-amplifier: 0
+  effect-duration-ticks: 60
+  check-interval-ticks: 20
+
+Assassin:
+  speed-bonus: 1.0
+  disable-duration-ticks: 120
+
+DragonScale:
+  hit-interval: 4
+  fire-ticks: 100
+
+Repulsion:
+  health-threshold: 0.2
+  radius: 5.0
+  cooldown-ticks: 100
+  knockback-horizontal: 1.5
+  knockback-vertical: 0.4

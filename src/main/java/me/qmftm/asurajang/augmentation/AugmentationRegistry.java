@@ -36,6 +36,13 @@ import me.qmftm.asurajang.augmentation.effect.InfiniteGoldEffect;
 import me.qmftm.asurajang.augmentation.effect.TotalConcentrationEffect;
 import me.qmftm.asurajang.augmentation.effect.AegisEffect;
 import me.qmftm.asurajang.augmentation.effect.SealEffect;
+import me.qmftm.asurajang.augmentation.effect.MassIsPowerEffect;
+import me.qmftm.asurajang.augmentation.effect.StatEffect;
+import me.qmftm.asurajang.augmentation.effect.QuickDrawEffect;
+import me.qmftm.asurajang.augmentation.effect.FleeEffect;
+import me.qmftm.asurajang.augmentation.effect.AssassinEffect;
+import me.qmftm.asurajang.augmentation.effect.DragonScaleEffect;
+import me.qmftm.asurajang.augmentation.effect.RepulsionEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -82,6 +89,13 @@ public class AugmentationRegistry {
         REGISTRY.put("TotalConcentration", TotalConcentrationEffect::new);
         REGISTRY.put("Aegis",             AegisEffect::new);
         REGISTRY.put("Seal",              SealEffect::new);
+        REGISTRY.put("MassIsPower",       MassIsPowerEffect::new);
+        REGISTRY.put("Stat",              StatEffect::new);
+        REGISTRY.put("QuickDraw",         QuickDrawEffect::new);
+        REGISTRY.put("Flee",              FleeEffect::new);
+        REGISTRY.put("Assassin",          AssassinEffect::new);
+        REGISTRY.put("DragonScale",       DragonScaleEffect::new);
+        REGISTRY.put("Repulsion",         RepulsionEffect::new);
     }
 
     @Nullable

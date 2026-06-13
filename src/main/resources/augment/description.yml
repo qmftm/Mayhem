@@ -244,3 +244,57 @@ Charm:
     - "<light_purple>3초</light_purple>간 <light_purple>50%</light_purple> 감소시키고"
     - "자신을 계속 바라보게 만듭니다."
     - "<light_purple>쿨타임: 25초</light_purple>"
+
+MassIsPower:
+  display-name: "질량은 곧 힘"
+  icon: NETHERITE_INGOT
+  color: gray
+  description:
+    - "근접 공격 시 자신의 최대 체력의"
+    - "<gray>5%</gray>에 해당하는 추가 피해를 입힙니다."
+
+Stat:
+  display-name: "능력치"
+  icon: EXPERIENCE_BOTTLE
+  color: dark_purple
+  description:
+    - "능력치 모루 <dark_purple>2개</dark_purple>를 획득합니다!"
+
+QuickDraw:
+  display-name: "발도"
+  icon: NETHERITE_SWORD
+  color: blue
+  description:
+    - "공격 속도가 <blue>30%</blue> 증가합니다."
+
+Flee:
+  display-name: "도주"
+  icon: POTION
+  color: aqua
+  description:
+    - "체력이 <aqua>35%</aqua> 이하가 되면"
+    - "<aqua>신속</aqua> 효과를 얻습니다."
+
+Assassin:
+  display-name: "암살자"
+  icon: LEATHER_BOOTS
+  color: dark_gray
+  description:
+    - "이동 속도가 <dark_gray>100%</dark_gray> 증가합니다."
+    - "피해를 받으면 <dark_gray>6초간</dark_gray> 비활성화됩니다."
+
+DragonScale:
+  display-name: "용린"
+  icon: DRAGON_BREATH
+  color: red
+  description:
+    - "<red>4번째</red> 공격마다"
+    - "상대에게 불을 붙입니다."
+
+Repulsion:
+  display-name: "반발"
+  icon: SLIME_BALL
+  color: green
+  description:
+    - "체력이 <green>20%</green> 이하로 내려가면"
+    - "주변 적들을 밀쳐냅니다."
