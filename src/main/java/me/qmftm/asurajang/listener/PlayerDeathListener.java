@@ -185,8 +185,7 @@ public class PlayerDeathListener implements Listener {
             plugin.getScoreboardManager().addGold(killer, killerGold);
             int killerLevel  = plugin.getScoreboardManager().getLevel(killer);
             int victimKills  = plugin.getScoreboardManager().getKills(player.getUniqueId());
-            int expAmount    = 75 + killerLevel * 5
-                + (int) Math.round(killerLevel * 3 * Math.sqrt(victimKills + 1));
+            int expAmount    = 75 + (int) Math.round(killerLevel * (5 + 2 * Math.sqrt(victimKills + 1)));
             GameScoreboardManager.ExpResult expResult = plugin.getScoreboardManager().addExp(killer, expAmount);
             if (expResult.leveledUp()) {
                 plugin.getLevelUpManager().onLevelUp(killer, killerLevel, expResult.newLevel());
