@@ -31,7 +31,7 @@ public class GamblerEffect implements AugmentationEffect {
                 if (roll == JACKPOT_NUMBER) {
                     AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
                     if (maxHealth != null) player.setHealth(maxHealth.getValue());
-                    player.playSound(player.getLocation(), Sound.ENTITY_GOAT_HORN_SOUND_0, 1.0f, 1.2f);
+                    player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1.0f, 1.2f);
                 }
 
                 if (!ActionBarTracker.isRecentlyUsed(player, DISPLAY_BLOCK_MILLIS)) {
