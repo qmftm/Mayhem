@@ -180,8 +180,7 @@ public class AugmentationEffectListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         if (SealManager.isSealed(player.getUniqueId())) return;
-        if (Asurajang.getInstance().getAugmentationManager()
-                .getActiveEffects(player.getUniqueId()).containsKey("Aegis")) {
+        if (player.isInvulnerable()) {
             event.setCancelled(true);
         }
     }
