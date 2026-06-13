@@ -102,6 +102,7 @@ public class BattlefieldManager implements Listener {
         boolean recovering;
         @Nullable BukkitTask attackTask;
         @Nullable BukkitTask particleTask;
+        @Nullable BukkitTask rangeTask;
         long attackCooldownTicks;
 
         GuardianState(BossBar bar, String teamLabel, NamedTextColor color, BossBar.Color barColor, int teamIndex, int lives) {
@@ -482,6 +483,7 @@ public class BattlefieldManager implements Listener {
         guardianStates.put(guardian.getUniqueId(), state);
         if (Asurajang.getInstance().getGameManager().isGuardianAttackEnabled()) {
             state.attackTask = startGuardianAttackLoop(guardian, state);
+            state.rangeTask = startAggroRangeParticleLoop(guardian, state);
         }
         state.particleTask = startBeaconParticleLoop(guardian, state);
         for (Player p : Bukkit.getOnlinePlayers()) p.showBossBar(bar);
@@ -504,6 +506,37 @@ public class BattlefieldManager implements Listener {
             world.spawnParticle(detection, particleLoc, 2, 0.4, 0.5, 0.4, 0);
             world.spawnParticle(omen, particleLoc, 2, 0.4, 0.5, 0.4, 0);
         }, 0L, 10L);
+        return holder[0];
+    }
+
+    // 거점이 적을 감지·공격하는 어그로 범위를 지상에 원형 파티클로 표시
+    private BukkitTask startAggroRangeParticleLoop(LivingEntity guardian, GuardianState state) {
+        World world = guardian.getWorld();
+        Location center = guardian.getLocation();
+        double radius = NexusSettings.aggroRange();
+        Particle.DustOptions dust = teamDustOptions(state.teamIndex, 1.0f);
+
+        int points = Math.max(16, (int) Math.round(radius * 2 * Math.PI / 1.5));
+        Location[] ring = new Location[points];
+        for (int i = 0; i < points; i++) {
+            double angle = 2 * Math.PI * i / points;
+            int x = (int) Math.floor(center.getX() + radius * Math.cos(angle));
+            int z = (int) Math.floor(center.getZ() + radius * Math.sin(angle));
+            if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
+            int y = world.getHighestBlockYAt(x, z);
+            ring[i] = new Location(world, x + 0.5, y + 0.2, z + 0.5);
+        }
+
+        BukkitTask[] holder = new BukkitTask[1];
+        holder[0] = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
+            if (!guardian.isValid() || !guardianStates.containsKey(guardian.getUniqueId())) {
+                holder[0].cancel();
+                return;
+            }
+            for (Location loc : ring) {
+                world.spawnParticle(Particle.DUST, loc, 1, 0, 0, 0, 0.0, dust);
+            }
+        }, 0L, 20L);
         return holder[0];
     }
 
@@ -737,6 +770,7 @@ public class BattlefieldManager implements Listener {
         if (state == null) return;
         if (state.attackTask != null) state.attackTask.cancel();
         if (state.particleTask != null) state.particleTask.cancel();
+        if (state.rangeTask != null) state.rangeTask.cancel();
         for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
     }
 
@@ -759,6 +793,7 @@ public class BattlefieldManager implements Listener {
                 .append(Component.text(state.teamLabel + " 거점이 파괴되었습니다!", state.color)));
             if (state.attackTask != null) state.attackTask.cancel();
             if (state.particleTask != null) state.particleTask.cancel();
+            if (state.rangeTask != null) state.rangeTask.cancel();
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             guardianStates.remove(guardian.getUniqueId());
             guardian.remove();
@@ -823,6 +858,7 @@ public class BattlefieldManager implements Listener {
             GuardianState state = entry.getValue();
             if (state.attackTask != null) state.attackTask.cancel();
             if (state.particleTask != null) state.particleTask.cancel();
+            if (state.rangeTask != null) state.rangeTask.cancel();
             for (Player p : Bukkit.getOnlinePlayers()) p.hideBossBar(state.bar);
             Entity entity = Bukkit.getEntity(entry.getKey());
             if (entity != null) entity.remove();
