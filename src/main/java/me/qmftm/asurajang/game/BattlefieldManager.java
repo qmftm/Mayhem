@@ -54,37 +54,32 @@ public class BattlefieldManager implements Listener {
     private static final int MAX_RAMP_STEPS            = 16; // 기지가 지면보다 높이 솟았을 때 만들어줄 진입 계단의 최대 길이
 
     private static final List<Biome> BIOME_POOL = List.of(
-        Biome.PLAINS,          Biome.CHERRY_GROVE,
-        Biome.DESERT,          Biome.SNOWY_PLAINS,
-        Biome.SNOWY_TAIGA,     Biome.SAVANNA,
-        Biome.MEADOW,          Biome.SWAMP,
-        Biome.SUNFLOWER_PLAINS, Biome.TAIGA
+        Biome.PLAINS,             Biome.SUNFLOWER_PLAINS,
+        Biome.SNOWY_PLAINS,       Biome.SAVANNA,
+        Biome.DESERT,             Biome.OLD_GROWTH_BIRCH_FOREST,
+        Biome.SPARSE_JUNGLE,      Biome.FROZEN_RIVER
     );
 
     private static final Map<Biome, String> BIOME_NAMES = Map.of(
-        Biome.PLAINS,           "평원",
-        Biome.CHERRY_GROVE,     "벚꽃 숲",
-        Biome.DESERT,           "사막",
-        Biome.SNOWY_PLAINS,     "눈 덮인 평원",
-        Biome.SNOWY_TAIGA,      "눈 덮인 타이가",
-        Biome.SAVANNA,          "사바나",
-        Biome.MEADOW,           "목초지",
-        Biome.SWAMP,            "늪",
-        Biome.SUNFLOWER_PLAINS, "해바라기 평원",
-        Biome.TAIGA,            "타이가"
+        Biome.PLAINS,                  "평원",
+        Biome.SUNFLOWER_PLAINS,        "해바라기 평원",
+        Biome.SNOWY_PLAINS,            "눈 덮인 평원",
+        Biome.SAVANNA,                 "사바나",
+        Biome.DESERT,                  "사막",
+        Biome.OLD_GROWTH_BIRCH_FOREST, "자작나무 원시림",
+        Biome.SPARSE_JUNGLE,           "듬성듬성한 정글",
+        Biome.FROZEN_RIVER,            "얼어붙은 강"
     );
 
     private static final Map<String, NamedTextColor> BIOME_COLORS = Map.of(
         "평원",             NamedTextColor.GREEN,
-        "벚꽃 숲",          NamedTextColor.LIGHT_PURPLE,
-        "사막",             NamedTextColor.GOLD,
-        "눈 덮인 평원",     NamedTextColor.AQUA,
-        "눈 덮인 타이가",   NamedTextColor.WHITE,
-        "사바나",           NamedTextColor.RED,
-        "목초지",           NamedTextColor.DARK_GREEN,
-        "늪",               NamedTextColor.DARK_GRAY,
         "해바라기 평원",    NamedTextColor.YELLOW,
-        "타이가",           NamedTextColor.GRAY
+        "눈 덮인 평원",     NamedTextColor.WHITE,
+        "사바나",           NamedTextColor.DARK_RED,
+        "사막",             NamedTextColor.GOLD,
+        "자작나무 원시림",  NamedTextColor.DARK_GREEN,
+        "듬성듬성한 정글",  NamedTextColor.DARK_AQUA,
+        "얼어붙은 강",      NamedTextColor.AQUA
     );
 
 
