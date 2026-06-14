@@ -2,6 +2,7 @@ package me.qmftm.asurajang.game;
 
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import io.papermc.paper.datacomponent.item.ResolvableProfile;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -48,10 +49,11 @@ public class AiBotManager {
             team == 0 ? NamedTextColor.RED : NamedTextColor.BLUE);
 
         Mannequin mannequin = location.getWorld().spawn(location, Mannequin.class, m -> {
-            m.setProfile(Bukkit.createProfile(UUID.randomUUID(), team == 0 ? "AI_Red" : "AI_Blue"));
+            m.setProfile(ResolvableProfile.resolvableProfile(
+                Bukkit.createProfile(UUID.randomUUID(), team == 0 ? "AI_Red" : "AI_Blue")));
             m.customName(name);
             m.setCustomNameVisible(true);
-            m.setMovable(true);
+            m.setImmovable(false);
 
             EntityEquipment eq = m.getEquipment();
             if (eq != null) {
