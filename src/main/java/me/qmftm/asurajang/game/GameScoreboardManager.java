@@ -326,7 +326,11 @@ public class GameScoreboardManager {
     public void addEntityToOwnerTeam(Entity entity, UUID ownerUuid) {
         int ownerTeam = Asurajang.getInstance().getGameManager().getTeam(ownerUuid);
         if (ownerTeam == -1) return;
-        String teamName = ownerTeam == 0 ? "mayhem_red" : "mayhem_blue";
+        addEntityToTeam(entity, ownerTeam);
+    }
+
+    public void addEntityToTeam(Entity entity, int team) {
+        String teamName = team == 0 ? "mayhem_red" : "mayhem_blue";
         String entry = entity.getUniqueId().toString();
 
         Scoreboard main = Bukkit.getScoreboardManager().getMainScoreboard();

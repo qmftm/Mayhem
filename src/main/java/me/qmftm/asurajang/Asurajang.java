@@ -6,6 +6,7 @@ import me.qmftm.asurajang.augmentation.PrismChoice;
 import me.qmftm.asurajang.augmentation.PrismItemManager;
 import me.qmftm.asurajang.command.AsurajangCommand;
 import me.qmftm.asurajang.config.YamlResource;
+import me.qmftm.asurajang.game.AiBotManager;
 import me.qmftm.asurajang.game.BattlefieldManager;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.game.GameScoreboardManager;
@@ -53,6 +54,7 @@ public final class Asurajang extends JavaPlugin {
     private PrismItemManager prismItemManager;
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
+    private AiBotManager aiBotManager;
     private GameScoreboardManager scoreboardManager;
     private MaxHealthManager maxHealthManager;
     private LevelUpManager levelUpManager;
@@ -82,6 +84,7 @@ public final class Asurajang extends JavaPlugin {
         prismItemManager    = new PrismItemManager(prismItemConfig.get());
         battlefieldManager  = new BattlefieldManager();
         gameManager         = new GameManager();
+        aiBotManager        = new AiBotManager();
         scoreboardManager   = new GameScoreboardManager();
         maxHealthManager    = new MaxHealthManager();
         levelUpManager      = new LevelUpManager();
@@ -199,6 +202,10 @@ public final class Asurajang extends JavaPlugin {
 
     public GameManager getGameManager() {
         return gameManager;
+    }
+
+    public AiBotManager getAiBotManager() {
+        return aiBotManager;
     }
 
     public GameScoreboardManager getScoreboardManager() {

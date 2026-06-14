@@ -298,6 +298,7 @@ public class GameManager {
 
         Asurajang plugin = Asurajang.getInstance();
         plugin.getAugmentationManager().deactivateAll(Bukkit.getOnlinePlayers());
+        plugin.getAiBotManager().clearAll();
         plugin.getBattlefieldManager().resetBorder();
         plugin.getScoreboardManager().cleanupGameTeams();
         plugin.getScoreboardManager().removeAll();
