@@ -17,12 +17,12 @@ import java.util.List;
 public class StatAnvilGUI implements InventoryHolder {
 
     public enum Stat {
-        BULKY   ("맷집", Material.HEART_POTTERY_SHERD,    2.0, 0.25, 0.005, NamedTextColor.RED,
-                 List.of("§7+2 최대 체력 (1 하트)", "§7+0.25 공격력", "§7+0.005 이동속도")),
-        STRENGTH("근력", Material.BLADE_POTTERY_SHERD,    0.5, 0.75, 0.005, NamedTextColor.GOLD,
-                 List.of("§7+0.5 최대 체력 (0.25 하트)", "§7+0.75 공격력", "§7+0.005 이동속도")),
-        AGILITY ("민첩", Material.EXPLORER_POTTERY_SHERD, 0.5, 0.25, 0.01, NamedTextColor.AQUA,
-                 List.of("§7+0.5 최대 체력 (0.25 하트)", "§7+0.25 공격력", "§7+0.01 이동속도"));
+        BULKY   ("맷집", Material.HEART_POTTERY_SHERD,    2.0, 0.2, 0.005, NamedTextColor.RED,
+                 List.of("§7+2 최대 체력 (1 하트)", "§7+0.2 공격력", "§7+0.005 이동속도")),
+        STRENGTH("근력", Material.BLADE_POTTERY_SHERD,    0.5, 0.5, 0.005, NamedTextColor.GOLD,
+                 List.of("§7+0.5 최대 체력 (0.25 하트)", "§7+0.5 공격력", "§7+0.005 이동속도")),
+        AGILITY ("민첩", Material.EXPLORER_POTTERY_SHERD, 0.5, 0.2, 0.01, NamedTextColor.AQUA,
+                 List.of("§7+0.5 최대 체력 (0.25 하트)", "§7+0.2 공격력", "§7+0.01 이동속도"));
 
         private final String         displayName;
         private final Material       icon;
