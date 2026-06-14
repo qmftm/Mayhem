@@ -481,11 +481,13 @@ public class BattlefieldManager implements Listener {
         int beaconY = spawn.getBlockY() + BEACON_HEIGHT;
 
         // 콘크리트 위 3x6x3 범위를 공기로 비워 시야와 이동 공간을 확보 (신호기 자리는 제외)
+        // 나뭇잎 등은 그대로 남겨 기지가 나무 아래에 가려지도록 함
         for (int dx = -half; dx <= half; dx++) {
             for (int dz = -half; dz <= half; dz++) {
                 int x = cx + dx, z = cz + dz;
                 for (int by = y + 1; by <= y + 6; by++) {
                     if (dx == 0 && dz == 0 && by == beaconY) continue;
+                    if (isFoliage(world.getBlockAt(x, by, z).getType())) continue;
                     world.getBlockAt(x, by, z).setType(Material.AIR);
                 }
             }
@@ -556,13 +558,14 @@ public class BattlefieldManager implements Listener {
     }
 
     // 거점이 적을 감지·공격하는 어그로 범위를 지상에 원형 파티클로 표시
+    // (레드팀: flame / 블루팀: soul_fire_flame)
     private BukkitTask startAggroRangeParticleLoop(LivingEntity guardian, GuardianState state) {
         World world = guardian.getWorld();
         Location center = guardian.getLocation();
         double radius = NexusSettings.aggroRange();
-        Particle.DustOptions dust = teamDustOptions(state.teamIndex, 1.0f);
+        Particle rangeParticle = (state.teamIndex == 0) ? Particle.FLAME : Particle.SOUL_FIRE_FLAME;
 
-        int points = Math.max(16, (int) Math.round(radius * 2 * Math.PI / 1.5));
+        int points = Math.max(48, (int) Math.round(radius * 2 * Math.PI / 0.5));
         Location[] ring = new Location[points];
         for (int i = 0; i < points; i++) {
             double angle = 2 * Math.PI * i / points;
@@ -580,9 +583,9 @@ public class BattlefieldManager implements Listener {
                 return;
             }
             for (Location loc : ring) {
-                world.spawnParticle(Particle.DUST, loc, 1, 0, 0, 0, 0.0, dust);
+                world.spawnParticle(rangeParticle, loc, 2, 0.1, 0.1, 0.1, 0.0);
             }
-        }, 0L, 20L);
+        }, 0L, 10L);
         return holder[0];
     }
 
