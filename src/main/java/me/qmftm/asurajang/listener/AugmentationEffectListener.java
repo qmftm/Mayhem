@@ -18,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -32,8 +33,25 @@ import org.bukkit.entity.Entity;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class AugmentationEffectListener implements Listener {
+
+    // 배고픔 감소를 절반으로 만들기 위한 플레이어별 토글 (true면 다음 감소를 무시)
+    private final Map<UUID, Boolean> hungerDecreaseSkip = new HashMap<>();
+
+    @EventHandler(ignoreCancelled = true)
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+        if (event.getFoodLevel() >= player.getFoodLevel()) return;
+
+        boolean skip = hungerDecreaseSkip.getOrDefault(player.getUniqueId(), false);
+        hungerDecreaseSkip.put(player.getUniqueId(), !skip);
+        if (skip) event.setCancelled(true);
+    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -188,6 +206,7 @@ public class AugmentationEffectListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         SealManager.clear(event.getPlayer().getUniqueId());
+        hungerDecreaseSkip.remove(event.getPlayer().getUniqueId());
         if (!Asurajang.getInstance().getGameManager().isRunning()) return;
         Asurajang.getInstance().getAugmentationManager().deactivateFor(event.getPlayer());
     }

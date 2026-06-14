@@ -17,8 +17,6 @@ import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Levelled;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -329,7 +327,7 @@ public class BattlefieldManager implements Listener {
         replaceWaterWithGlass(world, currentLocation);
     }
 
-    // 보더 내의 물을 파란 색유리로 치환 (위가 비어있는 물 근원지 → 색유리, 흐르는 물 → 색유리판)
+    // 보더 내의 물과 지표면 인근의 동굴(빈 공간)을 모두 파란 색유리로 채워 막음
     private void replaceWaterWithGlass(World world, Location center) {
         int half = (int) BORDER_RADIUS;
         int minX = center.getBlockX() - half;
@@ -345,14 +343,9 @@ public class BattlefieldManager implements Listener {
                 int bottom = Math.max(minY, top - WATER_SCAN_DEPTH);
                 for (int y = top; y >= bottom; y--) {
                     Block block = world.getBlockAt(x, y, z);
-                    if (block.getType() != Material.WATER) continue;
-
-                    BlockData data = block.getBlockData();
-                    if (data instanceof Levelled levelled && levelled.getLevel() == 0
-                        && block.getRelative(0, 1, 0).getType() == Material.AIR) {
+                    Material type = block.getType();
+                    if (type == Material.WATER || type == Material.AIR) {
                         block.setType(Material.BLUE_STAINED_GLASS, false);
-                    } else {
-                        block.setType(Material.BLUE_STAINED_GLASS_PANE, false);
                     }
                 }
             }
