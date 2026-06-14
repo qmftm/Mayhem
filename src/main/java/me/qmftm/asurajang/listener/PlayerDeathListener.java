@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.listener;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
@@ -254,7 +255,11 @@ public class PlayerDeathListener implements Listener {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("death-gold-penalty");
         if (config == null || !config.getBoolean("enabled", false)) return;
 
-        double ratio = config.getDouble("ratio", 0.1);
+        double ratio = config.getDouble("ratio", 0.05);
+        if (plugin.getAugmentationManager().getActiveEffects(player.getUniqueId()).containsKey("InfiniteGold")) {
+            ratio = AugmentSettings.getDouble("InfiniteGold", "death-gold-penalty-ratio", 0.10);
+        }
+
         int penalty = plugin.getScoreboardManager().removeGoldPercent(player, ratio);
         if (penalty > 0) {
             player.sendMessage(Component.text("-" + penalty + " 골드 (사망 패널티)", NamedTextColor.RED));

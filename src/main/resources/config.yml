@@ -6,4 +6,4 @@
 
 death-gold-penalty:
   enabled: true     # 사망 시 골드 감소 여부
-  ratio: 0.10       # 감소 비율 (현재 보유 골드 기준)
+  ratio: 0.05       # 감소 비율 (현재 보유 골드 기준)

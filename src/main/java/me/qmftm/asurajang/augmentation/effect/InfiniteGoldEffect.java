@@ -32,6 +32,6 @@ public class InfiniteGoldEffect implements AugmentationEffect {
 
     @Override
     public double getRespawnDelayMultiplier() {
-        return AugmentSettings.getDouble("InfiniteGold", "respawn-multiplier", 5.0);
+        return AugmentSettings.getDouble("InfiniteGold", "respawn-multiplier", 2.0);
     }
 }
