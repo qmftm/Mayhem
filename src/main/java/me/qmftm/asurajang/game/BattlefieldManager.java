@@ -399,6 +399,14 @@ public class BattlefieldManager implements Listener {
         return teamBaseSpawns.computeIfAbsent(teamIndex, this::buildTeamBase);
     }
 
+    // 기지 모드에서 거점이 지어진 팀의 신호기 위치 (지어지지 않았으면 null)
+    @Nullable
+    public Location getTeamBeaconLocation(int teamIndex) {
+        Location base = teamBaseSpawns.get(teamIndex);
+        if (base == null) return null;
+        return base.clone().add(0, BEACON_HEIGHT, 0);
+    }
+
     private Location randomTeamCornerSpawn(int teamIndex) {
         World world = currentLocation.getWorld();
         ThreadLocalRandom rng = ThreadLocalRandom.current();

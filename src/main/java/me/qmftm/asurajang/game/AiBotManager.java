@@ -90,7 +90,11 @@ public class AiBotManager {
             if (!(entity instanceof Mannequin mannequin) || !mannequin.isValid()) continue;
 
             Player target = findNearestEnemy(mannequin, entry.getValue(), gm);
-            if (target == null) continue;
+            if (target == null) {
+                Location beacon = Asurajang.getInstance().getBattlefieldManager().getTeamBeaconLocation(1 - entry.getValue());
+                if (beacon != null) moveToward(mannequin, beacon);
+                continue;
+            }
 
             if (target.getLocation().distanceSquared(mannequin.getLocation()) > ATTACK_RANGE * ATTACK_RANGE) {
                 moveToward(mannequin, target.getLocation());
