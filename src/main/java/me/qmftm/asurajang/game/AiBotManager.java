@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -185,6 +186,11 @@ public class AiBotManager {
         mannequin.swingMainHand();
         target.damage(damage, mannequin);
         target.setVelocity(target.getVelocity().add(knockback));
+    }
+
+    // 봇 UUID -> 소속 팀(0/1) 매핑 (읽기 전용)
+    public Map<UUID, Integer> getBotTeams() {
+        return Collections.unmodifiableMap(botTeams);
     }
 
     public void clearAll() {

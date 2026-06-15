@@ -15,7 +15,9 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Mannequin;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -29,6 +31,8 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 // 적 처치 시 일정 확률로 6종의 스톤 중 하나를 지급하고,
@@ -254,6 +258,13 @@ public class InevitableExistenceEffect implements AugmentationEffect {
             targets.add(other);
         }
 
+        List<Mannequin> botTargets = new ArrayList<>();
+        for (Map.Entry<UUID, Integer> entry : Asurajang.getInstance().getAiBotManager().getBotTeams().entrySet()) {
+            if (team && entry.getValue() == myTeam) continue;
+            Entity entity = Bukkit.getServer().getEntity(entry.getKey());
+            if (entity instanceof Mannequin mannequin && mannequin.isValid()) botTargets.add(mannequin);
+        }
+
         player.getWorld().spawnParticle(Particle.SOUL, player.getLocation().add(0, 1, 0), 100, 1, 1, 1, 0.1);
         player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1.0f, 0.6f);
         player.sendMessage(Component.text("[필연적인 존재] ", NamedTextColor.GOLD)
@@ -262,6 +273,12 @@ public class InevitableExistenceEffect implements AugmentationEffect {
         for (Player target : targets) {
             target.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, target.getLocation().add(0, 1, 0), 60, 0.4, 0.6, 0.4, 0.05);
             target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 0.7f);
+            target.damage(10_000.0, player);
+        }
+
+        for (Mannequin target : botTargets) {
+            target.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, target.getLocation().add(0, 1, 0), 60, 0.4, 0.6, 0.4, 0.05);
+            target.getWorld().playSound(target.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 0.7f);
             target.damage(10_000.0, player);
         }
     }
