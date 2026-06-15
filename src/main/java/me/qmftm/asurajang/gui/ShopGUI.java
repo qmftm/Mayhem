@@ -2,6 +2,7 @@ package me.qmftm.asurajang.gui;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,61 +10,133 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ShopGUI implements InventoryHolder {
 
-    // 검류: 2~6번 슬롯 (1행 중앙)
-    private static final int[] WEAPON_SLOTS = {2, 3, 4, 5, 6};
-    // 갑옷류: 11~15번 슬롯 (2행 중앙)
-    private static final int[] ARMOR_SLOTS  = {11, 12, 13, 14, 15};
-    // 활류 + 음식류: 3행 중앙
-    private static final int[] BOW_SLOTS    = {20, 21, 22};
+    public enum Category {
+        WEAPON("무기", Material.DIAMOND_SWORD,
+            new ItemStack[]{
+                new ItemStack(Material.STONE_SWORD),
+                new ItemStack(Material.IRON_SWORD),
+                new ItemStack(Material.DIAMOND_SWORD),
+                new ItemStack(Material.NETHERITE_SWORD),
+                new ItemStack(Material.DIAMOND_AXE)
+            },
+            new int[]{100, 200, 450, 700, 650}),
 
-    private static final ItemStack[] WEAPON_ITEMS = {
-        new ItemStack(Material.STONE_SWORD),
-        new ItemStack(Material.IRON_SWORD),
-        new ItemStack(Material.DIAMOND_SWORD),
-        new ItemStack(Material.NETHERITE_SWORD),
-        new ItemStack(Material.DIAMOND_AXE)
-    };
+        ARMOR("방어구", Material.DIAMOND_CHESTPLATE,
+            new ItemStack[]{
+                new ItemStack(Material.IRON_HELMET),
+                new ItemStack(Material.IRON_CHESTPLATE),
+                new ItemStack(Material.IRON_LEGGINGS),
+                new ItemStack(Material.IRON_BOOTS),
+                new ItemStack(Material.DIAMOND_CHESTPLATE)
+            },
+            new int[]{150, 200, 175, 150, 400}),
 
-    // 킬당 골드(기본 50 + 보너스 최대 약 50)와 시작 골드 200을 기준으로 책정
-    private static final int[] WEAPON_PRICES = {100, 200, 450, 700, 550};
+        RANGED("원거리", Material.CROSSBOW,
+            new ItemStack[]{
+                new ItemStack(Material.BOW),
+                new ItemStack(Material.CROSSBOW),
+                new ItemStack(Material.ARROW, 8)
+            },
+            new int[]{100, 250, 40}),
 
-    private static final ItemStack[] ARMOR_ITEMS = {
-        new ItemStack(Material.IRON_HELMET),
-        new ItemStack(Material.IRON_CHESTPLATE),
-        new ItemStack(Material.IRON_LEGGINGS),
-        new ItemStack(Material.IRON_BOOTS),
-        new ItemStack(Material.DIAMOND_CHESTPLATE)
-    };
+        MISC("기타", Material.BREAD,
+            new ItemStack[]{
+                new ItemStack(Material.BREAD, 8),
+                strengthPotion(),
+                regenerationPotion(),
+                new ItemStack(Material.TOTEM_OF_UNDYING)
+            },
+            new int[]{30, 150, 120, 1000});
 
-    private static final int[] ARMOR_PRICES = {150, 200, 175, 150, 400};
+        private final String label;
+        private final Material icon;
+        private final ItemStack[] items;
+        private final int[] prices;
 
-    private static final ItemStack BOW    = new ItemStack(Material.BOW);
-    private static final ItemStack ARROWS = new ItemStack(Material.ARROW, 8);
-    private static final ItemStack BREAD  = new ItemStack(Material.BREAD, 8);
+        Category(String label, Material icon, ItemStack[] items, int[] prices) {
+            this.label = label;
+            this.icon = icon;
+            this.items = items;
+            this.prices = prices;
+        }
+    }
 
-    private static final int BOW_PRICE    = 100;
-    private static final int ARROWS_PRICE = 40;
-    private static final int BREAD_PRICE  = 30;
+    private static ItemStack strengthPotion() {
+        ItemStack potion = new ItemStack(Material.POTION);
+        PotionMeta meta = (PotionMeta) potion.getItemMeta();
+        meta.setBasePotionType(PotionType.STRENGTH);
+        potion.setItemMeta(meta);
+        return potion;
+    }
+
+    private static ItemStack regenerationPotion() {
+        ItemStack potion = new ItemStack(Material.POTION);
+        PotionMeta meta = (PotionMeta) potion.getItemMeta();
+        meta.setBasePotionType(PotionType.REGENERATION);
+        potion.setItemMeta(meta);
+        return potion;
+    }
 
     private static final ItemStack BACKGROUND = buildBackground();
+    private static final int COLUMNS = 9;
 
     private final Inventory inventory;
+    private final EnumSet<Category> expanded = EnumSet.allOf(Category.class);
     private final Map<Integer, ItemStack> purchaseMap = new HashMap<>();
     private final Map<Integer, Integer>   priceMap    = new HashMap<>();
 
     public ShopGUI() {
-        this.inventory = Bukkit.createInventory(this, 27, Component.text("상점"));
-        fillBackground();
-        populate();
+        this.inventory = Bukkit.createInventory(this, Category.values().length * COLUMNS, Component.text("상점"));
+        render();
+    }
+
+    private void render() {
+        inventory.clear();
+        purchaseMap.clear();
+        priceMap.clear();
+
+        for (Category category : Category.values()) {
+            int row = category.ordinal() * COLUMNS;
+            boolean isOpen = expanded.contains(category);
+            inventory.setItem(row, buildHeader(category, isOpen));
+
+            for (int col = 1; col < COLUMNS; col++) {
+                int slot = row + col;
+                int index = col - 1;
+                if (isOpen && index < category.items.length) {
+                    place(slot, category.items[index], category.prices[index]);
+                } else {
+                    inventory.setItem(slot, BACKGROUND);
+                }
+            }
+        }
+    }
+
+    private static ItemStack buildHeader(Category category, boolean isOpen) {
+        ItemStack item = new ItemStack(category.icon);
+        ItemMeta meta = item.getItemMeta();
+        String prefix = isOpen ? "▼ " : "▶ ";
+        meta.displayName(Component.text(prefix + category.label, NamedTextColor.YELLOW)
+            .decoration(TextDecoration.ITALIC, false)
+            .decoration(TextDecoration.BOLD, true));
+        meta.lore(List.of(
+            Component.text(isOpen ? "클릭하여 접기" : "클릭하여 펼치기", NamedTextColor.GRAY)
+                .decoration(TextDecoration.ITALIC, false)
+        ));
+        item.setItemMeta(meta);
+        return item;
     }
 
     private static ItemStack buildBackground() {
@@ -72,24 +145,6 @@ public class ShopGUI implements InventoryHolder {
         meta.displayName(Component.empty());
         pane.setItemMeta(meta);
         return pane;
-    }
-
-    private void fillBackground() {
-        for (int i = 0; i < 27; i++) {
-            inventory.setItem(i, BACKGROUND);
-        }
-    }
-
-    private void populate() {
-        for (int i = 0; i < WEAPON_SLOTS.length; i++) {
-            place(WEAPON_SLOTS[i], WEAPON_ITEMS[i], WEAPON_PRICES[i]);
-        }
-        for (int i = 0; i < ARMOR_SLOTS.length; i++) {
-            place(ARMOR_SLOTS[i], ARMOR_ITEMS[i], ARMOR_PRICES[i]);
-        }
-        place(BOW_SLOTS[0], BOW, BOW_PRICE);
-        place(BOW_SLOTS[1], ARROWS, ARROWS_PRICE);
-        place(BOW_SLOTS[2], BREAD, BREAD_PRICE);
     }
 
     private void place(int slot, ItemStack item, int price) {
@@ -104,6 +159,23 @@ public class ShopGUI implements InventoryHolder {
         meta.lore(List.of(Component.text(price + " G", NamedTextColor.GOLD)));
         display.setItemMeta(meta);
         return display;
+    }
+
+    @Nullable
+    public Category getCategoryHeaderAt(int slot) {
+        for (Category category : Category.values()) {
+            if (slot == category.ordinal() * COLUMNS) {
+                return category;
+            }
+        }
+        return null;
+    }
+
+    public void toggleCategory(Category category) {
+        if (!expanded.remove(category)) {
+            expanded.add(category);
+        }
+        render();
     }
 
     @Nullable

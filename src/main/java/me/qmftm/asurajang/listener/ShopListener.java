@@ -21,6 +21,13 @@ public class ShopListener implements Listener {
 
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
+        ShopGUI.Category category = gui.getCategoryHeaderAt(event.getRawSlot());
+        if (category != null) {
+            gui.toggleCategory(category);
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.6f, 1.2f);
+            return;
+        }
+
         ItemStack purchase = gui.getPurchase(event.getRawSlot());
         if (purchase == null) return;
 
