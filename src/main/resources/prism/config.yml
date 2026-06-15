@@ -32,3 +32,11 @@ InevitableExistence:
 
 NanoTechnology:
   absorption-ratio: 0.5
+
+Dragon:
+  offhand-check-interval-ticks: 5
+  strength-amplifier: 1
+  resistance-amplifier: 1
+  speed-amplifier: 0
+  regeneration-amplifier: 1
+  health-boost-amplifier: 3

@@ -117,3 +117,14 @@ NanoTechnology:
     - "적 처치 시 적의 최대 체력"
     - "<aqua>절반</aqua>만큼 <aqua>흡수 체력</aqua>을"
     - "<aqua>중첩</aqua>하여 얻습니다."
+
+Dragon:
+  display-name: "드래곤"
+  icon: DRAGON_HEAD
+  color: light_purple
+  description:
+    - "<light_purple>드래곤의 머리</light_purple>를 지급합니다."
+    - "왼손에 들고 있으면"
+    - "<light_purple>힘 II</light_purple>, <light_purple>저항 II</light_purple>,"
+    - "<light_purple>신속 I</light_purple>, <light_purple>재생 II</light_purple>,"
+    - "<light_purple>생명력 강화 IV</light_purple> 효과를 받습니다."

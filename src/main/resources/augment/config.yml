@@ -187,3 +187,6 @@ Corrosion:
   cooldown-ticks: 200
   wither-duration: 100
   wither-amplifier: 0
+
+DragonSlayer:
+  damage-multiplier: 2.0

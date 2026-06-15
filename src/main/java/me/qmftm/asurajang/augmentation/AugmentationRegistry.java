@@ -56,6 +56,8 @@ import me.qmftm.asurajang.augmentation.effect.BlinkEffect;
 import me.qmftm.asurajang.augmentation.effect.SacredFlameEffect;
 import me.qmftm.asurajang.augmentation.effect.WaitingEffect;
 import me.qmftm.asurajang.augmentation.effect.CorrosionEffect;
+import me.qmftm.asurajang.augmentation.effect.DragonEffect;
+import me.qmftm.asurajang.augmentation.effect.DragonSlayerEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -122,6 +124,8 @@ public class AugmentationRegistry {
         REGISTRY.put("SacredFlame",       SacredFlameEffect::new);
         REGISTRY.put("Waiting",           WaitingEffect::new);
         REGISTRY.put("Corrosion",         CorrosionEffect::new);
+        REGISTRY.put("Dragon",            DragonEffect::new);
+        REGISTRY.put("DragonSlayer",      DragonSlayerEffect::new);
     }
 
     @Nullable

@@ -388,3 +388,11 @@ Corrosion:
     - "<dark_green>시듦</dark_green> 효과를 부여합니다."
     - ""
     - "<dark_green>쿨타임: 10초</dark_green>"
+
+DragonSlayer:
+  display-name: "드래곤 슬레이어"
+  icon: NETHERITE_SWORD
+  color: dark_purple
+  description:
+    - "<dark_purple>드래곤</dark_purple> 증강을 가진 적에게"
+    - "<dark_purple>2배</dark_purple>의 피해를 줍니다."
