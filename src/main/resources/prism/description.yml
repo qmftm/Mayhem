@@ -118,6 +118,19 @@ NanoTechnology:
     - "<aqua>절반</aqua>만큼 <aqua>흡수 체력</aqua>을"
     - "<aqua>중첩</aqua>하여 얻습니다."
 
+ShadowLord:
+  display-name: "그림자 군주"
+  icon: SCULK
+  color: dark_gray
+  description:
+    - "적을 처치하면 그 위치에"
+    - "<dark_gray>영혼</dark_gray>을 소환해 함께 싸웁니다."
+    - "최대 <dark_gray>5명</dark_gray>까지 소환 가능하며"
+    - "한 플레이어에게서 동시에"
+    - "여러 영혼을 추출할 수 없습니다."
+    - "영혼은 <dark_gray>적의 능력치</dark_gray>를 따라가며"
+    - "사망 시 부활하지 않습니다."
+
 Dragon:
   display-name: "드래곤"
   icon: DRAGON_HEAD

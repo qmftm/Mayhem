@@ -268,13 +268,14 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>프리즘 증강 목록 (11종)</summary>
+<summary>프리즘 증강 목록 (12종)</summary>
 
 <table>
 <thead>
 <tr><th width="17%"></th><th width="33%">이름</th><th width="50%">설명</th></tr>
 </thead>
 <tbody>
+<tr><td align="center"><img src="docs/icons/sculk.png" width="64"></td><td>그림자 군주</td><td>적을 처치할 시 그 위치에 자신을 도와 싸우는 영혼을 소환합니다. 최대 5명까지 소환 가능하며 한 플레이어에게서 동시에 여러 영혼을 추출할 수 없습니다. 영혼은 적의 능력치를 따라가며 사망 시 부활하지 않습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/enchanted_golden_apple.png" width="64"></td><td>나노 테크놀로지</td><td>적 처치 시 적의 최대 체력 절반만큼 흡수 체력을 중첩하여 얻습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/smithing_table_iso.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
 <tr><td align="center"><img src="docs/icons/dragon_head.png" width="64"></td><td>드래곤</td><td>드래곤의 머리를 지급합니다. 왼손에 들고 있으면 힘 II, 저항 II, 신속 I, 재생 II, 생명력 강화 IV 효과를 받습니다.</td></tr>
