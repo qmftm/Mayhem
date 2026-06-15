@@ -7,6 +7,8 @@ FeatherFalling:
   color: white
   description:
     - "<white>낙하 피해</white>를 받지 않습니다."
+    - "공중에서 <white>점프 키</white>를 다시 누르면"
+    - "<white>한 번 더 점프</white>할 수 있습니다."
 
 StrongStrong:
   display-name: "강강약약"
