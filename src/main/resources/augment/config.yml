@@ -30,6 +30,9 @@ Deadful:
   max-health-fixed: 0.5
   heal-interval-ticks: 20
 
+Gambler:
+  heal-ratio: 0.5
+
 Copy:
   max-copies: 3
 
@@ -85,7 +88,7 @@ DivineLove:
 CleanUp:
   range: 10.0
   health-threshold: 0.3
-  speed-bonus: 0.5
+  speed-bonus: 0.3
   check-interval-ticks: 4
 
 SaturatedFat:
@@ -130,7 +133,7 @@ Flee:
   check-interval-ticks: 20
 
 Assassin:
-  speed-bonus: 1.0
+  speed-bonus: 0.6
   disable-duration-ticks: 120
 
 DragonScale:

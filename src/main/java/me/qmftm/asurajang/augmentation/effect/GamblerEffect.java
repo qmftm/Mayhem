@@ -1,6 +1,7 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,7 +31,11 @@ public class GamblerEffect implements AugmentationEffect {
 
                 if (roll == JACKPOT_NUMBER) {
                     AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
-                    if (maxHealth != null) player.setHealth(maxHealth.getValue());
+                    if (maxHealth != null) {
+                        double healRatio = AugmentSettings.getDouble("Gambler", "heal-ratio", 0.5);
+                        double newHealth = Math.min(maxHealth.getValue(), player.getHealth() + maxHealth.getValue() * healRatio);
+                        player.setHealth(newHealth);
+                    }
                     player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1.0f, 1.2f);
                 }
 

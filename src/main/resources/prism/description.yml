@@ -81,7 +81,7 @@ Seal:
   cooldown: 120
   description:
     - "아이템을 우클릭하면 주변 <gray>10칸</gray>의"
-    - "플레이어에게 <gray>15초간</gray> <gray>몰수</gray>"
+    - "플레이어에게 <gray>9초간</gray> <gray>몰수</gray>"
     - "효과를 부여합니다."
     - ""
     - "<gray>몰수</gray>: 모든 증강 사용이"

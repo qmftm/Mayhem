@@ -67,7 +67,7 @@ Gambler:
   description:
     - "매 틱마다 <gold>1~239</gold> 사이의"
     - "무작위 숫자를 액션바에 표시합니다."
-    - "<gold>77</gold>이 나오면 체력을 전부 회복합니다."
+    - "<gold>77</gold>이 나오면 최대 체력의 <gold>50%</gold>를 회복합니다."
 
 Copy:
   display-name: "모방"
@@ -195,7 +195,7 @@ CleanUp:
   description:
     - "체력 <white>30%</white> 이하인 적이"
     - "<white>10칸</white> 내에 있으면"
-    - "이동 속도가 <white>50%</white> 증가합니다."
+    - "이동 속도가 <white>30%</white> 증가합니다."
 
 SaturatedFat:
   display-name: "포화지방산"
@@ -280,7 +280,7 @@ Assassin:
   icon: LEATHER_BOOTS
   color: dark_gray
   description:
-    - "이동 속도가 <dark_gray>100%</dark_gray> 증가합니다."
+    - "이동 속도가 <dark_gray>60%</dark_gray> 증가합니다."
     - "피해를 받으면 <dark_gray>6초간</dark_gray> 비활성화됩니다."
 
 DragonScale:

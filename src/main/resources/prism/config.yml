@@ -17,7 +17,7 @@ Aegis:
 
 Seal:
   radius: 10.0
-  duration-ticks: 300
+  duration-ticks: 180
   damage-multiplier: 0.9
 
 InevitableExistence:
