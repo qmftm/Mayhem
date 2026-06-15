@@ -324,7 +324,7 @@ ResilientSpirit:
 
 SpiritBomb:
   display-name: "원기옥"
-  icon: BEACON
+  icon: END_CRYSTAL
   color: blue
   description:
     - "<blue>10초</blue> 동안 피해를 받지 않으면"

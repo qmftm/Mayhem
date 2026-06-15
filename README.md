@@ -243,7 +243,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>암살자</td><td>이동 속도가 60% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/dragon_breath.png" width="64"></td><td>용린</td><td>4번째 공격마다 상대에게 불을 붙입니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/beacon_iso.png" width="64"></td><td>원기옥</td><td>10초 동안 피해를 받지 않으면 다음 공격이 치명타가 됩니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/end_crystal.png" width="64"></td><td>원기옥</td><td>10초 동안 피해를 받지 않으면 다음 공격이 치명타가 됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_axe.png" width="64"></td><td>육중한 힘</td><td>공격력이 20% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/tnt_iso.png" width="64"></td><td>자폭</td><td>35초마다 머리 위에 TNT가 부착됩니다. 부착 시 5초 간 신속을 받은 뒤 폭발하며 반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다. 자신은 그 피해의 50%만 받습니다. 폭탄 보유 중 사망하면 즉시 폭발합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>저격 대결</td><td>12칸 이상 거리의 적을 공격 시 피해가 50% 증가합니다.</td></tr>
