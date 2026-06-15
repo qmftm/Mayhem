@@ -114,7 +114,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/fermented_spider_eye.png" width="64"></td><td>데드풀</td><td>최대 체력이 5칸으로 고정되며 1초마다 즉시 치유 I를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_nugget.png" width="64"></td><td>도박사</td><td>매 틱마다 1~239 사이의 무작위 숫자를 액션바에 표시합니다. 77이 나오면 최대 체력의 50%를 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/potion.png" width="64"></td><td>도주</td><td>체력이 35% 이하가 되면 신속 효과를 얻습니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/ender_eye.png" width="64"></td><td>매혹</td><td>공격한 상대에게 3초간 이동 속도를 50% 감소시키고 자신을 계속 바라보게 만듭니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/cherry_sapling.png" width="64"></td><td>매혹</td><td>공격한 상대에게 3초간 이동 속도를 50% 감소시키고 자신을 계속 바라보게 만듭니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/magenta_dye.png" width="64"></td><td>모방</td><td>적을 죽일 시 적의 증강 중 하나를 복사합니다. 3회 복사 후 이 증강이 사라집니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/slime_ball.png" width="64"></td><td>반발</td><td>체력이 20% 이하로 내려가면 주변 적들을 밀쳐냅니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/netherite_sword.png" width="64"></td><td>발도</td><td>공격 속도가 30% 증가합니다.</td></tr>
