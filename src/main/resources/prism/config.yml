@@ -29,3 +29,6 @@ InevitableExistence:
   mind-charm-duration-ticks: 100
   mind-charm-slow-amount: 0.5
   offhand-check-interval-ticks: 5
+
+NanoTechnology:
+  absorption-ratio: 0.5

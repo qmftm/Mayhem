@@ -144,7 +144,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>프리즘 증강 목록 (9종)</summary>
+<summary>프리즘 증강 목록 (10종)</summary>
 
 <table>
 <thead>
@@ -160,6 +160,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/clock.png" width="64"></td><td>이지스</td><td>아이템을 우클릭하면 4초간 모든 피해를 무시하는 무적 상태가 됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_bars.png" width="64"></td><td>봉인</td><td>아이템을 우클릭하면 주변 10칸의 플레이어에게 9초간 몰수 효과를 부여합니다. 몰수: 모든 증강 사용이 금지되며 공격력이 10% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/honeycomb.png" width="64"></td><td>필연적인 존재</td><td>적을 처치할 때마다 50% 확률로 6종의 스톤 중 하나를 무작위로 획득합니다. 모두 모은 뒤 건틀릿을 우클릭하면 1회에 한해 모든 적을 즉사시키고 모든 스톤이 소멸합니다. 각 스톤은 왼손에 들고 있을 때 효과가 발동합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/ghast_tear.png" width="64"></td><td>나노 테크놀로지</td><td>적을 처치할 때마다 적의 최대 체력의 절반에 해당하는 흡수 체력을 얻습니다. (중첩됨)</td></tr>
 </tbody>
 </table>
 
