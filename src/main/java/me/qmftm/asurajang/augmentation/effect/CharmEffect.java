@@ -72,7 +72,7 @@ public class CharmEffect implements AugmentationEffect {
         }, cooldownTicks);
     }
 
-    private static void applyCharm(Player target, Player attacker, long durationTicks, double slowAmount) {
+    static void applyCharm(Player target, Player attacker, long durationTicks, double slowAmount) {
         UUID targetId = target.getUniqueId();
         Asurajang plugin = Asurajang.getInstance();
 

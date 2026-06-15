@@ -19,3 +19,13 @@ Seal:
   radius: 10.0
   duration-ticks: 300
   damage-multiplier: 0.9
+
+InevitableExistence:
+  stone-drop-chance: 0.5
+  power-damage-multiplier: 2.0
+  space-speed-bonus: 1.0
+  soul-fixed-damage-ratio: 0.5
+  time-attack-speed-bonus: 0.5
+  mind-charm-duration-ticks: 100
+  mind-charm-slow-amount: 0.5
+  offhand-check-interval-ticks: 5
