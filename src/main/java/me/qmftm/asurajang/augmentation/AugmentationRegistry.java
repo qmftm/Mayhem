@@ -44,6 +44,7 @@ import me.qmftm.asurajang.augmentation.effect.AssassinEffect;
 import me.qmftm.asurajang.augmentation.effect.DragonScaleEffect;
 import me.qmftm.asurajang.augmentation.effect.RepulsionEffect;
 import me.qmftm.asurajang.augmentation.effect.InevitableExistenceEffect;
+import me.qmftm.asurajang.augmentation.effect.ExtraHealthEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -98,6 +99,7 @@ public class AugmentationRegistry {
         REGISTRY.put("DragonScale",       DragonScaleEffect::new);
         REGISTRY.put("Repulsion",         RepulsionEffect::new);
         REGISTRY.put("InevitableExistence", InevitableExistenceEffect::new);
+        REGISTRY.put("ExtraHealth",       ExtraHealthEffect::new);
     }
 
     @Nullable

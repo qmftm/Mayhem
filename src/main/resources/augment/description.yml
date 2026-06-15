@@ -298,3 +298,10 @@ Repulsion:
   description:
     - "체력이 <green>20%</green> 이하로 내려가면"
     - "주변 적들을 밀쳐냅니다."
+
+ExtraHealth:
+  display-name: "추가 체력"
+  icon: GOLDEN_APPLE
+  color: green
+  description:
+    - "최대 체력 <green>5칸</green>을 늘립니다."

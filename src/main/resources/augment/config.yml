@@ -146,3 +146,6 @@ Repulsion:
   cooldown-ticks: 100
   knockback-horizontal: 1.5
   knockback-vertical: 0.4
+
+ExtraHealth:
+  bonus-health: 10.0

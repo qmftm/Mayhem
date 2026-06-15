@@ -96,7 +96,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (34종)</summary>
+<summary>전체 증강 목록 (35종)</summary>
 
 <table>
 <thead>
@@ -134,6 +134,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/redstone.png" width="64"></td><td>죄책감의 쾌락</td><td>적 플레이어를 처치 시 최대 체력의 20%를 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/blaze_powder.png" width="64"></td><td>주님의 사랑</td><td>검 우클릭 시 바라보는 방향으로 화염구를 3회 연달아 날립니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/netherite_ingot.png" width="64"></td><td>질량은 곧 힘</td><td>근접 공격 시 자신의 최대 체력의 5%에 해당하는 추가 피해를 입힙니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/golden_apple.png" width="64"></td><td>추가 체력</td><td>최대 체력 5칸을 늘립니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/sugar.png" width="64"></td><td>클린업</td><td>체력 30% 이하인 적이 10칸 내에 있으면 이동 속도가 30% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/cooked_porkchop.png" width="64"></td><td>포화지방산</td><td>배고픔이 소모되지 않습니다. 음식을 먹을 때마다 즉시 치유 효과를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/obsidian_iso.png" width="64"></td><td>흑섬</td><td>공격마다 3% 확률로 2.5배의 피해를 줍니다. 발동 후 3번의 공격 동안 확률이 증가합니다.</td></tr>
