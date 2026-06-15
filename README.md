@@ -124,49 +124,69 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <details>
 <summary>무기</summary>
 
-| 품목 | 가격 |
-|------|------|
-| 돌 검 | 100 G |
-| 철 검 | 200 G |
-| 다이아몬드 검 | 450 G |
-| 네더라이트 검 | 700 G |
-| 다이아몬드 도끼 | 650 G |
+<table>
+<thead>
+<tr><th width="17%"></th><th width="50%">품목</th><th width="33%">가격</th></tr>
+</thead>
+<tbody>
+<tr><td align="center"><img src="docs/icons/stone_sword.png" width="64"></td><td>돌 검</td><td>100 G</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>철 검</td><td>200 G</td></tr>
+<tr><td align="center"><img src="docs/icons/diamond_sword.png" width="64"></td><td>다이아몬드 검</td><td>450 G</td></tr>
+<tr><td align="center"><img src="docs/icons/netherite_sword.png" width="64"></td><td>네더라이트 검</td><td>700 G</td></tr>
+<tr><td align="center"><img src="docs/icons/diamond_axe.png" width="64"></td><td>다이아몬드 도끼</td><td>650 G</td></tr>
+</tbody>
+</table>
 
 </details>
 
 <details>
 <summary>방어구</summary>
 
-| 품목 | 가격 |
-|------|------|
-| 철 모자 | 150 G |
-| 철 흉갑 | 200 G |
-| 철 바지 | 175 G |
-| 철 신발 | 150 G |
-| 다이아몬드 흉갑 | 400 G |
+<table>
+<thead>
+<tr><th width="17%"></th><th width="50%">품목</th><th width="33%">가격</th></tr>
+</thead>
+<tbody>
+<tr><td align="center"><img src="docs/icons/iron_helmet.png" width="64"></td><td>철 모자</td><td>150 G</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_chestplate.png" width="64"></td><td>철 흉갑</td><td>200 G</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_leggings.png" width="64"></td><td>철 바지</td><td>175 G</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_boots.png" width="64"></td><td>철 신발</td><td>150 G</td></tr>
+<tr><td align="center"><img src="docs/icons/diamond_chestplate.png" width="64"></td><td>다이아몬드 흉갑</td><td>400 G</td></tr>
+</tbody>
+</table>
 
 </details>
 
 <details>
 <summary>원거리</summary>
 
-| 품목 | 가격 |
-|------|------|
-| 활 | 100 G |
-| 쇠뇌 | 250 G |
-| 화살 8개 | 40 G |
+<table>
+<thead>
+<tr><th width="17%"></th><th width="50%">품목</th><th width="33%">가격</th></tr>
+</thead>
+<tbody>
+<tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>활</td><td>100 G</td></tr>
+<tr><td align="center"><img src="docs/icons/crossbow.png" width="64"></td><td>쇠뇌</td><td>250 G</td></tr>
+<tr><td align="center"><img src="docs/icons/arrow.png" width="64"></td><td>화살 8개</td><td>40 G</td></tr>
+</tbody>
+</table>
 
 </details>
 
 <details>
 <summary>기타</summary>
 
-| 품목 | 가격 |
-|------|------|
-| 빵 8개 | 30 G |
-| 힘의 물약 | 150 G |
-| 회복의 물약 | 120 G |
-| 불사의 토템 | 1000 G |
+<table>
+<thead>
+<tr><th width="17%"></th><th width="50%">품목</th><th width="33%">가격</th></tr>
+</thead>
+<tbody>
+<tr><td align="center"><img src="docs/icons/bread.png" width="64"></td><td>빵 8개</td><td>30 G</td></tr>
+<tr><td align="center"><img src="docs/icons/potion.png" width="64"></td><td>힘의 물약</td><td>150 G</td></tr>
+<tr><td align="center"><img src="docs/icons/potion.png" width="64"></td><td>회복의 물약</td><td>120 G</td></tr>
+<tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>불사의 토템</td><td>1000 G</td></tr>
+</tbody>
+</table>
 
 </details>
 
