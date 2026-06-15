@@ -124,8 +124,8 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>불멸</td><td>사망 시 35%의 확률로 부활합니다. 부활 시 전체 체력의 절반인 상태로 부활하며 죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wind_charge.png" width="64"></td><td>붕뜨네</td><td>검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/creeper_spawn_egg.png" width="64"></td><td>신체 폭탄</td><td>버리기 키를 누르면 체력 3칸을 소모하고 TNT를 던집니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/leather_boots.png" width="64"></td><td>암살자</td><td>이동 속도가 100% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/spawn_egg.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다. 당신이 사망하면 늑대도 같이 사라지며 같이 부활합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>암살자</td><td>이동 속도가 100% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다. 당신이 사망하면 늑대도 같이 사라지며 같이 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/dragon_breath.png" width="64"></td><td>용린</td><td>4번째 공격마다 상대에게 불을 붙입니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_axe.png" width="64"></td><td>육중한 힘</td><td>공격력이 20% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/tnt_iso.png" width="64"></td><td>자폭</td><td>35초마다 머리 위에 TNT가 부착됩니다. 부착 시 5초 간 신속을 받은 뒤 폭발하며 반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다. 자신은 그 피해의 50%만 받습니다. 폭탄 보유 중 사망하면 즉시 폭발합니다.</td></tr>
