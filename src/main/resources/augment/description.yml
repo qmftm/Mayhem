@@ -361,3 +361,30 @@ Blink:
     - "양손 맞바꾸기 키로 <yellow>7칸</yellow> 앞으로"
     - "빠르게 이동합니다."
     - "<yellow>벽은 투과할 수 없습니다.</yellow>"
+
+SacredFlame:
+  display-name: "신성한 불꽃"
+  icon: SOUL_CAMPFIRE
+  color: aqua
+  description:
+    - "체력을 회복할 때마다 5칸 이내"
+    - "가장 가까운 적을 <aqua>불태웁니다</aqua>."
+    - ""
+    - "<aqua>쿨타임: 3초</aqua>"
+
+Waiting:
+  display-name: "기다림"
+  icon: CLOCK
+  color: green
+  description:
+    - "체력 재생량이 <green>3배</green> 증가합니다."
+
+Corrosion:
+  display-name: "부식"
+  icon: ROTTEN_FLESH
+  color: dark_green
+  description:
+    - "적에게 근접 공격을 할 때"
+    - "<dark_green>시듦</dark_green> 효과를 부여합니다."
+    - ""
+    - "<dark_green>쿨타임: 10초</dark_green>"

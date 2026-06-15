@@ -174,3 +174,16 @@ Bodyguard:
 Blink:
   distance: 7.0
   cooldown-ticks: 60
+
+SacredFlame:
+  cooldown-ticks: 60
+  range: 5.0
+  fire-ticks: 100
+
+Waiting:
+  regen-multiplier: 3.0
+
+Corrosion:
+  cooldown-ticks: 200
+  wither-duration: 100
+  wither-amplifier: 0
