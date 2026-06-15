@@ -111,7 +111,7 @@ InevitableExistence:
 
 NanoTechnology:
   display-name: "나노 테크놀로지"
-  icon: GHAST_TEAR
+  icon: ENCHANTED_GOLDEN_APPLE
   color: aqua
   description:
     - "적을 처치할 때마다 적의 최대 체력의"
