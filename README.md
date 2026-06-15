@@ -123,20 +123,20 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/redstone.png" width="64"></td><td>뱀파이어</td><td>근접 공격 시 입힌 피해의 10%만큼 체력을 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/armor_stand.png" width="64"></td><td>변태</td><td>적을 때릴 때마다 3% 확률로 갑옷 부위를 벗깁니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_nugget.png" width="64"></td><td>보너스</td><td>골드를 2배로 획득합니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/leather_chestplate_black.png" width="64"></td><td>보디가드</td><td>8칸 이내의 팀원 수 x 5%만큼 받는 피해를 감소시킵니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/leather_chestplate_black.png" width="64"></td><td>보디가드</td><td>(8칸 이내의 팀원 수 x 5)%만큼 받는 피해를 감소시킵니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/shears.png" width="64"></td><td>부기우기</td><td>양손 맞바꾸기 키로 20블록 내의 가장 가까운 적과 위치를 교환합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bedrock_iso.png" width="64"></td><td>불괴</td><td>아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>불멸</td><td>사망 시 35%의 확률로 부활합니다. 부활 시 전체 체력의 절반인 상태로 부활하며 죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wind_charge.png" width="64"></td><td>붕뜨네</td><td>검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/creeper_spawn_egg.png" width="64"></td><td>신체 폭탄</td><td>버리기 키를 누르면 체력 3칸을 소모하고 TNT를 던집니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>암살자</td><td>이동 속도가 60% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다. 당신이 사망하면 늑대도 같이 사라지며 같이 부활합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/dragon_breath.png" width="64"></td><td>용린</td><td>4번째 공격마다 상대에게 불을 붙입니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/beacon_iso.png" width="64"></td><td>원기옥</td><td>10초 동안 피해를 받지 않으면 다음 공격이 치명타가 됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_axe.png" width="64"></td><td>육중한 힘</td><td>공격력이 20% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/tnt_iso.png" width="64"></td><td>자폭</td><td>35초마다 머리 위에 TNT가 부착됩니다. 부착 시 5초 간 신속을 받은 뒤 폭발하며 반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다. 자신은 그 피해의 50%만 받습니다. 폭탄 보유 중 사망하면 즉시 폭발합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>저격 대결</td><td>12칸 이상 거리의 적을 공격 시 피해가 50% 증가합니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>전 집중 호흡</td><td>부숴지지 않는 철 검을 즉시 지급합니다. 날카로움, 밀치기, 화염 부여, 휩쓸기 베기 중 각각 25% 확률로 무작위 레벨이 부여되며 최소 하나는 반드시 부여됩니다. 적을 처치하거나 사망할 때마다 다시 부여됩니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>전 집중 호흡</td><td>부숴지지 않는 철 검을 지급합니다. 날카로움, 밀치기, 화염 부여, 휩쓸기 베기 중 각각 25% 확률로 무작위 레벨이 부여되며 적을 처치하거나 사망할 때마다 다시 부여됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/glowstone_iso.png" width="64"></td><td>점멸</td><td>양손 맞바꾸기 키로 7칸 앞으로 빠르게 이동합니다. 벽은 투과할 수 없습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/redstone.png" width="64"></td><td>죄책감의 쾌락</td><td>적 플레이어를 처치 시 최대 체력의 20%를 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/blaze_powder.png" width="64"></td><td>주님의 사랑</td><td>검 우클릭 시 바라보는 방향으로 화염구를 3회 연달아 날립니다.</td></tr>
