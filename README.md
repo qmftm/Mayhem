@@ -207,7 +207,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (42종)</summary>
+<summary>전체 증강 목록 (46종)</summary>
 
 <table>
 <thead>
@@ -221,12 +221,14 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/pufferfish.png" width="64"></td><td>개복치</td><td>최대체력이 절반 감소합니다. 적을 때릴 때마다 10% 확률로 능력을 이전 시킵니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/nautilus_shell.png" width="64"></td><td>경정권</td><td>공격 시 80%의 피해를 준 뒤 0.5초 후 40%의 피해와 2배의 넉백을 추가로 줍니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/string.png" width="64"></td><td>그랩</td><td>원거리 공격이 적에게 명중하면 그 적을 자신의 위치로 끌어옵니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/clock.png" width="64"></td><td>기다림</td><td>체력 재생량이 3배 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/snowball.png" width="64"></td><td>냉혈한</td><td>적을 우클릭하면 해당 대상에게 구속과 나약함을 3초간 부여합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/experience_bottle.png" width="64"></td><td>능력치</td><td>능력치 모루 2개를 획득합니다!</td></tr>
 <tr><td align="center"><img src="docs/icons/fermented_spider_eye.png" width="64"></td><td>데드풀</td><td>최대 체력이 5칸으로 고정되며 1초마다 즉시 치유 I를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_nugget.png" width="64"></td><td>도박사</td><td>매 틱마다 1~239 사이의 무작위 숫자를 액션바에 표시합니다. 77이 나오면 최대 체력의 50%를 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/potion.png" width="64"></td><td>도주</td><td>체력이 35% 이하가 되면 신속 효과를 얻습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/vex_spawn_egg.png" width="64"></td><td>동귀어진</td><td>자신을 죽인 적에게 3칸의 고정 피해를 줍니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/netherite_sword.png" width="64"></td><td>드래곤 슬레이어</td><td>드래곤 증강을 가진 적에게 2배의 피해를 줍니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/cherry_sapling.png" width="64"></td><td>매혹</td><td>공격한 상대에게 3초간 이동 속도를 50% 감소시키고 자신을 계속 바라보게 만듭니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/magenta_dye.png" width="64"></td><td>모방</td><td>적을 죽일 시 적의 증강 중 하나를 복사합니다. 3회 복사 후 이 증강이 사라집니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/slime_ball.png" width="64"></td><td>반발</td><td>체력이 20% 이하로 내려가면 주변 적들을 밀쳐냅니다.</td></tr>
@@ -236,9 +238,11 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/gold_nugget.png" width="64"></td><td>보너스</td><td>골드를 2배로 획득합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/leather_chestplate_black.png" width="64"></td><td>보디가드</td><td>(8칸 이내의 팀원 수 x 5)%만큼 받는 피해를 감소시킵니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/shears.png" width="64"></td><td>부기우기</td><td>양손 맞바꾸기 키로 20블록 내의 가장 가까운 적과 위치를 교환합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/rotten_flesh.png" width="64"></td><td>부식</td><td>적에게 근접 공격을 할 때 시듦 효과를 부여합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bedrock_iso.png" width="64"></td><td>불괴</td><td>아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>불멸</td><td>사망 시 35%의 확률로 부활합니다. 부활 시 전체 체력의 절반인 상태로 부활하며 죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wind_charge.png" width="64"></td><td>붕뜨네</td><td>검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/soul_campfire.png" width="64"></td><td>신성한 불꽃</td><td>체력을 회복할 때마다 5칸 이내 가장 가까운 적을 불태웁니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/creeper_spawn_egg.png" width="64"></td><td>신체 폭탄</td><td>버리기 키를 누르면 체력 3칸을 소모하고 TNT를 던집니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>암살자</td><td>이동 속도가 60% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>옥견</td><td>두 마리의 길들인 늑대가 당신을 도와 싸웁니다. 늑대는 사망 시 60초 후에 부활합니다.</td></tr>
@@ -262,7 +266,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>프리즘 증강 목록 (10종)</summary>
+<summary>프리즘 증강 목록 (11종)</summary>
 
 <table>
 <thead>
@@ -271,6 +275,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tbody>
 <tr><td align="center"><img src="docs/icons/enchanted_golden_apple.png" width="64"></td><td>나노 테크놀로지</td><td>적 처치 시 적의 최대 체력 절반만큼 흡수 체력을 중첩하여 얻습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/smithing_table_iso.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
+<tr><td align="center"><img src="docs/icons/dragon_head.png" width="64"></td><td>드래곤</td><td>드래곤의 머리를 지급합니다. 왼손에 들고 있으면 힘 II, 저항 II, 신속 I, 재생 II, 생명력 강화 IV 효과를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/rabbit_foot.png" width="64"></td><td>드롭킥</td><td>근접 공격 시 체력 15% 이하인 적을 즉사시킵니다. 즉사한 적에게 강한 넉백과 폭발이 발생하며, 자신의 체력을 최대 체력의 50% 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_block_iso.png" width="64"></td><td>무한한 골드</td><td>골드를 32767로 변경합니다. 단, 부활 시간이 5배 증가하며 주는 피해량이 10% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_bars.png" width="64"></td><td>봉인</td><td>아이템을 우클릭하면 주변 10칸의 플레이어에게 9초간 몰수 효과를 부여합니다. 몰수: 모든 증강 사용이 금지되며 공격력이 10% 감소합니다.</td></tr>
