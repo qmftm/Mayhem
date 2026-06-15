@@ -345,7 +345,7 @@ MutualDestruction:
   color: dark_purple
   description:
     - "자신을 죽인 적에게"
-    - "<dark_purple>3칸</dark_purple>의 고정 피해를 줍니다."
+    - "<dark_purple>3.5칸</dark_purple>의 고정 피해를 줍니다."
 
 Bodyguard:
   display-name: "보디가드"

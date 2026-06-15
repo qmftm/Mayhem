@@ -31,7 +31,7 @@ InevitableExistence:
   offhand-check-interval-ticks: 5
 
 NanoTechnology:
-  absorption-ratio: 0.5
+  absorption-ratio: 0.35
 
 ShadowLord:
   max-souls: 5
@@ -39,7 +39,7 @@ ShadowLord:
 Dragon:
   offhand-check-interval-ticks: 5
   strength-amplifier: 1
-  resistance-amplifier: 1
+  resistance-amplifier: 0
   speed-amplifier: 0
   regeneration-amplifier: 1
-  health-boost-amplifier: 3
+  health-boost-amplifier: 1

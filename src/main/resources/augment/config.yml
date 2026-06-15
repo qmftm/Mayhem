@@ -169,7 +169,7 @@ Bonus:
   gold-multiplier: 2.0
 
 MutualDestruction:
-  fixed-damage: 6.0
+  fixed-damage: 7.0
 
 Bodyguard:
   radius: 8.0
