@@ -93,7 +93,7 @@ public class ShopGUI implements InventoryHolder {
     private static final int COLUMNS = 9;
 
     private final Inventory inventory;
-    private final EnumSet<Category> expanded = EnumSet.allOf(Category.class);
+    private final EnumSet<Category> expanded = EnumSet.noneOf(Category.class);
     private final Map<Integer, ItemStack> purchaseMap = new HashMap<>();
     private final Map<Integer, Integer>   priceMap    = new HashMap<>();
 
