@@ -149,3 +149,28 @@ Repulsion:
 
 ExtraHealth:
   bonus-health: 10.0
+
+Vampire:
+  heal-ratio: 0.10
+
+ResilientSpirit:
+  health-threshold: 0.5
+  damage-reduction: 0.15
+
+SpiritBomb:
+  charge-ticks: 200
+  critical-multiplier: 1.5
+
+Bonus:
+  gold-multiplier: 2.0
+
+MutualDestruction:
+  fixed-damage: 6.0
+
+Bodyguard:
+  radius: 8.0
+  reduction-per-ally: 0.05
+
+Blink:
+  distance: 7.0
+  cooldown-ticks: 60

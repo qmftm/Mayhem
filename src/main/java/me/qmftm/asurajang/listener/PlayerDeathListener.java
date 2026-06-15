@@ -178,8 +178,8 @@ public class PlayerDeathListener implements Listener {
             }
 
             // 어시스트가 있으면 킬러는 절반, 어시스터는 총량의 1/n
-            int killerGold   = assisters.isEmpty() ? reward : reward / 2;
-            int assisterGold = assisters.isEmpty() ? 0      : reward / assisters.size();
+            int killerGold   = applyGoldBonus(killer, assisters.isEmpty() ? reward : reward / 2);
+            int assisterGoldBase = assisters.isEmpty() ? 0 : reward / assisters.size();
 
             Asurajang plugin = Asurajang.getInstance();
             plugin.getScoreboardManager().addKill(killer);
@@ -214,6 +214,7 @@ public class PlayerDeathListener implements Listener {
 
             // 어시스터 처리
             for (Player assister : assisters) {
+                int assisterGold = applyGoldBonus(assister, assisterGoldBase);
                 plugin.getScoreboardManager().addAssist(assister);
                 plugin.getScoreboardManager().addGold(assister, assisterGold);
                 Bukkit.getPluginManager().callEvent(
@@ -318,6 +319,13 @@ public class PlayerDeathListener implements Listener {
             color = NamedTextColor.WHITE;
         }
         return Component.text(player.getName(), color);
+    }
+
+    private static int applyGoldBonus(Player player, int amount) {
+        if (!Asurajang.getInstance().getAugmentationManager().getActiveEffects(player.getUniqueId()).containsKey("Bonus")) {
+            return amount;
+        }
+        return (int) Math.round(amount * AugmentSettings.getDouble("Bonus", "gold-multiplier", 2.0));
     }
 
     private static int multiKillBonus(int count) {

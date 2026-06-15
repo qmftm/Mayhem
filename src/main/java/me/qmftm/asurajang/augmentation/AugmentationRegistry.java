@@ -46,6 +46,13 @@ import me.qmftm.asurajang.augmentation.effect.RepulsionEffect;
 import me.qmftm.asurajang.augmentation.effect.InevitableExistenceEffect;
 import me.qmftm.asurajang.augmentation.effect.ExtraHealthEffect;
 import me.qmftm.asurajang.augmentation.effect.NanoTechnologyEffect;
+import me.qmftm.asurajang.augmentation.effect.VampireEffect;
+import me.qmftm.asurajang.augmentation.effect.ResilientSpiritEffect;
+import me.qmftm.asurajang.augmentation.effect.SpiritBombEffect;
+import me.qmftm.asurajang.augmentation.effect.BonusEffect;
+import me.qmftm.asurajang.augmentation.effect.MutualDestructionEffect;
+import me.qmftm.asurajang.augmentation.effect.BodyguardEffect;
+import me.qmftm.asurajang.augmentation.effect.BlinkEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -102,6 +109,13 @@ public class AugmentationRegistry {
         REGISTRY.put("InevitableExistence", InevitableExistenceEffect::new);
         REGISTRY.put("ExtraHealth",       ExtraHealthEffect::new);
         REGISTRY.put("NanoTechnology",    NanoTechnologyEffect::new);
+        REGISTRY.put("Vampire",           VampireEffect::new);
+        REGISTRY.put("ResilientSpirit",   ResilientSpiritEffect::new);
+        REGISTRY.put("SpiritBomb",        SpiritBombEffect::new);
+        REGISTRY.put("Bonus",             BonusEffect::new);
+        REGISTRY.put("MutualDestruction", MutualDestructionEffect::new);
+        REGISTRY.put("Bodyguard",         BodyguardEffect::new);
+        REGISTRY.put("Blink",             BlinkEffect::new);
     }
 
     @Nullable

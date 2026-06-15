@@ -305,3 +305,59 @@ ExtraHealth:
   color: green
   description:
     - "최대 체력 <green>5칸</green>을 늘립니다."
+
+Vampire:
+  display-name: "뱀파이어"
+  icon: REDSTONE
+  color: red
+  description:
+    - "근접 공격 시 입힌 피해의"
+    - "<red>10%</red>만큼 체력을 회복합니다."
+
+ResilientSpirit:
+  display-name: "강인한 정신"
+  icon: IRON_BLOCK
+  color: white
+  description:
+    - "체력이 <white>50%</white> 이하일 때"
+    - "받는 피해가 <white>15%</white> 감소합니다."
+
+SpiritBomb:
+  display-name: "원기옥"
+  icon: BEACON
+  color: blue
+  description:
+    - "<blue>10초</blue> 동안 피해를 받지 않으면"
+    - "다음 공격이 <blue>치명타</blue>가 됩니다."
+
+Bonus:
+  display-name: "보너스"
+  icon: GOLD_NUGGET
+  color: gold
+  description:
+    - "골드를 <gold>2배</gold>로 획득합니다."
+
+MutualDestruction:
+  display-name: "동귀어진"
+  icon: VEX_SPAWN_EGG
+  color: dark_purple
+  description:
+    - "자신을 죽인 적에게"
+    - "<dark_purple>3칸</dark_purple>의 고정 피해를 줍니다."
+
+Bodyguard:
+  display-name: "보디가드"
+  icon: LEATHER_CHESTPLATE
+  color: dark_gray
+  description:
+    - "<dark_gray>8칸</dark_gray> 이내의 팀원 수 x <dark_gray>5%</dark_gray>만큼"
+    - "받는 피해를 감소시킵니다."
+
+Blink:
+  display-name: "점멸"
+  icon: GLOWSTONE
+  color: yellow
+  description:
+    - "양손 맞바꾸기 키로 <yellow>7칸</yellow> 앞으로"
+    - "빠르게 이동합니다."
+    - "<yellow>벽은 투과할 수 없습니다.</yellow>"
