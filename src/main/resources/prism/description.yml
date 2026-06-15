@@ -114,6 +114,6 @@ NanoTechnology:
   icon: ENCHANTED_GOLDEN_APPLE
   color: aqua
   description:
-    - "적을 처치할 때마다 적의 최대 체력의"
+    - "적 처치 시 적의 최대 체력"
     - "<aqua>절반</aqua>만큼 <aqua>흡수 체력</aqua>을"
     - "얻습니다. (<aqua>중첩됨</aqua>)"
