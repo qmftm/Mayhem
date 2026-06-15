@@ -151,7 +151,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><th width="17%"></th><th width="33%">이름</th><th width="50%">설명</th></tr>
 </thead>
 <tbody>
-<tr><td align="center"><img src="docs/icons/enchanted_golden_apple.png" width="64"></td><td>나노 테크놀로지</td><td>적 처치 시 적의 최대 체력 절반만큼 흡수 체력을 얻습니다. (중첩됨)</td></tr>
+<tr><td align="center"><img src="docs/icons/enchanted_golden_apple.png" width="64"></td><td>나노 테크놀로지</td><td>적 처치 시 적의 최대 체력 절반만큼 흡수 체력을 중첩하여 얻습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/smithing_table_iso.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
 <tr><td align="center"><img src="docs/icons/rabbit_foot.png" width="64"></td><td>드롭킥</td><td>근접 공격 시 체력 15% 이하인 적을 즉사시킵니다. 즉사한 적에게 강한 넉백과 폭발이 발생하며, 자신의 체력을 최대 체력의 50% 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_block_iso.png" width="64"></td><td>무한한 골드</td><td>골드를 32767로 변경합니다. 단, 부활 시간이 5배 증가하며 주는 피해량이 10% 감소합니다.</td></tr>
