@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
+import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 
 import me.qmftm.asurajang.game.GameManager;
@@ -180,6 +181,18 @@ public class AugmentationEffectListener implements Listener {
         AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
         for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
             effect.onToggleFlight(player, event);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onToggleSneak(PlayerToggleSneakEvent event) {
+        if (!Asurajang.getInstance().getGameManager().isRunning()) return;
+
+        Player player = event.getPlayer();
+        if (SealManager.isSealed(player.getUniqueId())) return;
+        AugmentationManager mgr = Asurajang.getInstance().getAugmentationManager();
+        for (AugmentationEffect effect : new ArrayList<>(mgr.getActiveEffects(player.getUniqueId()).values())) {
+            effect.onToggleSneak(player, event);
         }
     }
 

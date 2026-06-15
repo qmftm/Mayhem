@@ -58,6 +58,8 @@ import me.qmftm.asurajang.augmentation.effect.WaitingEffect;
 import me.qmftm.asurajang.augmentation.effect.CorrosionEffect;
 import me.qmftm.asurajang.augmentation.effect.DragonEffect;
 import me.qmftm.asurajang.augmentation.effect.DragonSlayerEffect;
+import me.qmftm.asurajang.augmentation.effect.BlackHoleEffect;
+import me.qmftm.asurajang.augmentation.effect.ManeuverGearEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -126,6 +128,8 @@ public class AugmentationRegistry {
         REGISTRY.put("Corrosion",         CorrosionEffect::new);
         REGISTRY.put("Dragon",            DragonEffect::new);
         REGISTRY.put("DragonSlayer",      DragonSlayerEffect::new);
+        REGISTRY.put("BlackHole",         BlackHoleEffect::new);
+        REGISTRY.put("ManeuverGear",      ManeuverGearEffect::new);
     }
 
     @Nullable

@@ -398,3 +398,22 @@ DragonSlayer:
   description:
     - "<dark_purple>드래곤</dark_purple> 증강을 가진 적에게"
     - "<dark_purple>2배</dark_purple>의 피해를 줍니다."
+
+BlackHole:
+  display-name: "블랙홀"
+  icon: CRYING_OBSIDIAN
+  color: dark_purple
+  description:
+    - "웅크리기 시 주변 <dark_purple>4칸</dark_purple>의 적에게"
+    - "<dark_purple>구속 4</dark_purple>를 부여하고"
+    - "<dark_purple>4초간</dark_purple> 지속 피해를 줍니다."
+    - "<dark_purple>쿨타임: 35초</dark_purple>"
+
+ManeuverGear:
+  display-name: "입체기동장치"
+  icon: FISHING_ROD
+  color: green
+  description:
+    - "원거리 공격이 적에게 명중하면"
+    - "<green>그 적의 위치</green>로 이동합니다."
+    - "<green>쿨타임: 25초</green>"

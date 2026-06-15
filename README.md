@@ -207,7 +207,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (46종)</summary>
+<summary>전체 증강 목록 (48종)</summary>
 
 <table>
 <thead>
@@ -242,6 +242,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/bedrock_iso.png" width="64"></td><td>불괴</td><td>아이템의 내구도가 소모될 때 75% 확률로 소모되지 않습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>불멸</td><td>사망 시 35%의 확률로 부활합니다. 부활 시 전체 체력의 절반인 상태로 부활하며 죽은 위치의 10칸 이내에 랜덤한 좌표에서 부활합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wind_charge.png" width="64"></td><td>붕뜨네</td><td>검 우클릭 시 바라보는 방향으로 돌풍구를 날립니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/crying_obsidian.png" width="64"></td><td>블랙홀</td><td>웅크리기 시 주변 4칸의 적에게 구속 4를 부여하고 4초간 지속 피해를 줍니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/soul_campfire.png" width="64"></td><td>신성한 불꽃</td><td>체력을 회복할 때마다 5칸 이내 가장 가까운 적을 불태웁니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/creeper_spawn_egg.png" width="64"></td><td>신체 폭탄</td><td>버리기 키를 누르면 체력 3칸을 소모하고 TNT를 던집니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>암살자</td><td>이동 속도가 60% 증가합니다. 피해를 받으면 6초간 비활성화됩니다.</td></tr>
@@ -249,6 +250,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/dragon_breath.png" width="64"></td><td>용린</td><td>4번째 공격마다 상대에게 불을 붙입니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/end_crystal.png" width="64"></td><td>원기옥</td><td>10초 동안 피해를 받지 않으면 다음 공격이 치명타가 됩니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_axe.png" width="64"></td><td>육중한 힘</td><td>공격력이 20% 증가합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/fishing_rod.png" width="64"></td><td>입체기동장치</td><td>원거리 공격이 적에게 명중하면 그 적의 위치로 이동합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/tnt_iso.png" width="64"></td><td>자폭</td><td>35초마다 머리 위에 TNT가 부착됩니다. 부착 시 5초 간 신속을 받은 뒤 폭발하며 반경 8칸 내 적에게 최대 체력의 20%로 고정 피해를 줍니다. 자신은 그 피해의 50%만 받습니다. 폭탄 보유 중 사망하면 즉시 폭발합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>저격 대결</td><td>12칸 이상 거리의 적을 공격 시 피해가 50% 증가합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>전 집중 호흡</td><td>부숴지지 않는 철 검을 지급합니다. 날카로움, 밀치기, 화염 부여, 휩쓸기 베기 중 각각 25% 확률로 무작위 레벨이 부여되며 적을 처치하거나 사망할 때마다 다시 부여됩니다.</td></tr>

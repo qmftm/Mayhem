@@ -194,3 +194,15 @@ Corrosion:
 
 DragonSlayer:
   damage-multiplier: 2.0
+
+BlackHole:
+  radius: 4.0
+  cooldown-ticks: 700
+  slowness-amplifier: 3
+  slowness-duration-ticks: 80
+  damage-total: 4.0
+  damage-ticks: 4
+  damage-interval-ticks: 20
+
+ManeuverGear:
+  cooldown-ticks: 500
