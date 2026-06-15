@@ -17,7 +17,6 @@ Dropkick:
   display-name: "드롭킥"
   icon: RABBIT_FOOT
   color: red
-  active: false
   description:
     - "근접 공격 시 체력 <red>15%</red> 이하인"
     - "적을 <red>즉사</red>시킵니다."
