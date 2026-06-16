@@ -274,7 +274,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>시너지 증강 목록 (4종)</summary>
+<summary>시너지 증강 목록 (5종)</summary>
 
 <table>
 <thead>
@@ -285,6 +285,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/trim_vex.png" width="64"></td><td>복수귀<br><sub>(동귀어진+불멸)</sub></td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/trim_wild.png" width="64"></td><td>광견병<br><sub>(옥견+매혹)</sub></td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/trim_eye.png" width="64"></td><td>넌 이미 죽어있다<br><sub>(암살자+점멸)</sub></td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
+<tr><td align="center"><img src="docs/icons/trim_dune.png" width="64"></td><td>탐욕<br><sub>(후원+무한한 골드+강도)</sub></td><td>적을 공격할 때마다 적이 가진 골드의 1%를 강탈합니다.</td></tr>
 </tbody>
 </table>
 

@@ -247,3 +247,6 @@ Donation:
 Robber:
   steal-chance: 0.5
   steal-amount: 5
+
+Greed:
+  steal-ratio: 0.01

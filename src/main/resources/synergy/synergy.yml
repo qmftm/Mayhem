@@ -45,6 +45,18 @@ Rabies:
     - "<dark_red>1초</dark_red>의 매혹 효과를 줍니다."
     - "(자신 쿨타임은 그대로, 옥견은 쿨타임 없음)"
 
+Greed:
+  components:
+    - Donation
+    - InfiniteGold
+    - Robber
+  display-name: "탐욕"
+  icon: DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: gold
+  description:
+    - "적을 공격할 때마다"
+    - "적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
+
 YouAreAlreadyDead:
   components:
     - Assassin
