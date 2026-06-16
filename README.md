@@ -276,13 +276,13 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 
 <table>
 <thead>
-<tr><th width="17%"></th><th width="20%">이름</th><th width="25%">필요 증강</th><th width="38%">효과</th></tr>
+<tr><th width="17%"></th><th width="30%">이름</th><th width="53%">효과</th></tr>
 </thead>
 <tbody>
-<tr><td align="center"><img src="docs/icons/crossbow.png" width="64"></td><td>맹추</td><td>추격자 + 사냥 본능</td><td>같은 적을 연속 공격할 때마다 피해가 7%씩 증가합니다 (최대 70%). 처치 후 8초간 추가 피해 50%.</td></tr>
-<tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>복수귀</td><td>동귀어진 + 불멸</td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>광견병</td><td>옥견 + 매혹</td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>넌 이미 죽어있다</td><td>암살자 + 점멸</td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
+<tr><td align="center"><img src="docs/icons/crossbow.png" width="64"></td><td>맹추<br><sub>(추격자+사냥 본능)</sub></td><td>같은 적을 연속 공격할 때마다 피해가 7%씩 증가합니다 (최대 70%). 처치 후 8초간 추가 피해 50%.</td></tr>
+<tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>복수귀<br><sub>(동귀어진+불멸)</sub></td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>광견병<br><sub>(옥견+매혹)</sub></td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>넌 이미 죽어있다<br><sub>(암살자+점멸)</sub></td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
 </tbody>
 </table>
 
