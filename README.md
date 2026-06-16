@@ -166,7 +166,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </thead>
 <tbody>
 <tr><td align="center"><img src="docs/icons/bow.png" width="64"></td><td>활</td><td>100 G</td></tr>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>쇠뇌</td><td>250 G</td></tr>
+<tr><td align="center"><img src="docs/icons/crossbow.png" width="64"></td><td>쇠뇌</td><td>250 G</td></tr>
 <tr><td align="center"><img src="docs/icons/arrow.png" width="64"></td><td>화살 8개</td><td>40 G</td></tr>
 </tbody>
 </table>
@@ -279,10 +279,10 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><th width="17%"></th><th width="30%">이름</th><th width="53%">효과</th></tr>
 </thead>
 <tbody>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>맹추<br><sub>(추격자+사냥 본능)</sub></td><td>같은 적을 연속 공격할 때마다 피해가 7%씩 증가합니다 (최대 70%). 처치 후 8초간 추가 피해 50%.</td></tr>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>복수귀<br><sub>(동귀어진+불멸)</sub></td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>광견병<br><sub>(옥견+매혹)</sub></td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>넌 이미 죽어있다<br><sub>(암살자+점멸)</sub></td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
+<tr><td align="center"><img src="docs/icons/trim_spire.png" width="64"></td><td>맹추<br><sub>(추격자+사냥 본능)</sub></td><td>같은 적을 연속 공격할 때마다 피해가 7%씩 증가합니다 (최대 70%). 처치 후 8초간 추가 피해 50%.</td></tr>
+<tr><td align="center"><img src="docs/icons/trim_vex.png" width="64"></td><td>복수귀<br><sub>(동귀어진+불멸)</sub></td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/trim_wild.png" width="64"></td><td>광견병<br><sub>(옥견+매혹)</sub></td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/trim_eye.png" width="64"></td><td>넌 이미 죽어있다<br><sub>(암살자+점멸)</sub></td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
 </tbody>
 </table>
 
@@ -298,7 +298,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tbody>
 <tr><td align="center"><img src="docs/icons/sculk.png" width="64"></td><td>그림자 군주</td><td>적을 처치하면 그 위치에 자신을 돕는 영혼을 소환합니다 (최대 5명, 동일 대상에게서 중복 추출 불가). 영혼은 적의 능력치를 그대로 가지며 사망 시 부활하지 않습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/enchanted_golden_apple.png" width="64"></td><td>나노 테크놀로지</td><td>적 처치 시 적의 최대 체력 35%만큼 흡수 체력을 중첩하여 얻습니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/smithing_template.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
+<tr><td align="center"><img src="docs/icons/smithing_table_iso.png" width="64"></td><td>능력치 더하기 더하기 더하기</td><td>능력치 모루 4개를 획득합니다!</td></tr>
 <tr><td align="center"><img src="docs/icons/dragon_head.png" width="64"></td><td>드래곤</td><td>드래곤의 머리를 지급합니다. 왼손에 들고 있으면 힘 II, 저항 I, 신속 I, 재생 II, 생명력 강화 II 효과를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/rabbit_foot.png" width="64"></td><td>드롭킥</td><td>근접 공격 시 체력 15% 이하인 적을 즉사시킵니다. 즉사한 적에게 강한 넉백과 폭발이 발생하며, 자신의 체력을 최대 체력의 50% 회복합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/gold_block_iso.png" width="64"></td><td>무한한 골드</td><td>골드를 32767로 변경합니다. 단, 부활 시간이 5배 증가하며 주는 피해량이 10% 감소합니다.</td></tr>
