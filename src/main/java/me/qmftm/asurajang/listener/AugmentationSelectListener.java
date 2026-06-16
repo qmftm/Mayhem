@@ -22,8 +22,12 @@ public class AugmentationSelectListener implements Listener {
 
     @EventHandler
     public void onListClick(InventoryClickEvent event) {
-        if (!(event.getInventory().getHolder() instanceof AugmentationListGUI)) return;
+        if (!(event.getInventory().getHolder() instanceof AugmentationListGUI gui)) return;
         event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player)) return;
+        int slot = event.getRawSlot();
+        if (slot == AugmentationListGUI.SLOT_NEXT) gui.nextPage();
+        else if (slot == AugmentationListGUI.SLOT_PREV) gui.prevPage();
     }
 
     @EventHandler
