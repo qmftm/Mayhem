@@ -18,9 +18,7 @@ FiercePursuer:
   icon: SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_red
   description:
-    - "추격자와 사냥 본능이 합쳐졌습니다."
-    - "같은 적 연속 공격 시 피해 <dark_red>7%</dark_red>씩 증가 (최대 <dark_red>70%</dark_red>),"
-    - "처치 후 <dark_red>8초</dark_red>간 추가 피해 <dark_red>50%</dark_red>."
+    - "플레이어 공격 시 피해량이 <dark_red>20%</dark_red> 증가합니다."
 
 VengefulGhost:
   components:
@@ -46,16 +44,24 @@ Rabies:
     - "(자신 쿨타임은 그대로, 옥견은 쿨타임 없음)"
 
 Greed:
-  components:
-    - Donation
-    - InfiniteGold
-    - Robber
-  display-name: "탐욕"
   icon: DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: gold
-  description:
-    - "적을 공격할 때마다"
-    - "적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
+  tiers:
+    GreedT1:
+      components:
+        - Donation
+        - Robber
+      display-name: "탐욕 I"
+      description:
+        - "공격할 때마다 <gold>10 골드</gold>를 강탈합니다."
+    GreedT2:
+      components:
+        - Donation
+        - InfiniteGold
+        - Robber
+      display-name: "탐욕 II"
+      description:
+        - "공격할 때마다 적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
 
 YouAreAlreadyDead:
   components:

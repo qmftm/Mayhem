@@ -72,6 +72,7 @@ import me.qmftm.asurajang.augmentation.effect.YouAreAlreadyDeadEffect;
 import me.qmftm.asurajang.augmentation.effect.DonationEffect;
 import me.qmftm.asurajang.augmentation.effect.RobberEffect;
 import me.qmftm.asurajang.augmentation.effect.GreedEffect;
+import me.qmftm.asurajang.augmentation.effect.GreedT1Effect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -149,12 +150,13 @@ public class AugmentationRegistry {
         REGISTRY.put("HuntingInstinct",   HuntingInstinctEffect::new);
         REGISTRY.put("TimeTraveler",      TimeTravelerEffect::new);
         REGISTRY.put("TimeLord",          TimeLordEffect::new);
-        REGISTRY.put("Greed",             GreedEffect::new);
         // 시너지 효과
         REGISTRY.put("FiercePursuer",       FiercePursuerEffect::new);
         REGISTRY.put("VengefulGhost",       VengefulGhostEffect::new);
         REGISTRY.put("Rabies",              RabiesEffect::new);
         REGISTRY.put("YouAreAlreadyDead",   YouAreAlreadyDeadEffect::new);
+        REGISTRY.put("GreedT1",             GreedT1Effect::new);
+        REGISTRY.put("GreedT2",             GreedEffect::new);
     }
 
     @Nullable

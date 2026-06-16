@@ -98,6 +98,7 @@ public class AugmentationManager {
     }
 
     public void deactivateFor(Player player) {
+        Asurajang.getInstance().getSynergyManager().clearPlayer(player.getUniqueId());
         Map<String, AugmentationEffect> effects = playerEffects.remove(player.getUniqueId());
         if (effects == null) return;
         effects.values().forEach(effect -> effect.onDeactivate(player));

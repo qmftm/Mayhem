@@ -219,27 +219,19 @@ TimeTraveler:
   cooldown-reduction: 0.15
 
 FiercePursuer:
-  damage-per-stack: 0.07
-  max-stacks: 10
-  kill-bonus-duration-ticks: 160
-  kill-bonus-multiplier: 1.5
+  bonus-multiplier: 0.20
 
 VengefulGhost: {}
 
 Rabies:
-  cooldown-ticks: 500
-  charm-duration-ticks: 60
   wolf-charm-duration-ticks: 20
   slow-amount: 0.5
-  respawn-delay-ticks: 1200
 
 YouAreAlreadyDead:
   cooldown-ticks: 60
   range: 7.0
   slow-amount: 0.4
   slow-duration-ticks: 60
-  speed-bonus: 0.6
-  disable-duration-ticks: 120
 
 Donation:
   gold-amount: 450
@@ -248,5 +240,8 @@ Robber:
   steal-chance: 0.5
   steal-amount: 5
 
-Greed:
+GreedT1:
+  steal-amount: 10
+
+GreedT2:
   steal-ratio: 0.01

@@ -14,11 +14,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -27,45 +22,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class YouAreAlreadyDeadEffect implements AugmentationEffect, Listener {
+public class YouAreAlreadyDeadEffect implements AugmentationEffect {
 
-    private static final NamespacedKey SPEED_KEY =
-        new NamespacedKey(Asurajang.getInstance(), "yaard_speed");
     private static final NamespacedKey SLOW_KEY =
         new NamespacedKey(Asurajang.getInstance(), "yaard_slow");
     private static final Map<UUID, BukkitTask> slowTasks = new HashMap<>();
 
     private Player owner;
-    private BukkitTask reEnableTask;
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
 
     @Override
     public void onActivate(Player player) {
         this.owner = player;
-        Asurajang.getInstance().getServer().getPluginManager()
-            .registerEvents(this, Asurajang.getInstance());
-        addSpeedModifier(player);
     }
 
     @Override
     public void onDeactivate(Player player) {
-        HandlerList.unregisterAll(this);
-        if (reEnableTask != null) { reEnableTask.cancel(); reEnableTask = null; }
         if (cooldownNotifyTask != null) { cooldownNotifyTask.cancel(); cooldownNotifyTask = null; }
-        removeSpeedModifier(player);
         owner = null;
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player) || !player.equals(owner)) return;
-        removeSpeedModifier(player);
-        if (reEnableTask != null) reEnableTask.cancel();
-        long disableDuration = AugmentSettings.getLong("YouAreAlreadyDead", "disable-duration-ticks", 120L);
-        reEnableTask = Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), () -> {
-            if (player.isOnline()) addSpeedModifier(player);
-        }, disableDuration);
     }
 
     @Override
@@ -88,7 +63,6 @@ public class YouAreAlreadyDeadEffect implements AugmentationEffect, Listener {
         event.setCancelled(true);
         lastUsed = now;
 
-        // 1 block behind target (opposite of their forward direction)
         double yawRad = Math.toRadians(target.getLocation().getYaw());
         Vector forward = new Vector(-Math.sin(yawRad), 0, Math.cos(yawRad));
         org.bukkit.Location behindLoc = target.getLocation().clone().subtract(forward);
@@ -162,23 +136,6 @@ public class YouAreAlreadyDeadEffect implements AugmentationEffect, Listener {
         if (attr == null) return;
         attr.getModifiers().stream()
             .filter(m -> m.getKey().equals(SLOW_KEY))
-            .findFirst()
-            .ifPresent(attr::removeModifier);
-    }
-
-    private void addSpeedModifier(Player player) {
-        removeSpeedModifier(player);
-        AttributeInstance attr = player.getAttribute(Attribute.MOVEMENT_SPEED);
-        if (attr == null) return;
-        double bonus = AugmentSettings.getDouble("YouAreAlreadyDead", "speed-bonus", 0.6);
-        attr.addModifier(new AttributeModifier(SPEED_KEY, bonus, AttributeModifier.Operation.ADD_SCALAR));
-    }
-
-    private void removeSpeedModifier(Player player) {
-        AttributeInstance attr = player.getAttribute(Attribute.MOVEMENT_SPEED);
-        if (attr == null) return;
-        attr.getModifiers().stream()
-            .filter(m -> m.getKey().equals(SPEED_KEY))
             .findFirst()
             .ifPresent(attr::removeModifier);
     }

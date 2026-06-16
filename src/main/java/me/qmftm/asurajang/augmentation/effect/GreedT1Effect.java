@@ -8,7 +8,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class GreedEffect implements AugmentationEffect {
+public class GreedT1Effect implements AugmentationEffect {
 
     @Override public void onActivate(Player player) {}
     @Override public void onDeactivate(Player player) {}
@@ -18,14 +18,14 @@ public class GreedEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target)) return;
 
         GameScoreboardManager scoreboard = Asurajang.getInstance().getScoreboardManager();
+        int amount = AugmentSettings.getInt("GreedT1", "steal-amount", 10);
         int targetGold = scoreboard.getGold(target);
-        double ratio = AugmentSettings.getDouble("GreedT2", "steal-ratio", 0.01);
-        int steal = (int)(targetGold * ratio);
-        if (steal < 1) return;
+        int actual = Math.min(amount, targetGold);
+        if (actual <= 0) return;
 
-        scoreboard.addGold(target, -steal);
-        scoreboard.addGold(attacker, steal);
+        scoreboard.addGold(target, -actual);
+        scoreboard.addGold(attacker, actual);
 
-        attacker.sendActionBar(Component.text("+" + steal + " 골드!", NamedTextColor.GOLD));
+        attacker.sendActionBar(Component.text("+" + actual + " 골드!", NamedTextColor.GOLD));
     }
 }
