@@ -155,5 +155,5 @@ Mace:
   icon: MACE
   color: dark_red
   description:
-    - "<dark_red>밀도 V</dark_red>, <dark_red>공략 IV</dark_red>가"
-    - "부여된 철퇴를 지급합니다."
+    - "<dark_red>밀도 II</dark_red>가 부여된"
+    - "철퇴를 지급합니다."

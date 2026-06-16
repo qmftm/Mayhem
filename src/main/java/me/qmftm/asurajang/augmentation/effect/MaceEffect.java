@@ -24,8 +24,7 @@ public class MaceEffect implements AugmentationEffect {
             .decoration(TextDecoration.ITALIC, false));
         meta.setUnbreakable(true);
 
-        addEnchant(meta, "density", 5);
-        addEnchant(meta, "breach", 4);
+        addEnchant(meta, "density", 2);
 
         mace.setItemMeta(meta);
         player.getInventory().addItem(mace);
