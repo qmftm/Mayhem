@@ -208,7 +208,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 ---
 
 <details>
-<summary>전체 증강 목록 (51종)</summary>
+<summary>전체 증강 목록 (53종)</summary>
 
 <table>
 <thead>
@@ -217,6 +217,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tbody>
 <tr><td align="center"><img src="docs/icons/feather.png" width="64"></td><td>가벼운 착지</td><td>낙하 피해를 받지 않습니다. 더블 점프가 가능합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/nether_star.png" width="64"></td><td>강강약약</td><td>가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_sword.png" width="64"></td><td>강도</td><td>적을 공격할 때마다 50% 확률로 적에게서 5 골드를 빼앗습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wither_rose.png" width="64"></td><td>강약약강</td><td>상대에게 (50 - 상대의 체력 비율)% 만큼의 추가 피해를 줍니다</td></tr>
 <tr><td align="center"><img src="docs/icons/iron_ingot.png" width="64"></td><td>강인한 정신</td><td>체력이 50% 이하일 때 받는 피해가 15% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/pufferfish.png" width="64"></td><td>개복치</td><td>최대체력이 절반 감소합니다. 적을 때릴 때마다 10% 확률로 능력을 이전 시킵니다.</td></tr>
@@ -266,6 +267,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/compass.png" width="64"></td><td>타임 트래버</td><td>모든 증강의 쿨타임이 15% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/cooked_porkchop.png" width="64"></td><td>포화지방산</td><td>배고픔이 소모되지 않습니다. 음식을 먹을 때마다 즉시 치유 효과를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/obsidian_iso.png" width="64"></td><td>흑섬</td><td>공격마다 3% 확률로 2.5배의 피해를 줍니다. 발동 후 3번의 공격 동안 확률이 증가합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/gold_ingot.png" width="64"></td><td>후원</td><td>증강 획득 시 즉시 450 골드를 획득합니다.</td></tr>
 </tbody>
 </table>
 

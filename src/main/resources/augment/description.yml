@@ -444,3 +444,20 @@ TimeTraveler:
   description:
     - "모든 증강의 쿨타임이"
     - "<aqua>15%</aqua> 감소합니다."
+
+Donation:
+  display-name: "후원"
+  icon: GOLD_INGOT
+  color: gold
+  description:
+    - "증강 획득 시 즉시"
+    - "<gold>450 골드</gold>를 획득합니다."
+
+Robber:
+  display-name: "강도"
+  icon: IRON_SWORD
+  color: dark_gray
+  description:
+    - "적을 공격할 때마다"
+    - "<dark_gray>50%</dark_gray> 확률로"
+    - "적에게서 <gold>5 골드</gold>를 빼앗습니다."

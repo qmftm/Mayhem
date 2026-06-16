@@ -69,6 +69,8 @@ import me.qmftm.asurajang.augmentation.effect.FiercePursuerEffect;
 import me.qmftm.asurajang.augmentation.effect.VengefulGhostEffect;
 import me.qmftm.asurajang.augmentation.effect.RabiesEffect;
 import me.qmftm.asurajang.augmentation.effect.YouAreAlreadyDeadEffect;
+import me.qmftm.asurajang.augmentation.effect.DonationEffect;
+import me.qmftm.asurajang.augmentation.effect.RobberEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -129,6 +131,8 @@ public class AugmentationRegistry {
         REGISTRY.put("ResilientSpirit",   ResilientSpiritEffect::new);
         REGISTRY.put("SpiritBomb",        SpiritBombEffect::new);
         REGISTRY.put("Bonus",             BonusEffect::new);
+        REGISTRY.put("Donation",          DonationEffect::new);
+        REGISTRY.put("Robber",            RobberEffect::new);
         REGISTRY.put("MutualDestruction", MutualDestructionEffect::new);
         REGISTRY.put("Bodyguard",         BodyguardEffect::new);
         REGISTRY.put("Blink",             BlinkEffect::new);
