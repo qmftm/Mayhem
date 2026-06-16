@@ -19,7 +19,7 @@ public class CorrosionEffect implements AugmentationEffect {
 
         long cooldownTicks = AugmentSettings.getLong("Corrosion", "cooldown-ticks", 200L);
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player))) return;
 
         int duration = AugmentSettings.getInt("Corrosion", "wither-duration", 100);
         int amplifier = AugmentSettings.getInt("Corrosion", "wither-amplifier", 0);

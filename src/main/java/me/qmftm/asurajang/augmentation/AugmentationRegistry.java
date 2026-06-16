@@ -61,6 +61,11 @@ import me.qmftm.asurajang.augmentation.effect.DragonSlayerEffect;
 import me.qmftm.asurajang.augmentation.effect.BlackHoleEffect;
 import me.qmftm.asurajang.augmentation.effect.ManeuverGearEffect;
 import me.qmftm.asurajang.augmentation.effect.ShadowLordEffect;
+import me.qmftm.asurajang.augmentation.effect.PursuerEffect;
+import me.qmftm.asurajang.augmentation.effect.HuntingInstinctEffect;
+import me.qmftm.asurajang.augmentation.effect.TimeTravelerEffect;
+import me.qmftm.asurajang.augmentation.effect.TimeLordEffect;
+import me.qmftm.asurajang.augmentation.effect.MaceEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -132,6 +137,11 @@ public class AugmentationRegistry {
         REGISTRY.put("BlackHole",         BlackHoleEffect::new);
         REGISTRY.put("ManeuverGear",      ManeuverGearEffect::new);
         REGISTRY.put("ShadowLord",        ShadowLordEffect::new);
+        REGISTRY.put("Pursuer",           PursuerEffect::new);
+        REGISTRY.put("HuntingInstinct",   HuntingInstinctEffect::new);
+        REGISTRY.put("TimeTraveler",      TimeTravelerEffect::new);
+        REGISTRY.put("TimeLord",          TimeLordEffect::new);
+        REGISTRY.put("Mace",              MaceEffect::new);
     }
 
     @Nullable

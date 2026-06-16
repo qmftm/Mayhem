@@ -30,9 +30,10 @@ public class ManeuverGearEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target) || target.equals(shooter)) return;
 
         long cooldownTicks = AugmentSettings.getLong("ManeuverGear", "cooldown-ticks", 500L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(shooter));
 
         long now = shooter.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < effectiveCooldown) return;
         lastUsed = now;
 
         Location origin = shooter.getLocation().clone();
@@ -59,6 +60,6 @@ public class ManeuverGearEffect implements AugmentationEffect {
                 shooter.playSound(shooter.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

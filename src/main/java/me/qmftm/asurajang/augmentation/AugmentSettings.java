@@ -1,9 +1,12 @@
 package me.qmftm.asurajang.augmentation;
 
 import me.qmftm.asurajang.Asurajang;
+import me.qmftm.asurajang.augmentation.effect.AugmentationEffect;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * augment/config.yml 또는 prism/config.yml의 <증강 ID>.<key> 경로에서
@@ -53,5 +56,18 @@ public final class AugmentSettings {
         ConfigurationSection section = section(augmentationId);
         if (section == null || !section.isSet(key)) return def;
         return section.getLongList(key);
+    }
+
+    public static double getCooldownMultiplier(Player player) {
+        Map<String, AugmentationEffect> active = Asurajang.getInstance()
+            .getAugmentationManager().getActiveEffects(player.getUniqueId());
+        double multiplier = 1.0;
+        if (active.containsKey("TimeTraveler")) {
+            multiplier *= (1.0 - getDouble("TimeTraveler", "cooldown-reduction", 0.15));
+        }
+        if (active.containsKey("TimeLord")) {
+            multiplier *= (1.0 - getDouble("TimeLord", "cooldown-reduction", 0.40));
+        }
+        return multiplier;
     }
 }

@@ -34,8 +34,9 @@ public class BlackHoleEffect implements AugmentationEffect {
         if (!event.isSneaking()) return;
 
         long cooldownTicks = AugmentSettings.getLong("BlackHole", "cooldown-ticks", 700L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < effectiveCooldown) return;
         lastUsed = now;
 
         double radius = AugmentSettings.getDouble("BlackHole", "radius", 4.0);
@@ -75,7 +76,7 @@ public class BlackHoleEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 
     private void applyFallDamage(Player target, double perTick, int ticks, long interval) {

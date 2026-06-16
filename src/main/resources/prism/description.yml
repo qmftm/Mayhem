@@ -141,3 +141,19 @@ Dragon:
     - "<light_purple>힘 II</light_purple>, <light_purple>저항 I</light_purple>,"
     - "<light_purple>신속 I</light_purple>, <light_purple>재생 II</light_purple>,"
     - "<light_purple>생명력 강화 II</light_purple> 효과를 받습니다."
+
+TimeLord:
+  display-name: "시간의 지배자"
+  icon: RECOVERY_COMPASS
+  color: gold
+  description:
+    - "모든 증강의 쿨타임이"
+    - "<gold>40%</gold> 감소합니다."
+
+Mace:
+  display-name: "철퇴"
+  icon: MACE
+  color: dark_red
+  description:
+    - "<dark_red>밀도 V</dark_red>, <dark_red>공략 IV</dark_red>가"
+    - "부여된 철퇴를 지급합니다."

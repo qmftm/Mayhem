@@ -417,3 +417,30 @@ ManeuverGear:
     - "원거리 공격이 적에게 명중하면"
     - "<green>그 적의 위치</green>로 이동합니다."
     - "<green>쿨타임: 25초</green>"
+
+Pursuer:
+  display-name: "추격자"
+  icon: ARROW
+  color: red
+  description:
+    - "같은 적을 공격할 때마다"
+    - "피해량이 <red>5%</red> 증가합니다."
+    - "최대 <red>50%</red>까지 증가하며"
+    - "다른 적을 공격하면 초기화됩니다."
+
+HuntingInstinct:
+  display-name: "사냥 본능"
+  icon: TRIDENT
+  color: dark_red
+  description:
+    - "최근 <dark_red>8초</dark_red> 내에"
+    - "처치가 발생한 적에게"
+    - "<dark_red>30%</dark_red>의 추가 피해를 줍니다."
+
+TimeTraveler:
+  display-name: "타임 트래버"
+  icon: COMPASS
+  color: aqua
+  description:
+    - "모든 증강의 쿨타임이"
+    - "<aqua>15%</aqua> 감소합니다."

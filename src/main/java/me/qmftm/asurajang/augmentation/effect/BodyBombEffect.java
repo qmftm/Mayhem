@@ -33,11 +33,12 @@ public class BodyBombEffect implements AugmentationEffect {
         event.setCancelled(true);
 
         long cooldownTicks = AugmentSettings.getLong("BodyBomb", "cooldown-ticks", 1000L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
         double healthCost = AugmentSettings.getDouble("BodyBomb", "health-cost", 6.0);
 
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) {
-            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
+        if (now - lastUsed < effectiveCooldown) {
+            long remain = (effectiveCooldown - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[신체 폭탄] ", NamedTextColor.DARK_GREEN)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -79,7 +80,7 @@ public class BodyBombEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 
     private void explode(Player player, TNTPrimed tnt) {

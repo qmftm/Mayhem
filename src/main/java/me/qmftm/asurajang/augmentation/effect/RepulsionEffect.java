@@ -42,7 +42,7 @@ public class RepulsionEffect implements AugmentationEffect, Listener {
 
         long cooldownTicks = AugmentSettings.getLong("Repulsion", "cooldown-ticks", 100L);
         long now = player.getWorld().getGameTime();
-        if (now - lastTrigger < cooldownTicks) return;
+        if (now - lastTrigger < (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player))) return;
         lastTrigger = now;
 
         repel(player);

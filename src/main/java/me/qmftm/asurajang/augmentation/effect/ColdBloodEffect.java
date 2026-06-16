@@ -30,10 +30,11 @@ public class ColdBloodEffect implements AugmentationEffect {
         if (target.equals(player)) return;
 
         long cooldownTicks = AugmentSettings.getLong("ColdBlood", "cooldown-ticks", 900L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
 
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) {
-            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
+        if (now - lastUsed < effectiveCooldown) {
+            long remain = (effectiveCooldown - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[냉혈한] ", NamedTextColor.AQUA)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -62,6 +63,6 @@ public class ColdBloodEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

@@ -43,9 +43,10 @@ public class CharmEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target) || target.equals(attacker)) return;
 
         long cooldownTicks = AugmentSettings.getLong("Charm", "cooldown-ticks", 500L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(attacker));
 
         long now = attacker.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < effectiveCooldown) return;
         lastUsed = now;
 
         long durationTicks = AugmentSettings.getLong("Charm", "duration-ticks", 60L);
@@ -69,7 +70,7 @@ public class CharmEffect implements AugmentationEffect {
                 attacker.playSound(attacker.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 
     static void applyCharm(Player target, Player attacker, long durationTicks, double slowAmount) {

@@ -206,3 +206,14 @@ BlackHole:
 
 ManeuverGear:
   cooldown-ticks: 500
+
+Pursuer:
+  damage-per-stack: 0.05
+  max-stacks: 10
+
+HuntingInstinct:
+  kill-bonus-duration-ticks: 160
+  kill-bonus-multiplier: 1.3
+
+TimeTraveler:
+  cooldown-reduction: 0.15

@@ -30,13 +30,14 @@ public class DivineLoveEffect implements AugmentationEffect {
         if (!player.getInventory().getItemInMainHand().getType().name().endsWith("_SWORD")) return;
 
         long cooldownTicks = AugmentSettings.getLong("DivineLove", "cooldown-ticks", 500L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
         int fireballCount = AugmentSettings.getInt("DivineLove", "fireball-count", 3);
         long spacingTicks = AugmentSettings.getLong("DivineLove", "spacing-ticks", 7L);
         double velocityMultiplier = AugmentSettings.getDouble("DivineLove", "velocity-multiplier", 1.5);
 
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) {
-            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
+        if (now - lastUsed < effectiveCooldown) {
+            long remain = (effectiveCooldown - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[주님의 사랑] ", NamedTextColor.GOLD)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -71,6 +72,6 @@ public class DivineLoveEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

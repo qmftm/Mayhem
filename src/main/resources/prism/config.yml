@@ -38,6 +38,9 @@ ShadowLord:
 
 Dragon:
   offhand-check-interval-ticks: 5
+
+TimeLord:
+  cooldown-reduction: 0.40
   strength-amplifier: 1
   resistance-amplifier: 0
   speed-amplifier: 0

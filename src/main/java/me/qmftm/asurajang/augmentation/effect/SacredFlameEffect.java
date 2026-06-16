@@ -18,7 +18,7 @@ public class SacredFlameEffect implements AugmentationEffect {
     public void onRegainHealth(Player player, EntityRegainHealthEvent event) {
         long cooldownTicks = AugmentSettings.getLong("SacredFlame", "cooldown-ticks", 60L);
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player))) return;
 
         double range = AugmentSettings.getDouble("SacredFlame", "range", 5.0);
         GameManager gm = Asurajang.getInstance().getGameManager();
