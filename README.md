@@ -196,6 +196,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 - 전투 중 무작위로 얻을 수 있는 여러 종의 특수 능력
 - `/mayhem list`로 전체 목록, `/mayhem status`로 내가 가진 증강을 확인
 - 프리즘 증강은 더 희귀한 별도 풀에서 등장하며, `/mayhem list prism`으로 확인 가능
+- 특정 증강 조합을 모두 보유하면 시너지 증강이 자동으로 발동됩니다. 기존 증강을 소모하고 강화된 새 증강을 지급합니다
 
 ---
 
@@ -265,6 +266,23 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/compass.png" width="64"></td><td>타임 트래버</td><td>모든 증강의 쿨타임이 15% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/cooked_porkchop.png" width="64"></td><td>포화지방산</td><td>배고픔이 소모되지 않습니다. 음식을 먹을 때마다 즉시 치유 효과를 받습니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/obsidian_iso.png" width="64"></td><td>흑섬</td><td>공격마다 3% 확률로 2.5배의 피해를 줍니다. 발동 후 3번의 공격 동안 확률이 증가합니다.</td></tr>
+</tbody>
+</table>
+
+</details>
+
+<details>
+<summary>시너지 증강 목록 (4종)</summary>
+
+<table>
+<thead>
+<tr><th width="17%"></th><th width="20%">이름</th><th width="25%">필요 증강</th><th width="38%">효과</th></tr>
+</thead>
+<tbody>
+<tr><td align="center"><img src="docs/icons/crossbow.png" width="64"></td><td>맹추</td><td>추격자 + 사냥 본능</td><td>같은 적을 연속 공격할 때마다 피해가 7%씩 증가합니다 (최대 70%). 처치 후 8초간 추가 피해 50%.</td></tr>
+<tr><td align="center"><img src="docs/icons/totem_of_undying.png" width="64"></td><td>복수귀</td><td>동귀어진 + 불멸</td><td>불멸 부활에 성공하면 자신을 죽인 적에게 마지막으로 받은 피해를 고정 피해로 줍니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/bone.png" width="64"></td><td>광견병</td><td>옥견 + 매혹</td><td>자신뿐 아니라 옥견의 공격에도 1초의 매혹 효과를 줍니다. 자신의 쿨타임은 그대로이며 옥견은 쿨타임이 없습니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/phantom_membrane.png" width="64"></td><td>넌 이미 죽어있다</td><td>암살자 + 점멸</td><td>양손 맞바꾸기로 7칸 이내 가장 가까운 적의 뒤로 이동한 뒤, 이동 속도를 3초간 40% 느리게 합니다. (쿨타임 3초)</td></tr>
 </tbody>
 </table>
 
