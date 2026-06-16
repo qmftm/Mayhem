@@ -65,6 +65,7 @@ import me.qmftm.asurajang.augmentation.effect.PursuerEffect;
 import me.qmftm.asurajang.augmentation.effect.HuntingInstinctEffect;
 import me.qmftm.asurajang.augmentation.effect.TimeTravelerEffect;
 import me.qmftm.asurajang.augmentation.effect.TimeLordEffect;
+import me.qmftm.asurajang.augmentation.effect.FiercePursuerEffect;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -140,6 +141,8 @@ public class AugmentationRegistry {
         REGISTRY.put("HuntingInstinct",   HuntingInstinctEffect::new);
         REGISTRY.put("TimeTraveler",      TimeTravelerEffect::new);
         REGISTRY.put("TimeLord",          TimeLordEffect::new);
+        // 시너지 효과
+        REGISTRY.put("FiercePursuer",     FiercePursuerEffect::new);
     }
 
     @Nullable

@@ -217,3 +217,9 @@ HuntingInstinct:
 
 TimeTraveler:
   cooldown-reduction: 0.15
+
+FiercePursuer:
+  damage-per-stack: 0.07
+  max-stacks: 10
+  kill-bonus-duration-ticks: 160
+  kill-bonus-multiplier: 1.5

@@ -4,6 +4,7 @@ import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
 import me.qmftm.asurajang.augmentation.PrismChoice;
 import me.qmftm.asurajang.augmentation.PrismItemManager;
+import me.qmftm.asurajang.augmentation.SynergyManager;
 import me.qmftm.asurajang.command.AsurajangCommand;
 import me.qmftm.asurajang.config.YamlResource;
 import me.qmftm.asurajang.game.AiBotManager;
@@ -49,9 +50,11 @@ public final class Asurajang extends JavaPlugin {
     private YamlResource prismDescriptionConfig;
     private YamlResource prismSettingConfig;
     private YamlResource prismItemConfig;
+    private YamlResource synergyConfig;
     private YamlResource gamemodeConfig;
     private AugmentationManager augmentationManager;
     private PrismItemManager prismItemManager;
+    private SynergyManager synergyManager;
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
     private AiBotManager aiBotManager;
@@ -78,10 +81,13 @@ public final class Asurajang extends JavaPlugin {
         prismDescriptionConfig   = new YamlResource(this, "prism/description.yml");
         prismSettingConfig       = new YamlResource(this, "prism/config.yml");
         prismItemConfig          = new YamlResource(this, "prism/item.yml");
+        synergyConfig            = new YamlResource(this, "synergy/synergy.yml");
         gamemodeConfig           = new YamlResource(this, "gamemode.yml");
 
         augmentationManager = new AugmentationManager(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager    = new PrismItemManager(prismItemConfig.get());
+        synergyManager      = new SynergyManager(synergyConfig.get());
+        synergyManager.getSynergyAugmentations().forEach(augmentationManager::addSynergy);
         battlefieldManager  = new BattlefieldManager();
         gameManager         = new GameManager();
         aiBotManager        = new AiBotManager();
@@ -174,6 +180,8 @@ public final class Asurajang extends JavaPlugin {
         gamemodeConfig.reload();
         augmentationManager.reload(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager.reload(prismItemConfig.get());
+        synergyConfig.reload();
+        synergyManager.reload(synergyConfig.get(), augmentationManager);
     }
 
     public FileConfiguration getAugmentDescriptionConfig() {
@@ -226,5 +234,9 @@ public final class Asurajang extends JavaPlugin {
 
     public PrismAugItemListener getPrismAugItemListener() {
         return prismAugItemListener;
+    }
+
+    public SynergyManager getSynergyManager() {
+        return synergyManager;
     }
 }
