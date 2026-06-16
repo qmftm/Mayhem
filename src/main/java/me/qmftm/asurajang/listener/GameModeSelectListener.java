@@ -31,6 +31,11 @@ public class GameModeSelectListener implements Listener {
             };
             gm.setBaseMode(next);
             event.getInventory().setItem(GameModeSelectGUI.BASE_MODE_SLOT, GameModeSelectGUI.buildBaseModeItem(next));
+            // 기지 모드는 팀전 전용 → 개인전 버튼 숨김/복원
+            event.getInventory().setItem(GameModeSelectGUI.SOLO_SLOT,
+                next == GameManager.BaseMode.BASE
+                    ? GameModeSelectGUI.backgroundItem()
+                    : GameModeSelectGUI.buildSoloItem());
             event.getInventory().setItem(GameModeSelectGUI.GUARDIAN_ATTACK_SLOT,
                 next == GameManager.BaseMode.BASE
                     ? GameModeSelectGUI.buildGuardianAttackItem(gm.isGuardianAttackEnabled())
@@ -56,6 +61,8 @@ public class GameModeSelectListener implements Listener {
         }
 
         if (slot != GameModeSelectGUI.TEAM_SLOT && slot != GameModeSelectGUI.SOLO_SLOT) return;
+        // 기지 모드에서는 개인전 버튼이 숨겨져 있으므로 클릭 무시
+        if (slot == GameModeSelectGUI.SOLO_SLOT && Asurajang.getInstance().getGameManager().getBaseMode() == GameManager.BaseMode.BASE) return;
 
         player.closeInventory();
 

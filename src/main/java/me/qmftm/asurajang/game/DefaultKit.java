@@ -28,6 +28,12 @@ public class DefaultKit {
         PlayerInventory inv = player.getInventory();
         inv.clear();
 
+        GameManager gm = Asurajang.getInstance().getGameManager();
+        if (gm.getBaseMode() == GameManager.BaseMode.WILD && WildKitManager.applyIfExists(player)) {
+            inv.setItem(8, buildMenuButton(player));
+            return;
+        }
+
         Color armorColor = teamArmorColor(player);
         inv.setHelmet(dyedLeather(Material.LEATHER_HELMET, armorColor));
         inv.setChestplate(dyedLeather(Material.LEATHER_CHESTPLATE, armorColor));
