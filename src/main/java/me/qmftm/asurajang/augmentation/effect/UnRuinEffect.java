@@ -85,5 +85,11 @@ public class UnRuinEffect implements AugmentationEffect, Listener {
         player.playSound(target, Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
         player.sendMessage(Component.text("[불멸] ", NamedTextColor.GOLD)
             .append(Component.text("죽음의 문턱에서 부활했습니다!", NamedTextColor.YELLOW)));
+
+        for (AugmentationEffect effect :
+                new java.util.ArrayList<>(Asurajang.getInstance().getAugmentationManager()
+                        .getActiveEffects(player.getUniqueId()).values())) {
+            effect.onOwnerRevive(player);
+        }
     }
 }

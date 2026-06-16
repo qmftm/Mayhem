@@ -21,3 +21,37 @@ FiercePursuer:
     - "추격자와 사냥 본능이 합쳐졌습니다."
     - "같은 적 연속 공격 시 피해 <dark_red>7%</dark_red>씩 증가 (최대 <dark_red>70%</dark_red>),"
     - "처치 후 <dark_red>8초</dark_red>간 추가 피해 <dark_red>50%</dark_red>."
+
+VengefulGhost:
+  components:
+    - MutualDestruction
+    - UnRuin
+  display-name: "복수귀"
+  icon: WITHER_SKELETON_SKULL
+  color: dark_purple
+  description:
+    - "부활에 성공하면 자신을 죽인 적에게"
+    - "마지막으로 받은 피해를 <dark_purple>고정 피해</dark_purple>로 줍니다."
+
+Rabies:
+  components:
+    - DivineDogs
+    - Charm
+  display-name: "광견병"
+  icon: BONE
+  color: dark_red
+  description:
+    - "자신 뿐 아니라 옥견의 공격에도"
+    - "<dark_red>1초</dark_red>의 매혹 효과를 줍니다."
+    - "(자신 쿨타임은 그대로, 옥견은 쿨타임 없음)"
+
+YouAreAlreadyDead:
+  components:
+    - Assassin
+    - Blink
+  display-name: "넌 이미 죽어있다"
+  icon: ENDER_EYE
+  color: dark_gray
+  description:
+    - "양손 맞바꾸기로 <dark_gray>7칸</dark_gray> 이내의 가장 가까운 적의"
+    - "뒤로 이동한 뒤 이동 속도를 <dark_gray>40%</dark_gray> 느리게 합니다."
