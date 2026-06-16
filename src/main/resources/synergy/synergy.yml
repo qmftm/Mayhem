@@ -15,7 +15,7 @@ FiercePursuer:
     - Pursuer
     - HuntingInstinct
   display-name: "맹추"
-  icon: CROSSBOW
+  icon: SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_red
   description:
     - "추격자와 사냥 본능이 합쳐졌습니다."
@@ -27,7 +27,7 @@ VengefulGhost:
     - MutualDestruction
     - UnRuin
   display-name: "복수귀"
-  icon: WITHER_SKELETON_SKULL
+  icon: SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_purple
   description:
     - "부활에 성공하면 자신을 죽인 적에게"
@@ -38,7 +38,7 @@ Rabies:
     - DivineDogs
     - Charm
   display-name: "광견병"
-  icon: BONE
+  icon: SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_red
   description:
     - "자신 뿐 아니라 옥견의 공격에도"
@@ -50,7 +50,7 @@ YouAreAlreadyDead:
     - Assassin
     - Blink
   display-name: "넌 이미 죽어있다"
-  icon: ENDER_EYE
+  icon: SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_gray
   description:
     - "양손 맞바꾸기로 <dark_gray>7칸</dark_gray> 이내의 가장 가까운 적의"
