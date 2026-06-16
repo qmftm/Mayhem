@@ -318,7 +318,7 @@ Vampire:
 
 ResilientSpirit:
   display-name: "강인한 정신"
-  icon: IRON_BLOCK
+  icon: IRON_INGOT
   color: white
   description:
     - "체력이 <white>50%</white> 이하일 때"

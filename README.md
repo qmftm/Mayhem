@@ -217,7 +217,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/feather.png" width="64"></td><td>가벼운 착지</td><td>낙하 피해를 받지 않습니다. 더블 점프가 가능합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/nether_star.png" width="64"></td><td>강강약약</td><td>가장 킬 수가 높은 적에게 1.5배의 피해를 줍니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/wither_rose.png" width="64"></td><td>강약약강</td><td>상대에게 (50 - 상대의 체력 비율)% 만큼의 추가 피해를 줍니다</td></tr>
-<tr><td align="center"><img src="docs/icons/iron_block_iso.png" width="64"></td><td>강인한 정신</td><td>체력이 50% 이하일 때 받는 피해가 15% 감소합니다.</td></tr>
+<tr><td align="center"><img src="docs/icons/iron_ingot.png" width="64"></td><td>강인한 정신</td><td>체력이 50% 이하일 때 받는 피해가 15% 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/pufferfish.png" width="64"></td><td>개복치</td><td>최대체력이 절반 감소합니다. 적을 때릴 때마다 10% 확률로 능력을 이전 시킵니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/nautilus_shell.png" width="64"></td><td>경정권</td><td>공격 시 80%의 피해를 준 뒤 0.5초 후 40%의 피해와 2배의 넉백을 추가로 줍니다. (쿨타임 15초)</td></tr>
 <tr><td align="center"><img src="docs/icons/string.png" width="64"></td><td>그랩</td><td>원거리 공격이 적에게 명중하면 적을 자신의 위치로 끌어옵니다. (쿨타임 35초)</td></tr>
