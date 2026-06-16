@@ -19,7 +19,7 @@ public class GreedEffect implements AugmentationEffect {
 
         GameScoreboardManager scoreboard = Asurajang.getInstance().getScoreboardManager();
         int targetGold = scoreboard.getGold(target);
-        double ratio = AugmentSettings.getDouble("GreedT2", "steal-ratio", 0.01);
+        double ratio = AugmentSettings.getDouble("Greed", "steal-ratio", 0.01);
         int steal = (int)(targetGold * ratio);
         if (steal < 1) return;
 

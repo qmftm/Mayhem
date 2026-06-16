@@ -44,24 +44,15 @@ Rabies:
     - "(자신 쿨타임은 그대로, 옥견은 쿨타임 없음)"
 
 Greed:
+  components:
+    - Donation
+    - InfiniteGold
+    - Robber
+  display-name: "탐욕"
   icon: DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: gold
-  tiers:
-    GreedT1:
-      components:
-        - Donation
-        - Robber
-      display-name: "탐욕 I"
-      description:
-        - "공격할 때마다 <gold>10 골드</gold>를 강탈합니다."
-    GreedT2:
-      components:
-        - Donation
-        - InfiniteGold
-        - Robber
-      display-name: "탐욕 II"
-      description:
-        - "공격할 때마다 적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
+  description:
+    - "공격할 때마다 적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
 
 YouAreAlreadyDead:
   components:

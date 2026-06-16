@@ -240,8 +240,5 @@ Robber:
   steal-chance: 0.5
   steal-amount: 5
 
-GreedT1:
-  steal-amount: 10
-
-GreedT2:
+Greed:
   steal-ratio: 0.01
