@@ -38,6 +38,19 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("list")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                return true;
+            }
+            if (args.length >= 2 && args[1].equalsIgnoreCase("prism")) {
+                plugin.openPrismAugmentationList(player);
+            } else {
+                plugin.openAugmentationList(player);
+            }
+            return true;
+        }
+
         if (!sender.hasPermission("asurajang.admin")) {
             sender.sendMessage(Component.text("권한이 없습니다.", NamedTextColor.RED));
             return true;
@@ -64,15 +77,6 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
                 plugin.reloadConfig();
                 plugin.reloadExtraConfigs();
                 sender.sendMessage(Component.text("[Asurajang] 설정을 리로드했습니다.", NamedTextColor.GREEN));
-            }
-            case "list" -> {
-                if (!(sender instanceof Player player)) {
-                    sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
-                } else if (args.length >= 2 && args[1].equalsIgnoreCase("prism")) {
-                    plugin.openPrismAugmentationList(player);
-                } else {
-                    plugin.openAugmentationList(player);
-                }
             }
             case "debug" -> handleDebug(sender, args, plugin);
             default -> sendUsage(sender);
