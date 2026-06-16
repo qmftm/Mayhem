@@ -271,7 +271,7 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 </details>
 
 <details>
-<summary>프리즘 증강 목록 (14종)</summary>
+<summary>프리즘 증강 목록 (13종)</summary>
 
 <table>
 <thead>
@@ -289,7 +289,6 @@ Paper 기반 마인크래프트 PvP 미니게임 플러그인입니다.
 <tr><td align="center"><img src="docs/icons/glass_iso.png" width="64"></td><td>유리 대포</td><td>최대 체력이 30% 감소합니다. 공격 시 15%의 추가 고정 피해를 입힙니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/clock.png" width="64"></td><td>이지스</td><td>아이템을 우클릭하면 4초간 모든 피해를 무시하는 무적 상태가 됩니다. (쿨타임 80초)</td></tr>
 <tr><td align="center"><img src="docs/icons/golden_sword.png" width="64"></td><td>처형인의 검</td><td>내구도가 1이지만 높은 날카로움 수치를 가진 금 검을 즉시 지급합니다. 검이 깨지면 299초 후 자동으로 다시 지급됩니다.</td></tr>
-<tr><td align="center"><img src="docs/icons/mace.png" width="64"></td><td>철퇴</td><td>밀도 II가 부여된 철퇴를 지급합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/jukebox_iso.png" width="64"></td><td>탭 댄서</td><td>기본 공격 시 무한히 중첩되는 0.02의 이동 속도를 얻습니다. 마지막 중첩을 쌓은 후 5초 이내로 중첩을 쌓지 않으면 중첩이 빠르게 감소합니다.</td></tr>
 <tr><td align="center"><img src="docs/icons/honeycomb.png" width="64"></td><td>필연적인 존재</td><td>적 처치 시 50% 확률로 6종의 스톤 중 하나를 획득합니다. 모두 모으면 건틀릿 우클릭으로 1회 한정 모든 적을 즉사시키고 스톤이 소멸합니다 (스톤은 왼손에 들고 있을 때 발동).</td></tr>
 </tbody>
