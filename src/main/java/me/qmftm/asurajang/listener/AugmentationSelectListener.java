@@ -90,7 +90,7 @@ public class AugmentationSelectListener implements Listener {
                 player.sendMessage(Component.text("아이템을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
             }
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
-            Asurajang.getInstance().getLevelUpManager().openNextGui(player);
+            Asurajang.getInstance().getLevelUpManager().openNextAfterPrism(player);
             return;
         }
 
@@ -126,7 +126,7 @@ public class AugmentationSelectListener implements Listener {
             Asurajang.getInstance().getAugmentationManager().activateFor(player, aug.getId());
             player.sendMessage(Component.text("[" + aug.getDisplayName() + "] 증강을 획득했습니다.", NamedTextColor.LIGHT_PURPLE));
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.7f, 1.5f);
-            Asurajang.getInstance().getLevelUpManager().openNextGui(player);
+            Asurajang.getInstance().getLevelUpManager().openNextAfterAug(player);
             return;
         }
 
