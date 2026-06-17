@@ -40,7 +40,17 @@ public class YouAreAlreadyDeadEffect implements AugmentationEffect {
     @Override
     public void onDeactivate(Player player) {
         if (cooldownNotifyTask != null) { cooldownNotifyTask.cancel(); cooldownNotifyTask = null; }
+        clearAllSlows();
         owner = null;
+    }
+
+    private static void clearAllSlows() {
+        for (var entry : slowTasks.entrySet()) {
+            entry.getValue().cancel();
+            Player target = Bukkit.getPlayer(entry.getKey());
+            if (target != null) removeSlowModifier(target);
+        }
+        slowTasks.clear();
     }
 
     @Override

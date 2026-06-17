@@ -46,9 +46,24 @@ public class TabDancerEffect implements AugmentationEffect {
 
     @Override
     public void onOwnerDeath(Player player) {
-        cancelTimers();
+        cancelAll();
         stacks = 0;
         removeSpeedModifier(player);
+    }
+
+    @Override
+    public void onOwnerRespawn(Player player) {
+        if (displayTask == null) {
+            displayTask = Asurajang.getInstance().getServer().getScheduler().runTaskTimer(
+                Asurajang.getInstance(), () -> {
+                    if (!player.isOnline()) return;
+                    if (stacks > 0) {
+                        player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
+                            .decoration(TextDecoration.ITALIC, false));
+                        ActionBarTracker.markUsed(player);
+                    }
+                }, 0L, 2L);
+        }
     }
 
     @Override

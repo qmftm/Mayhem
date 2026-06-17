@@ -82,7 +82,7 @@ public class ShadowLordEffect implements AugmentationEffect, Listener {
     @EventHandler(ignoreCancelled = true)
     public void onTarget(EntityTargetLivingEntityEvent event) {
         if (!souls.contains(event.getEntity().getUniqueId())) return;
-        if (event.getTarget() == null) return;
+        if (event.getTarget() == null || owner == null) return;
 
         if (!(event.getTarget() instanceof Player target) || target.getGameMode() == GameMode.SPECTATOR) {
             event.setCancelled(true);

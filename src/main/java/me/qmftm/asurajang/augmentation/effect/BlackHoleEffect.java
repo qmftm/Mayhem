@@ -17,16 +17,22 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlackHoleEffect implements AugmentationEffect {
 
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
+    private final List<BukkitTask> damageTasks = new ArrayList<>();
 
     @Override public void onActivate(Player player) {}
 
     @Override
     public void onDeactivate(Player player) {
         if (cooldownNotifyTask != null) { cooldownNotifyTask.cancel(); cooldownNotifyTask = null; }
+        damageTasks.forEach(BukkitTask::cancel);
+        damageTasks.clear();
     }
 
     @Override
@@ -86,11 +92,16 @@ public class BlackHoleEffect implements AugmentationEffect {
         holder[0] = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
             if (!target.isOnline() || target.isDead()) {
                 holder[0].cancel();
+                damageTasks.remove(holder[0]);
                 return;
             }
             target.setHealth(Math.max(0.0, target.getHealth() - perTick));
             remaining[0]--;
-            if (remaining[0] <= 0) holder[0].cancel();
+            if (remaining[0] <= 0) {
+                holder[0].cancel();
+                damageTasks.remove(holder[0]);
+            }
         }, interval, interval);
+        damageTasks.add(holder[0]);
     }
 }

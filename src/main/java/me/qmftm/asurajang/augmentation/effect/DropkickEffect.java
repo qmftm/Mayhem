@@ -31,7 +31,9 @@ public class DropkickEffect implements AugmentationEffect {
     public void onDamageAsAttacker(Player attacker, EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player victim)) return;
 
-        double maxHp = victim.getAttribute(Attribute.MAX_HEALTH).getValue();
+        var maxHealthAttr = victim.getAttribute(Attribute.MAX_HEALTH);
+        if (maxHealthAttr == null) return;
+        double maxHp = maxHealthAttr.getValue();
         if (victim.getHealth() / maxHp > 0.15) return;
 
         // 즉사
@@ -52,11 +54,13 @@ public class DropkickEffect implements AugmentationEffect {
         ActionBarTracker.markUsed(attacker);
 
         // 공격자 체력 50% 회복 + 하트 파티클 (1틱 후)
-        double healAmount = attacker.getAttribute(Attribute.MAX_HEALTH).getValue() * 0.5;
+        var attackerMaxHealth = attacker.getAttribute(Attribute.MAX_HEALTH);
+        if (attackerMaxHealth == null) return;
+        double healAmount = attackerMaxHealth.getValue() * 0.5;
         Asurajang.getInstance().getServer().getScheduler().runTask(Asurajang.getInstance(), () -> {
-            double newHp = Math.min(
-                attacker.getAttribute(Attribute.MAX_HEALTH).getValue(),
-                attacker.getHealth() + healAmount);
+            var atkMaxHp = attacker.getAttribute(Attribute.MAX_HEALTH);
+            if (atkMaxHp == null) return;
+            double newHp = Math.min(atkMaxHp.getValue(), attacker.getHealth() + healAmount);
             attacker.setHealth(newHp);
 
             ThreadLocalRandom rng = ThreadLocalRandom.current();

@@ -20,12 +20,14 @@ public class BodyBombEffect implements AugmentationEffect {
 
     private long lastUsed = 0;
     private BukkitTask cooldownNotifyTask;
+    private BukkitTask explodeTask;
 
     @Override public void onActivate(Player player) {}
 
     @Override
     public void onDeactivate(Player player) {
         if (cooldownNotifyTask != null) { cooldownNotifyTask.cancel(); cooldownNotifyTask = null; }
+        if (explodeTask != null) { explodeTask.cancel(); explodeTask = null; }
     }
 
     @Override
@@ -69,7 +71,10 @@ public class BodyBombEffect implements AugmentationEffect {
         ActionBarTracker.markUsed(player);
 
         Asurajang plugin = Asurajang.getInstance();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> explode(player, tnt), fuseTicks);
+        explodeTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            explodeTask = null;
+            explode(player, tnt);
+        }, fuseTicks);
 
         if (cooldownNotifyTask != null) cooldownNotifyTask.cancel();
         cooldownNotifyTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
