@@ -18,6 +18,10 @@ public final class NexusSettings {
         return Asurajang.getInstance().getGamemodeConfig().getConfigurationSection("guardian");
     }
 
+    public static int gameDurationSeconds() {
+        return Asurajang.getInstance().getGamemodeConfig().getInt("duration-seconds", 1800);
+    }
+
     public static double wildBorderSize() {
         ConfigurationSection section = Asurajang.getInstance().getGamemodeConfig().getConfigurationSection("wild");
         return section == null ? 500.0 : section.getDouble("border-size", 500.0);

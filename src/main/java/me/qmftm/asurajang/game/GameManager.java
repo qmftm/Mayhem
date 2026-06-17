@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION = 1800; // 30분
+    private static final int DEFAULT_DURATION = 1800;
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -32,7 +32,7 @@ public class GameManager {
     private GameMode gameMode = GameMode.SOLO;
     private final Map<UUID, PlayerInventorySnapshot> snapshots = new HashMap<>();
     private final Map<UUID, Integer> teams = new HashMap<>();
-    private int remainingSeconds = GAME_DURATION;
+    private int remainingSeconds = DEFAULT_DURATION;
     private BukkitTask timerTask;
     private BukkitTask timeTask;
     private boolean firstBloodClaimed = false;
@@ -204,7 +204,7 @@ public class GameManager {
             if (state != State.STARTING) return;
 
             state = State.RUNNING;
-            remainingSeconds = (baseMode == BaseMode.WILD) ? NexusSettings.wildDurationSeconds() : GAME_DURATION;
+            remainingSeconds = (baseMode == BaseMode.WILD) ? NexusSettings.wildDurationSeconds() : NexusSettings.gameDurationSeconds();
             firstBloodClaimed = false;
 
             BattlefieldManager bm = plugin.getBattlefieldManager();
