@@ -2,6 +2,7 @@ package me.qmftm.asurajang;
 
 import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.BlacklistManager;
 import me.qmftm.asurajang.augmentation.PrismChoice;
 import me.qmftm.asurajang.augmentation.PrismItemManager;
 import me.qmftm.asurajang.augmentation.SynergyManager;
@@ -61,6 +62,7 @@ public final class Asurajang extends JavaPlugin {
     private GameScoreboardManager scoreboardManager;
     private MaxHealthManager maxHealthManager;
     private LevelUpManager levelUpManager;
+    private BlacklistManager blacklistManager;
     private StatAnvilListener statAnvilListener;
     private PrismAugItemListener prismAugItemListener;
 
@@ -93,6 +95,7 @@ public final class Asurajang extends JavaPlugin {
         aiBotManager        = new AiBotManager();
         scoreboardManager   = new GameScoreboardManager();
         maxHealthManager    = new MaxHealthManager();
+        blacklistManager    = new BlacklistManager();
         levelUpManager      = new LevelUpManager();
         statAnvilListener   = new StatAnvilListener();
         prismAugItemListener = new PrismAugItemListener();
@@ -127,6 +130,7 @@ public final class Asurajang extends JavaPlugin {
         Set<String> owned = augmentationManager.getActiveEffects(player.getUniqueId()).keySet();
         List<Augmentation> available = augmentationManager.getAll().stream()
             .filter(aug -> !owned.contains(aug.getId()))
+            .filter(aug -> !blacklistManager.isBlacklisted(aug.getId()))
             .toList();
         new AugmentationSelectGUI(available).open(player);
     }
@@ -137,6 +141,7 @@ public final class Asurajang extends JavaPlugin {
 
         augmentationManager.getPrismAll().stream()
             .filter(aug -> aug.isActive() || !owned.contains(aug.getId()))
+            .filter(aug -> !blacklistManager.isBlacklisted(aug.getId()))
             .map(PrismChoice.Aug::new)
             .forEach(pool::add);
 
@@ -238,5 +243,9 @@ public final class Asurajang extends JavaPlugin {
 
     public SynergyManager getSynergyManager() {
         return synergyManager;
+    }
+
+    public BlacklistManager getBlacklistManager() {
+        return blacklistManager;
     }
 }

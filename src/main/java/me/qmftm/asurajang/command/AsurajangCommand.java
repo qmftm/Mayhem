@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.effect.BlackFlashEffect;
 import me.qmftm.asurajang.game.GameManager;
 import me.qmftm.asurajang.game.WildKitManager;
+import me.qmftm.asurajang.gui.BlacklistGUI;
 import me.qmftm.asurajang.gui.DebugAugGiveGUI;
 import me.qmftm.asurajang.gui.GameModeSelectGUI;
 import net.kyori.adventure.text.Component;
@@ -52,6 +53,19 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("blacklist")) {
+            if (!(sender instanceof Player player)) {
+                sender.sendMessage(Component.text("플레이어만 사용할 수 있습니다.", NamedTextColor.RED));
+                return true;
+            }
+            if (!sender.hasPermission("asurajang.admin")) {
+                sender.sendMessage(Component.text("권한이 없습니다.", NamedTextColor.RED));
+                return true;
+            }
+            new BlacklistGUI().open(player);
+            return true;
+        }
+
         if (!sender.hasPermission("asurajang.admin")) {
             sender.sendMessage(Component.text("권한이 없습니다.", NamedTextColor.RED));
             return true;
@@ -77,6 +91,7 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
             case "reload" -> {
                 plugin.reloadConfig();
                 plugin.reloadExtraConfigs();
+                plugin.getBlacklistManager().reload();
                 sender.sendMessage(Component.text("[Asurajang] 설정을 리로드했습니다.", NamedTextColor.GREEN));
             }
             case "wild_kit" -> {
@@ -153,7 +168,7 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
     }
 
     private void sendUsage(CommandSender sender) {
-        sender.sendMessage(Component.text("사용법: /mayhem <start|stop|reload|wild_kit|list [prism]|status|debug>", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("사용법: /mayhem <start|stop|reload|wild_kit|list [prism]|status|blacklist|debug>", NamedTextColor.YELLOW));
     }
 
     private void sendDebugUsage(CommandSender sender) {
@@ -162,7 +177,7 @@ public class AsurajangCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (args.length == 1) return List.of("start", "stop", "reload", "wild_kit", "list", "status", "debug");
+        if (args.length == 1) return List.of("start", "stop", "reload", "wild_kit", "list", "status", "blacklist", "debug");
         if (args.length == 2 && args[0].equalsIgnoreCase("list")) return List.of("prism");
         if (args.length == 2 && args[0].equalsIgnoreCase("debug")) return List.of("aug_1", "aug_2", "aug_3", "proc", "statvil", "add_ai");
         if (args.length == 3 && args[0].equalsIgnoreCase("debug") && args[1].equalsIgnoreCase("add_ai")) return List.of("red", "blue");

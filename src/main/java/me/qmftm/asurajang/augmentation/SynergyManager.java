@@ -136,7 +136,9 @@ public class SynergyManager {
 
             // 가장 높은 조건을 만족하는 단계 탐색
             TierDef qualifying = null;
+            BlacklistManager bl = me.qmftm.asurajang.Asurajang.getInstance().getBlacklistManager();
             for (TierDef tier : group.tiers()) {
+                if (bl != null && bl.isBlacklisted(tier.effectId())) continue;
                 if (active.containsAll(tier.components())) {
                     qualifying = tier;
                     break;

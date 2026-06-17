@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.PrismChoice;
 import me.qmftm.asurajang.gui.AugmentationListGUI;
 import me.qmftm.asurajang.gui.AugmentationSelectGUI;
+import me.qmftm.asurajang.gui.BlacklistGUI;
 import me.qmftm.asurajang.gui.DebugAugGiveGUI;
 import me.qmftm.asurajang.gui.PrismAugmentationSelectGUI;
 import net.kyori.adventure.text.Component;
@@ -138,6 +139,33 @@ public class AugmentationSelectListener implements Listener {
             player.sendMessage(Component.text("리롤 횟수를 모두 사용했습니다.", NamedTextColor.RED));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.5f);
         } else {
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.3f);
+        }
+    }
+
+    @EventHandler
+    public void onBlacklistClick(InventoryClickEvent event) {
+        if (!(event.getInventory().getHolder() instanceof BlacklistGUI gui)) return;
+        event.setCancelled(true);
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+
+        int slot = event.getRawSlot();
+        if (slot == BlacklistGUI.SLOT_PREV) { gui.prevPage(); return; }
+        if (slot == BlacklistGUI.SLOT_NEXT) { gui.nextPage(); return; }
+
+        Augmentation aug = gui.getAugAt(slot);
+        if (aug == null) return;
+
+        boolean added = Asurajang.getInstance().getBlacklistManager().toggle(aug.getId());
+        gui.render();
+
+        if (added) {
+            player.sendMessage(Component.text("[" + aug.getDisplayName() + "] ", NamedTextColor.RED)
+                .append(Component.text("블랙리스트에 추가되었습니다.", NamedTextColor.GRAY)));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 0.5f);
+        } else {
+            player.sendMessage(Component.text("[" + aug.getDisplayName() + "] ", NamedTextColor.GREEN)
+                .append(Component.text("블랙리스트에서 해제되었습니다.", NamedTextColor.GRAY)));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.3f);
         }
     }
