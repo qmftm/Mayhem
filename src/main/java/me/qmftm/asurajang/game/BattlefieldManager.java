@@ -293,6 +293,35 @@ public class BattlefieldManager implements Listener {
         };
     }
 
+    private static boolean isDangerous(Material mat) {
+        return switch (mat) {
+            case LAVA, FIRE, SOUL_FIRE, CACTUS, SWEET_BERRY_BUSH,
+                 MAGMA_BLOCK, CAMPFIRE, SOUL_CAMPFIRE, WITHER_ROSE,
+                 POINTED_DRIPSTONE, POWDER_SNOW -> true;
+            default -> false;
+        };
+    }
+
+    private static final int SAFE_SPAWN_ATTEMPTS = 10;
+
+    @Nullable
+    private Location findSafeSpawn(World world, int cx, int cz, int halfRange) {
+        ThreadLocalRandom rng = ThreadLocalRandom.current();
+        Location best = null;
+        for (int i = 0; i < SAFE_SPAWN_ATTEMPTS; i++) {
+            int x = cx + rng.nextInt(-halfRange, halfRange + 1);
+            int z = cz + rng.nextInt(-halfRange, halfRange + 1);
+            if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
+            int y = findGroundY(world, x, z);
+            Material ground = world.getBlockAt(x, y, z).getType();
+            if (!isDangerous(ground) && !isWet(ground)) {
+                return new Location(world, x + 0.5, y + 1, z + 0.5);
+            }
+            if (best == null) best = new Location(world, x + 0.5, y + 1, z + 0.5);
+        }
+        return best;
+    }
+
     public static List<String> getAllBiomeNames() {
         List<String> names = new ArrayList<>();
         for (Biome b : BIOME_POOL) names.add(BIOME_NAMES.getOrDefault(b, b.name()));
@@ -359,24 +388,36 @@ public class BattlefieldManager implements Listener {
 
     // ── 랜덤 스폰 ────────────────────────────────────────────────────────────
 
+    private int currentSafeMargin() {
+        if (currentLocation == null) return (int) (BORDER_RADIUS - 10);
+        WorldBorder border = currentLocation.getWorld().getWorldBorder();
+        double currentSize = border.getSize();
+        return Math.max(5, (int) (currentSize / 2.0 - 10));
+    }
+
     @Nullable
     public Location getRandomSpawn() {
         if (currentLocation == null) return null;
         World world = currentLocation.getWorld();
-        ThreadLocalRandom rng = ThreadLocalRandom.current();
-        int margin = (int) (BORDER_RADIUS - 10);
-
-        int x = currentLocation.getBlockX() + rng.nextInt(-margin, margin + 1);
-        int z = currentLocation.getBlockZ() + rng.nextInt(-margin, margin + 1);
-
-        if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
-        int y = world.getHighestBlockYAt(x, z);
-        return new Location(world, x + 0.5, y + 1, z + 0.5);
+        int margin = currentSafeMargin();
+        return findSafeSpawn(world, currentLocation.getBlockX(), currentLocation.getBlockZ(), margin);
     }
 
     @Nullable
     public Location getTeamRandomSpawn(int teamIndex) {
-        return teamRandomSpawnCache.computeIfAbsent(teamIndex, k -> getRandomSpawn());
+        return teamRandomSpawnCache.computeIfAbsent(teamIndex, k -> getTeamHalfSpawn(k));
+    }
+
+    @Nullable
+    public Location getTeamHalfSpawn(int teamIndex) {
+        if (currentLocation == null) return null;
+        World world = currentLocation.getWorld();
+        int margin = currentSafeMargin();
+        int sign = (teamIndex == 0) ? -1 : 1;
+        int teamCx = currentLocation.getBlockX() + sign * (margin / 2);
+        int teamCz = currentLocation.getBlockZ() + sign * (margin / 2);
+        int halfRange = margin / 2;
+        return findSafeSpawn(world, teamCx, teamCz, halfRange);
     }
 
     public void startBorderShrink(int durationSeconds) {
@@ -402,16 +443,15 @@ public class BattlefieldManager implements Listener {
 
     private Location randomTeamCornerSpawn(int teamIndex) {
         World world = currentLocation.getWorld();
-        ThreadLocalRandom rng = ThreadLocalRandom.current();
         int offset = (int) (BORDER_RADIUS - 10);
         int sign = (teamIndex == 0) ? -1 : 1;
-
-        int x = currentLocation.getBlockX() + sign * offset + rng.nextInt(-5, 6);
-        int z = currentLocation.getBlockZ() + sign * offset + rng.nextInt(-5, 6);
-
-        if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
-        int y = world.getHighestBlockYAt(x, z);
-        return new Location(world, x + 0.5, y + 1, z + 0.5);
+        int cx = currentLocation.getBlockX() + sign * offset;
+        int cz = currentLocation.getBlockZ() + sign * offset;
+        Location safe = findSafeSpawn(world, cx, cz, 5);
+        if (safe != null) return safe;
+        if (!world.isChunkLoaded(cx >> 4, cz >> 4)) world.loadChunk(cx >> 4, cz >> 4);
+        int y = findGroundY(world, cx, cz);
+        return new Location(world, cx + 0.5, y + 1, cz + 0.5);
     }
 
     // 팀 코너에 3x1x3 콘크리트 기지를 깔고, 그 위 3블록 높이에 신호기를 띄운 뒤

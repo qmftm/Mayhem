@@ -391,6 +391,8 @@ public class PlayerDeathListener implements Listener {
                 Location spawn;
                 if (gm.getGameMode() == GameManager.GameMode.TEAM && gm.isBaseModeEnabled()) {
                     spawn = plugin.getBattlefieldManager().getTeamCornerSpawn(gm.getTeam(player.getUniqueId()), true);
+                } else if (gm.getGameMode() == GameManager.GameMode.TEAM) {
+                    spawn = plugin.getBattlefieldManager().getTeamHalfSpawn(gm.getTeam(player.getUniqueId()));
                 } else {
                     spawn = plugin.getBattlefieldManager().getRandomSpawn();
                 }
