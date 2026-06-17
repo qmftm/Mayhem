@@ -28,7 +28,7 @@ public class GamblerEffect implements AugmentationEffect {
             Asurajang.getInstance(), () -> {
                 if (!player.isOnline()) return;
 
-                int roll = ThreadLocalRandom.current().nextInt(1, 240);
+                int roll = ThreadLocalRandom.current().nextInt(1, 244);
 
                 if (roll == JACKPOT_NUMBER) {
                     AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
