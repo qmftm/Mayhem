@@ -38,8 +38,14 @@ public class GamblerEffect implements AugmentationEffect {
                         player.setHealth(newHealth);
                     }
                     player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1.0f, 1.2f);
-                    player.getWorld().spawnParticle(Particle.WAX_ON,
-                        player.getLocation().add(0, 1.5, 0), 10, 0.4, 0.4, 0.4, 0);
+                    org.bukkit.Location loc = player.getLocation();
+                    for (int i = 0; i < 6; i++) {
+                        player.getWorld().spawnParticle(Particle.NOTE,
+                            loc.getX() + Math.random() * 0.6 - 0.3,
+                            loc.getY() + 2,
+                            loc.getZ() + Math.random() * 0.6 - 0.3,
+                            0, 0, 0, 0, 6.0 / 24.0);
+                    }
                 }
 
                 if (!ActionBarTracker.isRecentlyUsed(player, DISPLAY_BLOCK_MILLIS)) {
