@@ -4,6 +4,7 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -52,5 +53,6 @@ public class NanoTechnologyEffect implements AugmentationEffect {
 
         player.getWorld().spawnParticle(Particle.END_ROD, player.getLocation().add(0, 1.2, 0),
             16, 0.4, 0.6, 0.4, 0.05);
+        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 0.6f, 1.8f);
     }
 }

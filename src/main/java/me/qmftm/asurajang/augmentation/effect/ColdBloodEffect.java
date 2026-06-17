@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -47,6 +48,8 @@ public class ColdBloodEffect implements AugmentationEffect {
 
         target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, slownessDuration, slownessAmplifier, false, true));
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, weaknessDuration, weaknessAmplifier, false, true));
+        target.getWorld().spawnParticle(Particle.SNOWFLAKE, target.getLocation().add(0, 1, 0),
+            15, 0.4, 0.5, 0.4, 0.02);
 
         player.sendActionBar(Component.text("냉혈한 발동!", NamedTextColor.AQUA));
         ActionBarTracker.markUsed(player);

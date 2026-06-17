@@ -4,6 +4,8 @@ import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.game.GameManager;
 import org.bukkit.GameMode;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 
@@ -41,6 +43,11 @@ public class SacredFlameEffect implements AugmentationEffect {
 
         int fireTicks = AugmentSettings.getInt("SacredFlame", "fire-ticks", 100);
         target.setFireTicks(Math.max(target.getFireTicks(), fireTicks));
+
+        target.getWorld().spawnParticle(Particle.FLAME, target.getLocation().add(0, 1, 0),
+            15, 0.3, 0.4, 0.3, 0.05);
+        target.playSound(target.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.6f, 1.4f);
+
         lastUsed = now;
     }
 }

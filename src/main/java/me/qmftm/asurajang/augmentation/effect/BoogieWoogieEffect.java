@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -69,6 +70,10 @@ public class BoogieWoogieEffect implements AugmentationEffect {
             newTargetLoc.setYaw(targetLoc.getYaw());
             newTargetLoc.setPitch(targetLoc.getPitch());
 
+            playerLoc.getWorld().spawnParticle(Particle.REVERSE_PORTAL, playerLoc.clone().add(0, 1, 0),
+                20, 0.3, 0.5, 0.3, 0.1);
+            targetLoc.getWorld().spawnParticle(Particle.REVERSE_PORTAL, targetLoc.clone().add(0, 1, 0),
+                20, 0.3, 0.5, 0.3, 0.1);
             player.teleport(newPlayerLoc);
             finalTarget.teleport(newTargetLoc);
 

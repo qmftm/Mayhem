@@ -1,6 +1,8 @@
 package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.augmentation.AugmentSettings;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -41,5 +43,13 @@ public class FiercePursuerEffect implements AugmentationEffect {
         }
 
         event.setDamage(event.getDamage() * (1.0 + stacks * damagePerStack));
+
+        if (stacks >= 10) {
+            target.getWorld().spawnParticle(Particle.CRIT, target.getLocation().add(0, 1, 0),
+                stacks / 2, 0.3, 0.3, 0.3, 0.1);
+        }
+        if (stacks >= 20) {
+            player.playSound(target.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.6f, 1.5f);
+        }
     }
 }
