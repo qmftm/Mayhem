@@ -55,7 +55,7 @@ public class YouAreAlreadyDeadEffect implements AugmentationEffect {
 
     @Override
     public void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {
-        long cooldownTicks = AugmentSettings.getLong("YouAreAlreadyDead", "cooldown-ticks", 60L);
+        long cooldownTicks = AugmentSettings.getLong("YouAreAlreadyDead", "cooldown-ticks", 500L);
         long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
         double range = AugmentSettings.getDouble("YouAreAlreadyDead", "range", 7.0);
 
