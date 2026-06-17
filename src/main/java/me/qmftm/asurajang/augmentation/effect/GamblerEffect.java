@@ -33,7 +33,7 @@ public class GamblerEffect implements AugmentationEffect {
                 if (roll == JACKPOT_NUMBER) {
                     AttributeInstance maxHealth = player.getAttribute(Attribute.MAX_HEALTH);
                     if (maxHealth != null) {
-                        double healRatio = AugmentSettings.getDouble("Gambler", "heal-ratio", 0.5);
+                        double healRatio = AugmentSettings.getDouble("Gambler", "heal-ratio", 1.0);
                         double newHealth = Math.min(maxHealth.getValue(), player.getHealth() + maxHealth.getValue() * healRatio);
                         player.setHealth(newHealth);
                     }
