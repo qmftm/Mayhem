@@ -30,9 +30,10 @@ public class GrabEffect implements AugmentationEffect {
         if (!(event.getEntity() instanceof Player target) || target.equals(shooter)) return;
 
         long cooldownTicks = AugmentSettings.getLong("Grab", "cooldown-ticks", 700L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(shooter));
 
         long now = shooter.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) return;
+        if (now - lastUsed < effectiveCooldown) return;
         lastUsed = now;
 
         Location origin = target.getLocation().clone();
@@ -59,6 +60,6 @@ public class GrabEffect implements AugmentationEffect {
                 shooter.playSound(shooter.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

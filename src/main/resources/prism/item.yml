@@ -44,3 +44,10 @@ KnockbackSword:
   enchantments:
     knockback: 2
     unbreaking: 3
+
+Mace:
+  material: MACE
+  name: "<dark_red>철퇴</dark_red>"
+  enchantments:
+    density: 2
+  unbreakable: true

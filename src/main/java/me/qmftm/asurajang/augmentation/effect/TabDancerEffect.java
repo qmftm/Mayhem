@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -45,9 +46,24 @@ public class TabDancerEffect implements AugmentationEffect {
 
     @Override
     public void onOwnerDeath(Player player) {
-        cancelTimers();
+        cancelAll();
         stacks = 0;
         removeSpeedModifier(player);
+    }
+
+    @Override
+    public void onOwnerRespawn(Player player) {
+        if (displayTask == null) {
+            displayTask = Asurajang.getInstance().getServer().getScheduler().runTaskTimer(
+                Asurajang.getInstance(), () -> {
+                    if (!player.isOnline()) return;
+                    if (stacks > 0) {
+                        player.sendActionBar(Component.text("탭 댄서: " + stacks, NamedTextColor.AQUA)
+                            .decoration(TextDecoration.ITALIC, false));
+                        ActionBarTracker.markUsed(player);
+                    }
+                }, 0L, 2L);
+        }
     }
 
     @Override
@@ -55,6 +71,10 @@ public class TabDancerEffect implements AugmentationEffect {
         stacks++;
         updateSpeed(player);
         resetIdleTimer(player);
+        if (stacks % 5 == 0) {
+            player.getWorld().spawnParticle(Particle.NOTE, player.getLocation().add(0, 2, 0),
+                3, 0.3, 0.2, 0.3, 0);
+        }
     }
 
     private void resetIdleTimer(Player player) {

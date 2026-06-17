@@ -5,6 +5,8 @@ import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.game.GameManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -42,10 +44,13 @@ public class RepulsionEffect implements AugmentationEffect, Listener {
 
         long cooldownTicks = AugmentSettings.getLong("Repulsion", "cooldown-ticks", 100L);
         long now = player.getWorld().getGameTime();
-        if (now - lastTrigger < cooldownTicks) return;
+        if (now - lastTrigger < (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player))) return;
         lastTrigger = now;
 
         repel(player);
+        player.getWorld().spawnParticle(Particle.EXPLOSION, player.getLocation().add(0, 0.5, 0),
+            5, 0.5, 0.3, 0.5, 0);
+        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.7f, 1.3f);
     }
 
     private void repel(Player player) {

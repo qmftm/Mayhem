@@ -70,6 +70,10 @@ public class PrismItemManager {
                 damageable.setDamage(Math.max(0, maxDur - remaining));
             }
 
+            if (entry.getBoolean("unbreakable", false)) {
+                meta.setUnbreakable(true);
+            }
+
             stack.setItemMeta(meta);
             items.add(new PrismChoice.Item(stack));
         }

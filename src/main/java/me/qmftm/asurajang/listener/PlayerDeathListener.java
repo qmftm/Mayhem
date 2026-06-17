@@ -178,8 +178,8 @@ public class PlayerDeathListener implements Listener {
             }
 
             // 어시스트가 있으면 킬러는 절반, 어시스터는 총량의 1/n
-            int killerGold   = assisters.isEmpty() ? reward : reward / 2;
-            int assisterGold = assisters.isEmpty() ? 0      : reward / assisters.size();
+            int killerGold   = applyGoldBonus(killer, assisters.isEmpty() ? reward : reward / 2);
+            int assisterGoldBase = assisters.isEmpty() ? 0 : reward / assisters.size();
 
             Asurajang plugin = Asurajang.getInstance();
             plugin.getScoreboardManager().addKill(killer);
@@ -214,6 +214,7 @@ public class PlayerDeathListener implements Listener {
 
             // 어시스터 처리
             for (Player assister : assisters) {
+                int assisterGold = applyGoldBonus(assister, assisterGoldBase);
                 plugin.getScoreboardManager().addAssist(assister);
                 plugin.getScoreboardManager().addGold(assister, assisterGold);
                 Bukkit.getPluginManager().callEvent(
@@ -304,6 +305,18 @@ public class PlayerDeathListener implements Listener {
             player.setGameMode(GameMode.SPECTATOR);
             if (deathLoc != null) player.teleport(deathLoc);
 
+            GameManager gm = Asurajang.getInstance().getGameManager();
+            if (gm.getBaseMode() == GameManager.BaseMode.WILD) {
+                player.showTitle(Title.title(
+                    Component.text("탈락!", NamedTextColor.RED),
+                    Component.text("관전 모드로 전환됩니다", NamedTextColor.GRAY),
+                    Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(2000), Duration.ofMillis(500))
+                ));
+                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, 0.5f, 1.5f);
+                gm.checkWildSurvivor();
+                return;
+            }
+
             startSpectatorTimer(player);
         }, 1L);
     }
@@ -318,6 +331,13 @@ public class PlayerDeathListener implements Listener {
             color = NamedTextColor.WHITE;
         }
         return Component.text(player.getName(), color);
+    }
+
+    private static int applyGoldBonus(Player player, int amount) {
+        if (!Asurajang.getInstance().getAugmentationManager().getActiveEffects(player.getUniqueId()).containsKey("Bonus")) {
+            return amount;
+        }
+        return (int) Math.round(amount * AugmentSettings.getDouble("Bonus", "gold-multiplier", 2.0));
     }
 
     private static int multiKillBonus(int count) {
@@ -383,6 +403,8 @@ public class PlayerDeathListener implements Listener {
                 Location spawn;
                 if (gm.getGameMode() == GameManager.GameMode.TEAM && gm.isBaseModeEnabled()) {
                     spawn = plugin.getBattlefieldManager().getTeamCornerSpawn(gm.getTeam(player.getUniqueId()), true);
+                } else if (gm.getGameMode() == GameManager.GameMode.TEAM) {
+                    spawn = plugin.getBattlefieldManager().getTeamHalfSpawn(gm.getTeam(player.getUniqueId()));
                 } else {
                     spawn = plugin.getBattlefieldManager().getRandomSpawn();
                 }

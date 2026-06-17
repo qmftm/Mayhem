@@ -2,8 +2,10 @@ package me.qmftm.asurajang;
 
 import me.qmftm.asurajang.augmentation.Augmentation;
 import me.qmftm.asurajang.augmentation.AugmentationManager;
+import me.qmftm.asurajang.augmentation.BlacklistManager;
 import me.qmftm.asurajang.augmentation.PrismChoice;
 import me.qmftm.asurajang.augmentation.PrismItemManager;
+import me.qmftm.asurajang.augmentation.SynergyManager;
 import me.qmftm.asurajang.command.AsurajangCommand;
 import me.qmftm.asurajang.config.YamlResource;
 import me.qmftm.asurajang.game.AiBotManager;
@@ -49,15 +51,18 @@ public final class Asurajang extends JavaPlugin {
     private YamlResource prismDescriptionConfig;
     private YamlResource prismSettingConfig;
     private YamlResource prismItemConfig;
+    private YamlResource synergyConfig;
     private YamlResource gamemodeConfig;
     private AugmentationManager augmentationManager;
     private PrismItemManager prismItemManager;
+    private SynergyManager synergyManager;
     private BattlefieldManager battlefieldManager;
     private GameManager gameManager;
     private AiBotManager aiBotManager;
     private GameScoreboardManager scoreboardManager;
     private MaxHealthManager maxHealthManager;
     private LevelUpManager levelUpManager;
+    private BlacklistManager blacklistManager;
     private StatAnvilListener statAnvilListener;
     private PrismAugItemListener prismAugItemListener;
 
@@ -78,15 +83,19 @@ public final class Asurajang extends JavaPlugin {
         prismDescriptionConfig   = new YamlResource(this, "prism/description.yml");
         prismSettingConfig       = new YamlResource(this, "prism/config.yml");
         prismItemConfig          = new YamlResource(this, "prism/item.yml");
+        synergyConfig            = new YamlResource(this, "synergy/synergy.yml");
         gamemodeConfig           = new YamlResource(this, "gamemode.yml");
 
         augmentationManager = new AugmentationManager(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager    = new PrismItemManager(prismItemConfig.get());
+        synergyManager      = new SynergyManager(synergyConfig.get());
+        synergyManager.getSynergyAugmentations().forEach(augmentationManager::addSynergy);
         battlefieldManager  = new BattlefieldManager();
         gameManager         = new GameManager();
         aiBotManager        = new AiBotManager();
         scoreboardManager   = new GameScoreboardManager();
         maxHealthManager    = new MaxHealthManager();
+        blacklistManager    = new BlacklistManager();
         levelUpManager      = new LevelUpManager();
         statAnvilListener   = new StatAnvilListener();
         prismAugItemListener = new PrismAugItemListener();
@@ -121,6 +130,7 @@ public final class Asurajang extends JavaPlugin {
         Set<String> owned = augmentationManager.getActiveEffects(player.getUniqueId()).keySet();
         List<Augmentation> available = augmentationManager.getAll().stream()
             .filter(aug -> !owned.contains(aug.getId()))
+            .filter(aug -> !blacklistManager.isBlacklisted(aug.getId()))
             .toList();
         new AugmentationSelectGUI(available).open(player);
     }
@@ -131,6 +141,7 @@ public final class Asurajang extends JavaPlugin {
 
         augmentationManager.getPrismAll().stream()
             .filter(aug -> aug.isActive() || !owned.contains(aug.getId()))
+            .filter(aug -> !blacklistManager.isBlacklisted(aug.getId()))
             .map(PrismChoice.Aug::new)
             .forEach(pool::add);
 
@@ -174,6 +185,8 @@ public final class Asurajang extends JavaPlugin {
         gamemodeConfig.reload();
         augmentationManager.reload(augmentDescriptionConfig.get(), prismDescriptionConfig.get());
         prismItemManager.reload(prismItemConfig.get());
+        synergyConfig.reload();
+        synergyManager.reload(synergyConfig.get(), augmentationManager);
     }
 
     public FileConfiguration getAugmentDescriptionConfig() {
@@ -226,5 +239,13 @@ public final class Asurajang extends JavaPlugin {
 
     public PrismAugItemListener getPrismAugItemListener() {
         return prismAugItemListener;
+    }
+
+    public SynergyManager getSynergyManager() {
+        return synergyManager;
+    }
+
+    public BlacklistManager getBlacklistManager() {
+        return blacklistManager;
     }
 }

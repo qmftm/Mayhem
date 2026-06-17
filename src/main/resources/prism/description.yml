@@ -16,7 +16,6 @@ Dropkick:
   display-name: "드롭킥"
   icon: RABBIT_FOOT
   color: red
-  active: false
   description:
     - "근접 공격 시 체력이 <red>15%</red> 이하인"
     - "적을 <red>즉사</red>시킵니다."
@@ -88,3 +87,65 @@ Seal:
     - "공격력이 <dark_gray>10%</dark_gray> 감소합니다."
     - ""
     - "쿨타임: 120초"
+
+InevitableExistence:
+  display-name: "필연적인 존재"
+  icon: HONEYCOMB
+  color: gold
+  description:
+    - "적을 처치할 때마다 <gold>50%</gold> 확률로"
+    - "랜덤한 스톤을 획득합니다."
+    - "<gold>6종</gold>의 스톤을 모두 모은 뒤"
+    - "건틀릿을 우클릭하면 <red>1회</red>에 한해"
+    - "모든 적을 <red>즉사</red>시키고"
+    - "모든 스톤이 소멸합니다."
+    - ""
+    - "<light_purple>파워 스톤</light_purple>: 공격력 +100%"
+    - "<blue>스페이스 스톤</blue>: 이동 속도 +100%"
+    - "<red>리얼리티 스톤</red>: 투명화"
+    - "<gold>소울 스톤</gold>: 공격의 50% 고정 피해"
+    - "<green>타임 스톤</green>: 공격 속도 +50%"
+    - "<yellow>마인드 스톤</yellow>: 공격 시 5초간 매혹"
+    - ""
+    - "<gray>(스톤 효과는 왼손에 들고 있을 때만 발동)</gray>"
+
+NanoTechnology:
+  display-name: "나노 테크놀로지"
+  icon: ENCHANTED_GOLDEN_APPLE
+  color: aqua
+  description:
+    - "적 처치 시 적의 최대 체력"
+    - "<aqua>35%</aqua>만큼 <aqua>흡수 체력</aqua>을"
+    - "<aqua>중첩</aqua>하여 얻습니다."
+
+ShadowLord:
+  display-name: "그림자 군주"
+  icon: SCULK
+  color: dark_gray
+  description:
+    - "적을 처치하면 그 위치에"
+    - "<dark_gray>영혼</dark_gray>을 소환해 함께 싸웁니다."
+    - "최대 <dark_gray>5명</dark_gray>까지 소환 가능하며"
+    - "한 플레이어에게서 동시에"
+    - "여러 영혼을 추출할 수 없습니다."
+    - "영혼은 <dark_gray>적의 능력치</dark_gray>를 따라가며"
+    - "사망 시 부활하지 않습니다."
+
+Dragon:
+  display-name: "드래곤"
+  icon: DRAGON_HEAD
+  color: light_purple
+  description:
+    - "<light_purple>드래곤의 머리</light_purple>를 지급합니다."
+    - "왼손에 들고 있으면"
+    - "<light_purple>힘 II</light_purple>, <light_purple>저항 I</light_purple>,"
+    - "<light_purple>신속 I</light_purple>, <light_purple>재생 II</light_purple>,"
+    - "<light_purple>생명력 강화 II</light_purple> 효과를 받습니다."
+
+TimeLord:
+  display-name: "시간의 지배자"
+  icon: RECOVERY_COMPASS
+  color: gold
+  description:
+    - "모든 증강의 쿨타임이"
+    - "<gold>40%</gold> 감소합니다."

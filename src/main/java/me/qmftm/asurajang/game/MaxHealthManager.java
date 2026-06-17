@@ -49,12 +49,14 @@ public class MaxHealthManager {
      *   1. Fixed 중 가장 낮은 fraction × base → effectiveBase
      *   2. Fixed가 없으면 base 그대로
      *   3. 모든 Multiplier를 effectiveBase에 곱셈 적용
+     *   4. 모든 Additive를 더해 최종 적용
      */
     public void recalculate(Player player) {
         double baseHp = getBase(player.getUniqueId());
 
         double fixedMin = Double.MAX_VALUE;
         double totalMul = 1.0;
+        double totalAdd = 0.0;
 
         for (AugmentationEffect effect :
                 Asurajang.getInstance().getAugmentationManager()
@@ -64,11 +66,13 @@ public class MaxHealthManager {
                 fixedMin = Math.min(fixedMin, f.fraction());
             } else if (mod instanceof MaxHealthModifier.Multiplier m) {
                 totalMul *= m.factor();
+            } else if (mod instanceof MaxHealthModifier.Additive a) {
+                totalAdd += a.amount();
             }
         }
 
         double effectiveBase = (fixedMin < Double.MAX_VALUE) ? baseHp * fixedMin : baseHp;
-        double finalHp = Math.max(1.0, effectiveBase * totalMul);
+        double finalHp = Math.max(1.0, effectiveBase * totalMul + totalAdd);
 
         AttributeInstance attr = player.getAttribute(Attribute.MAX_HEALTH);
         if (attr == null) return;

@@ -5,6 +5,7 @@ import me.qmftm.asurajang.augmentation.AugmentSettings;
 import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -30,10 +31,11 @@ public class ColdBloodEffect implements AugmentationEffect {
         if (target.equals(player)) return;
 
         long cooldownTicks = AugmentSettings.getLong("ColdBlood", "cooldown-ticks", 900L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
 
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) {
-            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
+        if (now - lastUsed < effectiveCooldown) {
+            long remain = (effectiveCooldown - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[냉혈한] ", NamedTextColor.AQUA)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -46,6 +48,8 @@ public class ColdBloodEffect implements AugmentationEffect {
 
         target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, slownessDuration, slownessAmplifier, false, true));
         target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, weaknessDuration, weaknessAmplifier, false, true));
+        target.getWorld().spawnParticle(Particle.SNOWFLAKE, target.getLocation().add(0, 1, 0),
+            15, 0.4, 0.5, 0.4, 0.02);
 
         player.sendActionBar(Component.text("냉혈한 발동!", NamedTextColor.AQUA));
         ActionBarTracker.markUsed(player);
@@ -62,6 +66,6 @@ public class ColdBloodEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

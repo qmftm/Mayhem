@@ -18,6 +18,7 @@ import java.util.*;
 public class AugmentationManager {
 
     private final Map<String, Augmentation> augmentations = new LinkedHashMap<>();
+    private final Set<String> synergyIds = new HashSet<>();
     private final Map<UUID, Map<String, AugmentationEffect>> playerEffects = new HashMap<>();
 
     public AugmentationManager(FileConfiguration regular, FileConfiguration prism) {
@@ -27,6 +28,7 @@ public class AugmentationManager {
 
     public void reload(FileConfiguration regular, FileConfiguration prism) {
         augmentations.clear();
+        synergyIds.clear();
         load(regular, false);
         load(prism, true);
     }
@@ -71,9 +73,21 @@ public class AugmentationManager {
         }
     }
 
+    // ── 시너지 등록 ──────────────────────────────────────────────────────────
+
+    public void addSynergy(Augmentation aug) {
+        augmentations.put(aug.getId(), aug);
+        synergyIds.add(aug.getId());
+    }
+
     // ── 효과 활성화 / 비활성화 ───────────────────────────────────────────────
 
     public void activateFor(Player player, String augId) {
+        activateInternal(player, augId);
+        Asurajang.getInstance().getSynergyManager().checkAndApply(player, this);
+    }
+
+    void activateInternal(Player player, String augId) {
         AugmentationEffect effect = AugmentationRegistry.create(augId);
         if (effect == null) return;
 
@@ -84,6 +98,7 @@ public class AugmentationManager {
     }
 
     public void deactivateFor(Player player) {
+        Asurajang.getInstance().getSynergyManager().clearPlayer(player.getUniqueId());
         Map<String, AugmentationEffect> effects = playerEffects.remove(player.getUniqueId());
         if (effects == null) return;
         effects.values().forEach(effect -> effect.onDeactivate(player));
@@ -115,10 +130,14 @@ public class AugmentationManager {
     }
 
     public List<Augmentation> getAll() {
-        return augmentations.values().stream().filter(a -> !a.isPrism()).toList();
+        return augmentations.values().stream()
+                .filter(a -> !a.isPrism() && !synergyIds.contains(a.getId()))
+                .toList();
     }
 
     public List<Augmentation> getPrismAll() {
-        return augmentations.values().stream().filter(Augmentation::isPrism).toList();
+        return augmentations.values().stream()
+                .filter(a -> a.isPrism() && !synergyIds.contains(a.getId()))
+                .toList();
     }
 }

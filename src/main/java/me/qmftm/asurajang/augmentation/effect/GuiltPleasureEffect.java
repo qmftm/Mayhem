@@ -2,6 +2,7 @@ package me.qmftm.asurajang.augmentation.effect;
 
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 public class GuiltPleasureEffect implements AugmentationEffect {
@@ -16,5 +17,6 @@ public class GuiltPleasureEffect implements AugmentationEffect {
 
         player.getWorld().spawnParticle(Particle.HEART, player.getLocation().add(0, 1.5, 0),
             10, 0.4, 0.4, 0.4, 0);
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 0.4f, 1.8f);
     }
 }

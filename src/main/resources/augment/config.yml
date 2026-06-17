@@ -1,5 +1,9 @@
 # Asurajang 증강 수치 설정 (확률·피해량·쿨타임 등)
 
+FeatherFalling:
+  double-jump-power: 0.5
+  ground-check-interval-ticks: 5
+
 StrongStrong:
   damage-multiplier: 1.5
 
@@ -29,6 +33,9 @@ ColdBlood:
 Deadful:
   max-health-fixed: 0.5
   heal-interval-ticks: 20
+
+Gambler:
+  heal-ratio: 0.5
 
 Copy:
   max-copies: 3
@@ -85,7 +92,7 @@ DivineLove:
 CleanUp:
   range: 10.0
   health-threshold: 0.3
-  speed-bonus: 0.5
+  speed-bonus: 0.3
   check-interval-ticks: 4
 
 SaturatedFat:
@@ -130,7 +137,7 @@ Flee:
   check-interval-ticks: 20
 
 Assassin:
-  speed-bonus: 1.0
+  speed-bonus: 0.6
   disable-duration-ticks: 120
 
 DragonScale:
@@ -143,3 +150,96 @@ Repulsion:
   cooldown-ticks: 100
   knockback-horizontal: 1.5
   knockback-vertical: 0.4
+
+ExtraHealth:
+  bonus-health: 10.0
+
+Vampire:
+  heal-ratio: 0.10
+
+ResilientSpirit:
+  health-threshold: 0.5
+  damage-reduction: 0.15
+
+SpiritBomb:
+  charge-ticks: 200
+  critical-multiplier: 1.5
+
+Bonus:
+  gold-multiplier: 2.0
+
+MutualDestruction:
+  fixed-damage: 7.0
+
+Bodyguard:
+  radius: 8.0
+  reduction-per-ally: 0.05
+
+Blink:
+  distance: 7.0
+  cooldown-ticks: 60
+
+SacredFlame:
+  cooldown-ticks: 60
+  range: 5.0
+  fire-ticks: 100
+
+Waiting:
+  regen-multiplier: 3.0
+
+Corrosion:
+  cooldown-ticks: 200
+  wither-duration: 100
+  wither-amplifier: 0
+
+DragonSlayer:
+  damage-multiplier: 2.0
+
+BlackHole:
+  radius: 4.0
+  cooldown-ticks: 700
+  slowness-amplifier: 3
+  slowness-duration-ticks: 80
+  damage-total: 4.0
+  damage-ticks: 4
+  damage-interval-ticks: 20
+
+ManeuverGear:
+  cooldown-ticks: 500
+
+Pursuer:
+  damage-per-stack: 0.05
+  max-stacks: 10
+
+HuntingInstinct:
+  kill-bonus-duration-ticks: 160
+  kill-bonus-multiplier: 1.3
+
+TimeTraveler:
+  cooldown-reduction: 0.15
+
+FiercePursuer:
+  damage-per-stack: 0.03
+  max-stacks: 30
+
+VengefulGhost: {}
+
+Rabies:
+  wolf-charm-duration-ticks: 20
+  slow-amount: 0.5
+
+YouAreAlreadyDead:
+  cooldown-ticks: 60
+  range: 7.0
+  slow-amount: 0.4
+  slow-duration-ticks: 60
+
+Donation:
+  gold-amount: 450
+
+Robber:
+  steal-chance: 0.5
+  steal-amount: 5
+
+Greed:
+  steal-ratio: 0.01

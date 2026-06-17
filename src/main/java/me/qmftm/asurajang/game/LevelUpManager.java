@@ -130,6 +130,30 @@ public class LevelUpManager {
         anvilCharges.merge(uuid, count, Integer::sum);
     }
 
+    public void openNextAfterPrism(Player player) {
+        UUID uuid = player.getUniqueId();
+        Asurajang plugin = Asurajang.getInstance();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            if (!player.isOnline()) return;
+            if (getAugCharges(uuid) > 0) {
+                plugin.openAugmentationSelect(player);
+            } else if (getAnvilCharges(uuid) > 0) {
+                new StatAnvilGUI().open(player);
+            }
+        }, 1L);
+    }
+
+    public void openNextAfterAug(Player player) {
+        UUID uuid = player.getUniqueId();
+        Asurajang plugin = Asurajang.getInstance();
+        plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            if (!player.isOnline()) return;
+            if (getAnvilCharges(uuid) > 0) {
+                new StatAnvilGUI().open(player);
+            }
+        }, 1L);
+    }
+
     public void cleanup(UUID uuid) {
         augCharges.remove(uuid);
         prismCharges.remove(uuid);

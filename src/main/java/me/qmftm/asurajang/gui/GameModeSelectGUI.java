@@ -60,19 +60,26 @@ public class GameModeSelectGUI implements InventoryHolder {
                 Component.text("기지 모드를 함께 켤 수 있습니다.", NamedTextColor.DARK_GRAY)
             )
         ));
-        inventory.setItem(SOLO_SLOT, buildChoice(
+        // 기지 모드는 팀전 전용이므로 개인전 버튼 숨김
+        if (baseMode != GameManager.BaseMode.BASE) {
+            inventory.setItem(SOLO_SLOT, buildSoloItem());
+        }
+        inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseMode));
+        // 거점 공격 버튼은 기지 모드일 때만 노출
+        if (baseMode == GameManager.BaseMode.BASE) {
+            inventory.setItem(GUARDIAN_ATTACK_SLOT, buildGuardianAttackItem(guardianAttackEnabled));
+        }
+    }
+
+    public static ItemStack buildSoloItem() {
+        return buildChoice(
             Material.BLADE_POTTERY_SHERD,
             Component.text("개인전", NamedTextColor.GOLD),
             List.of(
                 Component.text("모두가 적이 되어 싸웁니다.", NamedTextColor.GRAY),
                 Component.text("전장 곳곳에 무작위로 흩어져 시작합니다.", NamedTextColor.GRAY)
             )
-        ));
-        inventory.setItem(BASE_MODE_SLOT, buildBaseModeItem(baseMode));
-        // 거점 공격 버튼은 기지 모드일 때만 노출
-        if (baseMode == GameManager.BaseMode.BASE) {
-            inventory.setItem(GUARDIAN_ATTACK_SLOT, buildGuardianAttackItem(guardianAttackEnabled));
-        }
+        );
     }
 
     public static ItemStack buildBaseModeItem(GameManager.BaseMode mode) {

@@ -1,0 +1,67 @@
+# 시너지 증강 설정
+# 형식:
+# SynergyId:                    ← AugmentationRegistry에 등록된 효과 ID
+#   components:                 ← 필요한 증강 ID 목록 (모두 보유 시 자동 발동)
+#     - AugId1
+#     - AugId2
+#   display-name: "이름"
+#   icon: MATERIAL_NAME
+#   color: color_name           ← aqua / red / gold / dark_purple 등 NamedTextColor
+#   description:
+#     - "설명 줄 1 (MiniMessage 형식)"
+
+FiercePursuer:
+  components:
+    - Pursuer
+    - HuntingInstinct
+  display-name: "맹추"
+  icon: SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: dark_red
+  description:
+    - "같은 적 연속 공격 시 피해 <dark_red>3%</dark_red>씩 추가 증가 (최대 <dark_red>30</dark_red>스택),"
+    - "처치 시 스택이 <dark_red>50%</dark_red> 감소합니다."
+
+VengefulGhost:
+  components:
+    - MutualDestruction
+    - UnRuin
+  display-name: "복수귀"
+  icon: VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: dark_purple
+  description:
+    - "부활에 성공하면 자신을 죽인 적에게"
+    - "마지막으로 받은 피해를 <dark_purple>고정 피해</dark_purple>로 줍니다."
+
+Rabies:
+  components:
+    - DivineDogs
+    - Charm
+  display-name: "광견병"
+  icon: WILD_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: dark_red
+  description:
+    - "자신 뿐 아니라 옥견의 공격에도"
+    - "<dark_red>1초</dark_red>의 매혹 효과를 줍니다."
+    - "(자신 쿨타임은 그대로, 옥견은 쿨타임 없음)"
+
+Greed:
+  components:
+    - Donation
+    - InfiniteGold
+    - Robber
+  display-name: "탐욕"
+  icon: DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: gold
+  description:
+    - "공격할 때마다 적이 가진 골드의 <gold>1%</gold>를 강탈합니다."
+
+YouAreAlreadyDead:
+  components:
+    - Assassin
+    - Blink
+  display-name: "넌 이미 죽어있다"
+  icon: EYE_ARMOR_TRIM_SMITHING_TEMPLATE
+  color: dark_gray
+  description:
+    - "양손 맞바꾸기로 <dark_gray>7칸</dark_gray> 이내의 가장 가까운 적의"
+    - "뒤로 이동한 뒤 이동 속도를 <dark_gray>40%</dark_gray> 느리게 합니다."

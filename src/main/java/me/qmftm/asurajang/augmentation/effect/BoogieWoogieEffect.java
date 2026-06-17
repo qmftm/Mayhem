@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -28,11 +29,12 @@ public class BoogieWoogieEffect implements AugmentationEffect {
     @Override
     public void onSwapHands(Player player, PlayerSwapHandItemsEvent event) {
         long cooldownTicks = AugmentSettings.getLong("BoogieWoogie", "cooldown-ticks", 100L);
+        long effectiveCooldown = (long)(cooldownTicks * AugmentSettings.getCooldownMultiplier(player));
         double range = AugmentSettings.getDouble("BoogieWoogie", "range", 20.0);
 
         long now = player.getWorld().getGameTime();
-        if (now - lastUsed < cooldownTicks) {
-            long remain = (cooldownTicks - (now - lastUsed) + 19) / 20;
+        if (now - lastUsed < effectiveCooldown) {
+            long remain = (effectiveCooldown - (now - lastUsed) + 19) / 20;
             player.sendMessage(Component.text("[부기우기] ", NamedTextColor.LIGHT_PURPLE)
                     .append(Component.text("쿨타임이 " + remain + "초 남았습니다.", NamedTextColor.GRAY)));
             return;
@@ -68,6 +70,10 @@ public class BoogieWoogieEffect implements AugmentationEffect {
             newTargetLoc.setYaw(targetLoc.getYaw());
             newTargetLoc.setPitch(targetLoc.getPitch());
 
+            playerLoc.getWorld().spawnParticle(Particle.REVERSE_PORTAL, playerLoc.clone().add(0, 1, 0),
+                20, 0.3, 0.5, 0.3, 0.1);
+            targetLoc.getWorld().spawnParticle(Particle.REVERSE_PORTAL, targetLoc.clone().add(0, 1, 0),
+                20, 0.3, 0.5, 0.3, 0.1);
             player.teleport(newPlayerLoc);
             finalTarget.teleport(newTargetLoc);
 
@@ -92,6 +98,6 @@ public class BoogieWoogieEffect implements AugmentationEffect {
                 player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.2f);
             }
             cooldownNotifyTask = null;
-        }, cooldownTicks);
+        }, effectiveCooldown);
     }
 }

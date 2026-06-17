@@ -7,6 +7,8 @@ FeatherFalling:
   color: white
   description:
     - "낙하 피해를 받지 않습니다."
+    - "공중에서 <white>점프 키</white>를 다시 누르면"
+    - "<white>한 번 더 점프</white>할 수 있습니다."
 
 StrongStrong:
   display-name: "강강약약"
@@ -69,7 +71,7 @@ Gambler:
   description:
     - "매 틱마다 <gold>1~239</gold> 사이의"
     - "무작위 숫자를 액션바에 표시합니다."
-    - "<gold>77</gold>이 나오면 체력을 전부 회복합니다."
+    - "<gold>77</gold>이 나오면 최대 체력의 <gold>50%</gold>를 회복합니다."
 
 Copy:
   display-name: "모방"
@@ -303,3 +305,164 @@ Repulsion:
   description:
     - "체력이 <dark_green>20%</dark_green> 이하로 내려가면"
     - "주변 적들을 밀쳐냅니다."
+
+ExtraHealth:
+  display-name: "추가 체력"
+  icon: GOLDEN_APPLE
+  color: green
+  description:
+    - "최대 체력 <green>5칸</green>을 늘립니다."
+
+Vampire:
+  display-name: "뱀파이어"
+  icon: REDSTONE
+  color: red
+  description:
+    - "근접 공격 시 입힌 피해의"
+    - "<red>10%</red>만큼 체력을 회복합니다."
+
+ResilientSpirit:
+  display-name: "강인한 정신"
+  icon: IRON_INGOT
+  color: white
+  description:
+    - "체력이 <white>50%</white> 이하일 때"
+    - "받는 피해가 <white>15%</white> 감소합니다."
+
+SpiritBomb:
+  display-name: "원기옥"
+  icon: END_CRYSTAL
+  color: blue
+  description:
+    - "<blue>10초</blue> 동안 피해를 받지 않으면"
+    - "다음 공격이 <blue>치명타</blue>가 됩니다."
+
+Bonus:
+  display-name: "보너스"
+  icon: GOLD_NUGGET
+  color: gold
+  description:
+    - "골드를 <gold>2배</gold>로 획득합니다."
+
+MutualDestruction:
+  display-name: "동귀어진"
+  icon: VEX_SPAWN_EGG
+  color: dark_purple
+  description:
+    - "자신을 죽인 적에게"
+    - "<dark_purple>3.5칸</dark_purple>의 고정 피해를 줍니다."
+
+Bodyguard:
+  display-name: "보디가드"
+  icon: LEATHER_CHESTPLATE
+  color: dark_gray
+  description:
+    - "<dark_gray>8칸</dark_gray> 이내의 팀원 수 x <dark_gray>5%</dark_gray>만큼"
+    - "받는 피해를 감소시킵니다."
+
+Blink:
+  display-name: "점멸"
+  icon: GLOWSTONE
+  color: yellow
+  description:
+    - "양손 맞바꾸기 키로 <yellow>7칸</yellow> 앞으로"
+    - "빠르게 이동합니다."
+    - "<yellow>벽은 투과할 수 없습니다.</yellow>"
+
+SacredFlame:
+  display-name: "신성한 불꽃"
+  icon: SOUL_CAMPFIRE
+  color: aqua
+  description:
+    - "체력을 회복할 때마다 5칸 이내"
+    - "가장 가까운 적을 <aqua>불태웁니다</aqua>."
+    - ""
+    - "<aqua>쿨타임: 3초</aqua>"
+
+Waiting:
+  display-name: "기다림"
+  icon: CLOCK
+  color: green
+  description:
+    - "체력 재생량이 <green>3배</green> 증가합니다."
+
+Corrosion:
+  display-name: "부식"
+  icon: ROTTEN_FLESH
+  color: dark_green
+  description:
+    - "적에게 근접 공격을 할 때"
+    - "<dark_green>시듦</dark_green> 효과를 부여합니다."
+    - ""
+    - "<dark_green>쿨타임: 10초</dark_green>"
+
+DragonSlayer:
+  display-name: "드래곤 슬레이어"
+  icon: NETHERITE_SWORD
+  color: dark_purple
+  description:
+    - "<dark_purple>드래곤</dark_purple> 증강을 가진 적에게"
+    - "<dark_purple>2배</dark_purple>의 피해를 줍니다."
+
+BlackHole:
+  display-name: "블랙홀"
+  icon: CRYING_OBSIDIAN
+  color: dark_purple
+  description:
+    - "웅크리기 시 주변 <dark_purple>4칸</dark_purple>의 적에게"
+    - "<dark_purple>구속 4</dark_purple>를 부여하고"
+    - "<dark_purple>4초간</dark_purple> 지속 피해를 줍니다."
+    - "<dark_purple>쿨타임: 35초</dark_purple>"
+
+ManeuverGear:
+  display-name: "입체기동장치"
+  icon: FISHING_ROD
+  color: green
+  description:
+    - "원거리 공격이 적에게 명중하면"
+    - "<green>그 적의 위치</green>로 이동합니다."
+    - "<green>쿨타임: 25초</green>"
+
+Pursuer:
+  display-name: "추격자"
+  icon: ARROW
+  color: red
+  description:
+    - "같은 적을 공격할 때마다"
+    - "피해량이 <red>5%</red> 증가합니다."
+    - "최대 <red>50%</red>까지 증가하며"
+    - "다른 적을 공격하면 초기화됩니다."
+
+HuntingInstinct:
+  display-name: "사냥 본능"
+  icon: TRIDENT
+  color: dark_red
+  description:
+    - "최근 <dark_red>8초</dark_red> 내에"
+    - "처치가 발생한 적에게"
+    - "<dark_red>30%</dark_red>의 추가 피해를 줍니다."
+
+TimeTraveler:
+  display-name: "타임 트래버"
+  icon: COMPASS
+  color: aqua
+  description:
+    - "모든 증강의 쿨타임이"
+    - "<aqua>15%</aqua> 감소합니다."
+
+Donation:
+  display-name: "후원"
+  icon: GOLD_INGOT
+  color: gold
+  description:
+    - "증강 획득 시 즉시"
+    - "<gold>450 골드</gold>를 획득합니다."
+
+Robber:
+  display-name: "강도"
+  icon: IRON_SWORD
+  color: dark_gray
+  description:
+    - "적을 공격할 때마다"
+    - "<dark_gray>50%</dark_gray> 확률로"
+    - "적에게서 <gold>5 골드</gold>를 빼앗습니다."

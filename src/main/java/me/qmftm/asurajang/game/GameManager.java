@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class GameManager {
 
-    private static final int GAME_DURATION = 1800; // 30분
+    private static final int DEFAULT_DURATION = 1800;
 
     public enum State { WAITING, STARTING, RUNNING }
     public enum GameMode { TEAM, SOLO }
@@ -32,7 +32,7 @@ public class GameManager {
     private GameMode gameMode = GameMode.SOLO;
     private final Map<UUID, PlayerInventorySnapshot> snapshots = new HashMap<>();
     private final Map<UUID, Integer> teams = new HashMap<>();
-    private int remainingSeconds = GAME_DURATION;
+    private int remainingSeconds = DEFAULT_DURATION;
     private BukkitTask timerTask;
     private BukkitTask timeTask;
     private boolean firstBloodClaimed = false;
@@ -204,7 +204,7 @@ public class GameManager {
             if (state != State.STARTING) return;
 
             state = State.RUNNING;
-            remainingSeconds = (baseMode == BaseMode.WILD) ? NexusSettings.wildDurationSeconds() : GAME_DURATION;
+            remainingSeconds = (baseMode == BaseMode.WILD) ? NexusSettings.wildDurationSeconds() : NexusSettings.gameDurationSeconds();
             firstBloodClaimed = false;
 
             BattlefieldManager bm = plugin.getBattlefieldManager();
@@ -348,5 +348,34 @@ public class GameManager {
         if (firstBloodClaimed) return false;
         firstBloodClaimed = true;
         return true;
+    }
+
+    public void checkWildSurvivor() {
+        if (!isRunning() || baseMode != BaseMode.WILD) return;
+
+        List<Player> alive = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getGameMode() != org.bukkit.GameMode.SPECTATOR) alive.add(p);
+        }
+
+        if (alive.size() <= 1) {
+            if (alive.size() == 1) {
+                Player winner = alive.get(0);
+                Bukkit.broadcast(Component.empty());
+                Bukkit.broadcast(Component.text("★ ", NamedTextColor.GOLD)
+                    .append(Component.text(winner.getName(), NamedTextColor.YELLOW))
+                    .append(Component.text(" 최후의 생존자!", NamedTextColor.GOLD)));
+                Bukkit.broadcast(Component.empty());
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.showTitle(Title.title(
+                        Component.text(winner.getName(), NamedTextColor.GOLD),
+                        Component.text("최후의 생존자!", NamedTextColor.YELLOW),
+                        Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(3000), Duration.ofMillis(1000))
+                    ));
+                    p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+                }
+            }
+            Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), this::stop, 60L);
+        }
     }
 }
