@@ -305,6 +305,18 @@ public class PlayerDeathListener implements Listener {
             player.setGameMode(GameMode.SPECTATOR);
             if (deathLoc != null) player.teleport(deathLoc);
 
+            GameManager gm = Asurajang.getInstance().getGameManager();
+            if (gm.getBaseMode() == GameManager.BaseMode.WILD) {
+                player.showTitle(Title.title(
+                    Component.text("탈락!", NamedTextColor.RED),
+                    Component.text("관전 모드로 전환됩니다", NamedTextColor.GRAY),
+                    Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(2000), Duration.ofMillis(500))
+                ));
+                player.playSound(player.getLocation(), Sound.ENTITY_WITHER_DEATH, 0.5f, 1.5f);
+                gm.checkWildSurvivor();
+                return;
+            }
+
             startSpectatorTimer(player);
         }, 1L);
     }

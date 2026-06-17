@@ -349,4 +349,33 @@ public class GameManager {
         firstBloodClaimed = true;
         return true;
     }
+
+    public void checkWildSurvivor() {
+        if (!isRunning() || baseMode != BaseMode.WILD) return;
+
+        List<Player> alive = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getGameMode() != org.bukkit.GameMode.SPECTATOR) alive.add(p);
+        }
+
+        if (alive.size() <= 1) {
+            if (alive.size() == 1) {
+                Player winner = alive.get(0);
+                Bukkit.broadcast(Component.empty());
+                Bukkit.broadcast(Component.text("★ ", NamedTextColor.GOLD)
+                    .append(Component.text(winner.getName(), NamedTextColor.YELLOW))
+                    .append(Component.text(" 최후의 생존자!", NamedTextColor.GOLD)));
+                Bukkit.broadcast(Component.empty());
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    p.showTitle(Title.title(
+                        Component.text(winner.getName(), NamedTextColor.GOLD),
+                        Component.text("최후의 생존자!", NamedTextColor.YELLOW),
+                        Title.Times.times(Duration.ofMillis(200), Duration.ofMillis(3000), Duration.ofMillis(1000))
+                    ));
+                    p.playSound(p.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 1.0f, 1.0f);
+                }
+            }
+            Bukkit.getScheduler().runTaskLater(Asurajang.getInstance(), this::stop, 60L);
+        }
+    }
 }
