@@ -8,9 +8,8 @@ ExecutionerSword:
   color: yellow
   cooldown: 299
   description:
-    - "<yellow>내구도 1</yellow>, 높은 날카로움의"
-    - "금 검을 즉시 지급합니다."
-    - "검이 깨지면 <yellow>299초</yellow> 후"
+    - "내구도가 <gold>1</gold>인 매우 높은 날카로움의 검을 지급합니다."
+    - "검이 깨지면 <gold>299초</gold> 후"
     - "자동으로 다시 지급됩니다."
 
 Dropkick:
@@ -19,20 +18,19 @@ Dropkick:
   color: red
   active: false
   description:
-    - "근접 공격 시 체력 <red>15%</red> 이하인"
+    - "근접 공격 시 체력이 <red>15%</red> 이하인"
     - "적을 <red>즉사</red>시킵니다."
-    - "즉사한 적에게 <red>강한 넉백</red>과"
-    - "<red>폭발</red>이 발생하며"
-    - "자신의 체력을 최대 체력의"
-    - "<red>50%</red> 회복합니다."
+    - ""
+    - "즉사한 적에게 <red>강한 넉백</red>과 <red>폭발</red>이 발생하며"
+    - "자신의 체력을 최대 체력의 <red>50%</red> 회복합니다."
 
 GlassCannon:
   display-name: "유리 대포"
   icon: GLASS
   color: white
   description:
-    - "최대 체력이 <white>30%</white> 감소합니다."
-    - "공격 시 <white>15%</white>의"
+    - "최대 체력이 <red>30%</red> 감소합니다."
+    - "공격 시 <red>15%</red>의"
     - "추가 고정 피해를 입힙니다."
 
 StatPlusPlusPlus:
@@ -40,7 +38,7 @@ StatPlusPlusPlus:
   icon: SMITHING_TABLE
   color: dark_purple
   description:
-    - "능력치 모루 <dark_purple>4개</dark_purple>를 획득합니다!"
+    - "능력치 모루 <light_purple>4개</light_purple>를 획득합니다!"
 
 TabDancer:
   display-name: "탭 댄서"
@@ -49,8 +47,8 @@ TabDancer:
   description:
     - "기본 공격 시 <aqua>0.02</aqua>의 이동 속도를"
     - "무한히 중첩하여 얻습니다."
-    - "마지막 중첩 후 <aqua>5초</aqua> 이내"
-    - "중첩을 쌓지 않으면"
+    - ""
+    - "마지막 중첩 후 <aqua>5초</aqua> 이내 중첩을 쌓지 않으면"
     - "중첩이 빠르게 감소합니다."
 
 InfiniteGold:
@@ -60,7 +58,7 @@ InfiniteGold:
   description:
     - "골드를 <gold>32767</gold>로 변경합니다."
     - "단, 부활 시간이 <gold>5배</gold> 증가하며"
-    - "주는 피해량이 <gold>10%</gold> 감소합니다."
+    - "주는 피해량이 <red>10%</red> 감소합니다."
 
 Aegis:
   display-name: "이지스"
@@ -70,21 +68,23 @@ Aegis:
   cooldown: 80
   description:
     - "아이템을 우클릭하면"
-    - "<gold>4초간</gold> 모든 피해를 무시하는"
+    - "<green>4초</green>간 모든 피해를 무시하는"
     - "<gold>무적</gold> 상태가 됩니다."
-    - "<gold>쿨타임: 80초</gold>"
+    - ""
+    - "쿨타임: 80초"
 
 Seal:
   display-name: "봉인"
   icon: IRON_BARS
-  color: gray
+  color: dark_gray
   active: true
   cooldown: 120
   description:
-    - "아이템을 우클릭하면 주변 <gray>10칸</gray>의"
-    - "플레이어에게 <gray>15초간</gray> <gray>몰수</gray>"
+    - "아이템을 우클릭하면 주변 <dark_gray>10칸</dark_gray>의"
+    - "플레이어에게 <green>15초</green>간 <dark_gray>몰수</dark_gray>"
     - "효과를 부여합니다."
     - ""
-    - "<gray>몰수</gray>: 모든 증강 사용이"
-    - "금지되며 공격력이 <gray>10%</gray> 감소합니다."
-    - "<gray>쿨타임: 120초</gray>"
+    - "<dark_gray>몰수</dark_gray>: 모든 증강 사용이 금지되며"
+    - "공격력이 <dark_gray>10%</dark_gray> 감소합니다."
+    - ""
+    - "쿨타임: 120초"
