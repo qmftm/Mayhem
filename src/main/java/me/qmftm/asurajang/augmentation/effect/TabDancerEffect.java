@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
@@ -60,8 +59,6 @@ public class TabDancerEffect implements AugmentationEffect {
         if (stacks % 5 == 0) {
             player.getWorld().spawnParticle(Particle.NOTE, player.getLocation().add(0, 2, 0),
                 3, 0.3, 0.2, 0.3, 0);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 0.4f,
-                Math.min(0.5f + stacks * 0.05f, 2.0f));
         }
     }
 

@@ -6,7 +6,6 @@ import me.qmftm.asurajang.util.ActionBarTracker;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -38,8 +37,6 @@ public class GamblerEffect implements AugmentationEffect {
                         player.setHealth(newHealth);
                     }
                     player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_0, 1.0f, 1.2f);
-                    player.getWorld().spawnParticle(Particle.TOTEM_OF_UNDYING,
-                        player.getLocation().add(0, 1.5, 0), 30, 0.5, 0.5, 0.5, 0.3);
                 }
 
                 if (!ActionBarTracker.isRecentlyUsed(player, DISPLAY_BLOCK_MILLIS)) {

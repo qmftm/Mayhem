@@ -3,8 +3,6 @@ package me.qmftm.asurajang.augmentation.effect;
 import me.qmftm.asurajang.Asurajang;
 import me.qmftm.asurajang.augmentation.AugmentSettings;
 import org.bukkit.Bukkit;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -24,11 +22,6 @@ public class FleeEffect implements AugmentationEffect {
         task = Bukkit.getScheduler().runTaskTimer(Asurajang.getInstance(), () -> {
             if (!player.isOnline()) return;
             if (player.getHealth() / player.getMaxHealth() <= threshold) {
-                if (!player.hasPotionEffect(PotionEffectType.SPEED)) {
-                    player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, 0.3, 0),
-                        6, 0.2, 0.1, 0.2, 0.02);
-                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_BREATH, 0.5f, 1.8f);
-                }
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, duration, amplifier, false, false));
             }
         }, 0L, checkInterval);
