@@ -18,7 +18,7 @@ public class RobberEffect implements AugmentationEffect {
     @Override
     public void onDamageAsAttacker(Player attacker, EntityDamageByEntityEvent event) {
         if (!(event.getEntity() instanceof Player target)) return;
-        double chance = AugmentSettings.getDouble("Robber", "steal-chance", 0.5);
+        double chance = AugmentSettings.getDouble("Robber", "steal-chance", 0.33);
         if (ThreadLocalRandom.current().nextDouble() >= chance) return;
 
         int stealAmount = AugmentSettings.getInt("Robber", "steal-amount", 5);
