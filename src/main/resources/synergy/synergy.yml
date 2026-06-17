@@ -18,7 +18,8 @@ FiercePursuer:
   icon: SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
   color: dark_red
   description:
-    - "플레이어 공격 시 피해량이 <dark_red>20%</dark_red> 증가합니다."
+    - "같은 적 연속 공격 시 피해 <dark_red>3%</dark_red>씩 추가 증가 (최대 <dark_red>30</dark_red>스택),"
+    - "처치 시 스택이 <dark_red>50%</dark_red> 감소합니다."
 
 VengefulGhost:
   components:

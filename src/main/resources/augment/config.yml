@@ -219,7 +219,8 @@ TimeTraveler:
   cooldown-reduction: 0.15
 
 FiercePursuer:
-  bonus-multiplier: 0.20
+  damage-per-stack: 0.03
+  max-stacks: 30
 
 VengefulGhost: {}
 
