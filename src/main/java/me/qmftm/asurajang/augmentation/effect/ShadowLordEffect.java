@@ -125,6 +125,6 @@ public class ShadowLordEffect implements AugmentationEffect, Listener {
     private void copyAttribute(Player victim, Zombie soul, Attribute attribute) {
         AttributeInstance source = victim.getAttribute(attribute);
         AttributeInstance dest = soul.getAttribute(attribute);
-        if (source != null && dest != null) dest.setBaseValue(source.getValue());
+        if (source != null && dest != null) dest.setBaseValue(source.getBaseValue() * 0.5);
     }
 }
